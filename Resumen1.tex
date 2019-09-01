@@ -1,0 +1,461 @@
+\documentclass[10pt, spanish]{article}
+
+\usepackage{geometry} %Necesario para poder equiparar los márgenes
+ \geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=20mm,
+     top=20mm,
+}
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+
+\usepackage{listings}
+\usepackage{color}
+
+\lstloadlanguages{C,C++,csh,Java}
+
+\definecolor{red}{rgb}{0.6,0,0}
+\definecolor{blue}{rgb}{0,0,0.6}
+\definecolor{green}{rgb}{0,0.8,0}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{cloudwhite}{rgb}{0.9412, 0.9608, 0.8471}
+
+\lstset{
+    language=csh,
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,
+    numberstyle=\tiny,
+    numbersep=5pt,
+    tabsize=2,
+    extendedchars=true,
+    breaklines=true,
+    frame=b,
+    stringstyle=\color{blue}\ttfamily,
+    showspaces=false,
+    showtabs=false,
+    xleftmargin=17pt,
+    framexleftmargin=17pt,
+    framexrightmargin=5pt,
+    framexbottommargin=4pt,
+    commentstyle=\color{green},
+    morecomment=[l]{//}, %use comment-line-style!
+    morecomment=[s]{/*}{*/}, %for multiline comments
+    showstringspaces=false,
+    morekeywords={ abstract, event, new, struct,
+    as, explicit, null, switch,
+    base, extern, object, this,
+    bool, false, operator, throw,
+    break, finally, out, true,
+    byte, fixed, override, try,
+    case, float, params, typeof,
+    catch, for, private, uint,
+    char, foreach, protected, ulong,
+    checked, goto, public, unchecked,
+    class, if, readonly, unsafe,
+    const, implicit, ref, ushort,
+    continue, in, return, using,
+    decimal, int, sbyte, virtual,
+    default, interface, sealed, volatile,
+    delegate, internal, short, void,
+    do, is, sizeof, while,
+    double, lock, stackalloc,
+    else, long, static,
+    enum, namespace, string},
+    keywordstyle=\color{cyan},
+    identifierstyle=\color{red},
+    backgroundcolor=\color{cloudwhite},
+}
+
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{blue}{\parbox{\textwidth}{\hspace{15pt}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
+
+\author{Emiliano Salvatori}
+\title{Redes I\\
+    \large Resumen Primera Parte}
+\date{Agosto 2019}
+\pagestyle{headings}
+
+\begin{document}
+\maketitle
+
+\section{Clase 2}
+
+\subsection{Partes de la red}
+
+\textbf{Frontera de la red}: dispositivos que estan dentor de una red en si mismo.
+\textbf{Nucleo}: todos los disipotitivos que interconectan los hosts: ruters, etc.
+
+La gestión de Internet se realiza mediante conmutación paquetes.
+
+\textbf{Red de acceso}: Red formada por nodos de tipo rouers. Todos los nodos interconectados se denominan nucleo de
+red. Red local formada por varios dispositivos.
+Si se quiere que tenga acceso a internet, se debe llegar a las demas redes, es decir a un nodo que de acceso a internet.
+Es como se conectan la red a internet, se conecta la red al resto del nucleo. Por ejemplo, cuando se conecta una
+computadora mediante cable. Puede que exista una red aislada sin conexión a internet, pero para que se conecte a
+internet será necesario que esta red se comunique con un nodo de acceso.
+
+\textbf{Nucleo}: se denomina los nodos interconectados de la red.
+
+Existen redes que no estan conectados a internet, sino interconectados con sus propios sistemas mediante redes internas: por
+ejemplo la red de Carrefour. A esta red se denomina intranet.
+
+\textbf{Diferencia entre LAN e Internet}: LAN confinada a un luar físico reducido. Se puede tener un red de area local
+distribuida en todo el mundo; puede ser utilizada toda la infrastructura de internet.
+Se puede tener una intranet a lo largo de todo el mundo, no interconectada con internet, sino con simplemente
+interconectada con su propia red interna. PREGUNTAR
+
+\subsection{¿Qué es lo que uno paga cuando accede a internet?}
+Para conectarse a internet es necesario conectarse a un nodo que permita la conectividad a la red de redes. Los
+proveedores de internet permiten realizar esto. Por lo tanto, se cobra el acceso, pero no la navegación.
+
+\textbf{¿Cómo se hace para conecar a un nodo disponible?}
+Se requieren de 2 cosas:
+\begin{itemize}
+    \item
+        El nodo en sí mismo
+    \item
+        Tener la infraestructura para poder conectarme al nodo
+\end{itemize}
+
+\subsection{ISP}
+
+Hay empresas que generan nodos, inviernetn en infrastructura y brindan el servicio de conección al nodo: empresas
+denominadas \textbf{ISP}.
+Lo que cobran es el enlace de un hogar hasta el nodo y el ancho de banda que uno contrate, que vendría a ser como una
+especie de "pegaje".
+
+El ancho de banda es algo que se contrata e incide en el precio, ¿por que? Por los destinos que debe destinar la
+empresa por otorgar esos recursos.  Cuanto mas alto es el servicio que se contrata, más es la inversión que la empresa
+debe destinar a otorgarlos.
+\textbf{Ancho de subida y bajada}: el servicio NO es simetrico muchas veces. Esto es porque en algunos servicios se
+requiere que sea asimetrico y en otros servicios no, dependiendo del negocio que se tenga en mente para consumir ese
+servicio.  Por ejemplo si se tiene una corporación que tiene una pagina web que se necesita mucha banda de subida, para
+que se conecten muchos usuarios. En cambio si es para consumo hogareño en los años 90 sólo se requiería que tenga mucho
+ancho de bajada, ya que no se solía subir contenido a la red. Este tipo de servicio era el ADS cantidad de información,
+Hoy en día no es tan asimetrico por el uso de las redes sociales, streaming online, donde el ancho de banda si requiere
+que sea asimetrico.
+
+\subsection{Infraestructura para internet}
+La problemática cuando se fue haciendo cada vez más necesario brindar el servicio de internet fue: ¿Cómo se puede
+conectar a Internet? Se debería basar en una infraestructura ya establecida, por eso se eligió la telefónica. Se usaba
+esa infraestructura de tendido telefónico, pero había que transformar la información para que viaje mediante un medio
+utilizado para voz, se debía transformar un medio de voz a otro que permita la tranmisión de paquetes (señales) de ahí
+viene el modem.
+
+Los primeros Modems fueron bastante rudimentarios por lo que transmitía en la misma frecuencia que la voz y en el mismo
+canal. Por lo que NO se podía hablar y establecer una comunicación de red (conectar a internet) al mismo tiempo.
+Modem permitía bajar 56kb. No se podía estar siempre "online" es decir que esté siempre conectado a internet, se cobraba
+como una llamada telefónica cada vez que se conectaba; Para ello se establecían tarifas dependiendo el horairo de uso.
+Luego surgió lo denominado \textbf{banda ancha} donde el servicio permitía estar todo el tiempo conectado, por lo que no
+se paga por esa característica, sino por el ancho de banda que se contrata, que se le asigna al usuario. Como por
+ejemplo el celular que esta todo el tiempo conectado a internet. Si se cobrara por la conexión sería un costo
+muy alto.
+
+Se comienza a saturar la línea telefónica por lo que en 1998 se utiliza otro sistema. Se pensó no tranmitir en la misma
+frecuencia, por lo que se separó el rango de voz por un lado y la de datos por otro lado. Se tenía Tres canales: voz,
+subida de datos y bajada de datos. Ahora si permite estar todo el tiempo "on". Lo que permite también incrementar la
+velocidad de transpaso de información. Pero es aún asimétrico.
+La voz sigue siendo analógica, hasta hoy en día, es decir que no se transporta en datos como los paquetes de internet.
+Los datos se digitalizan desde que son trasmitidos desde el host.
+
+\textbf{Fibra optica}: son altas las velocidades, se puede hablar por teleféno sin interrupción. El medio por el que se
+transmite se denomina "cable par trenzado" y tiene limitaciones por la cantidad de los datos que puede transmitir.
+Si se tiene una empresa donde no llegue el cable, la misma puede pagar el sanjeo y la infraestructura que se requiere
+para el tendido, etc y las empresas proveedoras dan el servicio.
+En campos muy alejados se utilizan mediante antenas; es decir: fibra optica hasta el nodo más cercano y desde ahí antena.
+Se taza por ancho de banda, no por usuarios.
+
+Fibra optica Tripe Play = telefonia, internet y cable. Fibertel y Movistar da este servicio.
+
+\textbf{Cable coaxial}: era un tipo de cable que se utilizaba para transmitir señales de canal, y ya que se tenía la
+infraestructura tendida y dadas sus características, se pensó un sistema para poder brindar internet. Infraestructura de
+cable para brindar internet. Se desarrolló la fibra optica la cual tiene mayor capacidad, pero es más cara, debido a que
+su tendido y su mantenimiento: más complicado el tendido del cable, se debe realizar por debajo de la tierra, se
+requiere mucha infraestructura para manternerlo. Su capacidad hoy en día está casi saturada, por lo que se está
+ofreciendo fibra óptica. El cambio de coaxial a fibra óptica no se produce un cambio instantáneo según el profesor
+por un tema de costos y de seguir amortizando el tendido coaxial; "mientras dure el coaxial, se seguirá utilizando ese".
+
+\textbf{HFC}: es un hibrido entre cable coaxial y fibra optica. Los nodos se interneconectan por fibra optica pero el
+cable que llega hasta la casa del usuario o empresa se hace mediante cable coaxial.
+
+\subsection{División de la parte física}
+
+En el cable Coaxial viajan muchas frecuancias superpuetas pero se pueden discriminar por los canales en los que viaja.
+Cada usuario utiliza cierta cantidad de canales según lo que paga. Por ejemplo, cuando un usuario tiene contratado 10
+megas tiene más canales que uno que tiene 3.
+A la entrada de cada hogar se instala un objeto que diferencia las distintas frecuencias tanto para telvisión,
+servidores, computadora, etc.
+Si se paga internet pero no cable, en los canales dedicados al cable no se transmite nada, lo que se hace es poner un
+filtro de frecuencia para que no pase el cable.
+Fibertel no sabe cuando el cable está siendo utilizado de forma pirata, sirviéndose del único medio para saberlo es que
+lo vea un técnico, pero sí es posible que sepa  cuando se está conectado a internet de forma ilegal por la transferencia
+de datos; cuando se utiliza el canal del cable como sigue transmitiendo entonces no se puedeestablecer existen datos
+transfiriéndose o no, pero cuando se conecta a internet hay transporte de datos por lo que se sabe si existen datos
+transmitidos.
+ADSL no es compartido, va directo a la central, el HFC si es compartido entre todos los usuarios (si está correctamente
+dimensionada tiene mayor conexión).
+
+El acceso en instituciones grandes se realiza mediante una conexión al nodo donde se conectan varios dispositivos, como
+por ejemplo en la UNAJ. Todos los dispositivos están interconectados denominandose \emph{red LAN}.
+Cuando se tiene una empresa, que si quiere tener mayor velocidad, privacidad, etc, es posible tener un cable de fibra
+óptica hasta el nodo de la empresa servidora/proveedora. Para ello existe servicios corporativos exclusivos para
+empresas que pueden costear esos precios.
+
+\subsection{Tipos de redes}
+
+\textbf{Redes de acceso inalámbrico}: se require un access point (router wifi), cuando se conecta a eso se conecta a
+internet simpre que tenga un punto de acceso.
+
+\textbf{Red de area amplia (WAN)}: redes de acceso que cubren mucho araea, como por ejemplo el area de telefonia celular.
+Cuando me conecto al paquete de datos = se conecta al area de red de area amplia. Cuando habilita wifi, habilita la red
+inalambrica.
+Como anotación una red Wimax permite un acceso a internet donde se esté (calle u hogar) como si fuera una red de accceso
+de area amplia, pero para los usuarios que paguen el servicio, pero por wifi.
+
+\emph{WiMAX}, siglas de Worldwide Interoperability for Microwave Access (interoperabilidad mundial para acceso por
+microondas), es una norma de transmisión de datos que utiliza las ondas de radio en las frecuencias de 2,5 a 5,8 GHz y
+puede tener una cobertura hasta de 70 km.
+Es una tecnología dentro de las conocidas como tecnologías de última milla, también conocidas como bucle local que
+permite la recepción de datos por microondas y retransmisión por ondas de radio. El estándar que define esta tecnología
+es el IEEE 802.16 MAN. Una de sus ventajas es dar servicios de banda ancha en zonas donde el despliegue de cable o fibra
+por la baja densidad de población presenta unos costos por usuario muy elevados (zonas rurales).
+\footnote{https://es.wikipedia.org/wiki/WiMAX}
+
+\emph{De internet}:
+Una red de área amplia o Wide Area Network (WAN) se usa para vincular sistemas de redes más pequeñas. Las redes que deben
+conectarse están muy separadas en este caso. Por ejemplo, conectar las redes de área local (LAN) de servidores,
+ordenadores e impresoras de los distintos campus de una universidad.
+Los WAN existen en diferentes tamaños. Esto abarca desde conexiones entre diferentes departamentos del ayuntamiento
+hasta la conexión de una estación base para controlar una red 4G nacional. Incluso cuando la comunicación se realiza de
+forma intercontinental, se hace a través de WAN. Por ejemplo, de esta manera, una empresa española puede ejecutar su
+sistema de gestión documental o ERP en un servidor dentro de la misma WAN en los Estados Unidos.
+\footnote{https://www.ticportal.es/glosario-tic/wan-red-area-amplia}
+
+\textbf{Red de area reducida (LAN)}: servicio para comunicar poca cantidad de usuarios en un area reducida.
+Una red de área local o LAN (por las siglas en inglés de Local Area Network) es una red de computadoras que abarca un
+área reducida a una casa, un departamento o un edificio.
+\footnote{https://es.wikipedia.org/wiki/Red\_de\_\%C3\%A1rea\_local}
+
+
+En las Redes caseras el modem adapta la señal al cable coaxial con el cable de red (explicado mas arriba). El modem
+negocia con la central a la hora de conectarse a internet, en qué frecuencia estará transmitiendo. También se requiere
+un router para comunicar la red de area local (para conectar varias computadoras) y la conexión entre la conexión del
+proveedor.
+Si en vez del router pongo una computadora, esta se conecta directamnete con la la red externa y se visualiza como una
+única conexicón. Pero si se quiere comunicar muchos dispositivos y varios usuarios se requiere otro tipo de conexión
+donde intervienen los siguientes elementos:
+
+\begin{itemize}
+    \item
+        Modem.
+    \item
+        Ruter.
+    \item
+        Switches.
+    \item
+        Access point.
+\end{itemize}
+
+La estructura en épocas anteriores era la siguiente:
+
+\begin{itemize}
+    \item
+        Como primer paso lo que primero entra en el hogar sería un cable coaxial (en el caso más generalizado). Esto
+        sería la Red número 1 del exterior.
+
+    \item
+        A partir del cable proveniente desde el exterior se conecta a un router el cual SÓLO provee una sola conexión
+        para un Host (Red número 2 del interior).
+    \item
+        Para poder conectar varias computadoras con este tipo de instalación era necesario instalar un switch o centro
+        de estrella a varios host. Como se puede ver, la conexión que proveía el ISP de nivel 3 era para una red
+        doméstica y el Router establecía la conexión entre 2 redes (la que provenía del exterior y la que proviene del
+        interior de la casa). El switch es una boca que tiene varios canales para establecer conexiones cableadas
+        (como el reverso del modem hogareño).
+    \item
+        Algunos conectores estrella venían provistos de un Access Point el cual permitía establecer conexiones de tipo
+        wifi.
+\end{itemize}
+
+Con las tecnologías de hoy, las empresas vieron que desarrollar en una misma unidad los 4 componentes juntos era mucho
+más rentable y se tenía mayor control de las conexiones establecidas. Los modems de ahora vienen con Modem, Route,
+switch y un access point todo integrado.
+Antes sólo venía el modem y sólo un acceso para un host, para establecer más conexiones eso se compraba un router que
+venía con switch y con un access point (pero era más económico construir todo en uno), pero su configuración era
+responsabilidad del usuario, ya que la empresa proveía conexión para una sola computadora.
+
+\subsection{Organización de Internet a nivel mundial}
+
+Los que generan los nodos de interconecxión son los ISP. Todas las redes son iguales pero los ISP NO, tienen 3 niveles:
+\begin{itemize}
+    \item
+        \textbf{ISP nivel 1}: generan nodos de interconexión y se conectan entre si. Por ejemplo qeu cada ISP ponga nodos para
+        conectar entre países. Los enlaces para ello debe ser mucha infraestructura, mucha inversión; conectan muchas
+        regiones muy distantes. Conectan continentes.  Le brindan enlaces a los otros agentes que se conocen como ISP
+        nivel 2.
+    \item
+        \textbf{ISP nivel 2}: son los encargados de distribuir conectividad en otras areas más chicas que la ISP 1, por
+        ejemplo distrubuyendo conexión entre provincias (son regiones más chicas que un país). Tienden conexiones de
+        fibras y también satelitales.
+        Ejemplo de algunas empresas de ISP 2: Telecom (Telefonica), telmex (Claro). Hay que tener en cuenta que algunas
+        empresas como Telecom en algunos países trabaja como ISP 2 y en otros países como ISP 1.
+    \item
+        \textbf{ISP nivel 3 (ISP locales)}: son las empresas que toman los nodos que están en las ciudades/proinvicias y
+        las distribuyen a usuarios finales. Los ISP 3 también estar interconctadas entre ellas (como los ISP 1 y 2).
+        Ejemplo de algunas empresas de IPS 3: Fibertel, Speedy, Telecentro, Claro. (casi siempre dueños de ISP2).
+\end{itemize}
+
+Hay que tener en cuenta que en Argentina por lo menos, entre distintas empresas se contratan servicios entre ellas, por
+ejemplo ¿para qué tender 2 cableadas en una misma zona? Se contrata el servicio de ese tendido a la empresa propietaria
+y listo; por lo que no existe competencia entre empresas para poder mejorar el servicio de cara al usuario.
+
+\textbf{Arsat}: Es una empresa estatal de ISP nivel 2 cuya conectividad la brinda mediante satelites que brindan
+enlaces. Si Argentina no los tuvieran deberían de contratar ese servicio a otas empresas, con los satelites también se
+vendían a otros países el servicio (Paraguay, Bolivia, Chile). Al ser del Estado, se dedicaba a tirar enlaces que no
+eran necesarios como medio para obtener ganancias pero si otorgaban como calidad de vida en otras ciudades como país
+federal.
+Arsat llega hasta la entrada de un determinado pueblo por ejemplo y debe haber un operador que luego la distrubuya.
+A diferencia de otros ISP 2 que no son del Estado, estos pueden tender su infraestructura donde le conviene, donde sepa
+que va a obtener ganancia. Algunas corporaciones grandes contatan servicios directamente con el ISP 2 y no a traves de
+la Empresas de tipo 3.
+
+\subsection{El modelo de capas de Internet}
+
+El modelo de capas empleado para entender Internet, para poder abarcarlo y comprenderlo se denomina TCP/IP.
+Las capas es un modelo para entender la red física, es un marco teórico para que los individuos puedan hacer el sistema
+lo mas versátil posible. Se requiere una estructura para poder establecer la relación entre ellas, para ello se requiere
+la modularización. Cada capa se comunica con la misma capa indpendientemente de las demás. Este modelo ayuda tanto para
+los usuarios, estudiantes, empresarios, y demás usuarios.
+
+Modelo OSI: modelo de referencia general de comunicación y más completo.
+Pero en la jerga siempre se utiliza el modelo de 5 capas explicado anterior.
+MOdelo OSI es de referencia. El TCP/IP pero se aplica a algo real que son
+las redes de datos y está basado en el OSI.
+Antes cada fabricante hacía su propia red y para interconectarse era basante
+difícil, si se toma como modelo de TCP/IP es más fácil de relacionarla.
+El modelo consta de los siguientes estratos:
+\begin{enumerate}
+    \item
+        Capa de Aplicación
+    \item
+        Capa de Transporte
+    \item
+        Capa de Red
+    \item
+        Capa de Enlace de datos
+    \item
+        Capa física.
+\end{enumerate}
+
+Cada uno ofrece determinados servicios dependiendo la capa.
+El ejemplo provisto por la cátedra es la de un servicio de avión: Para poder abordar el problema se puede hacer más
+fácil dividiéndolo en capas. Cuando se compra el pasaje por ejemplo se determina en determinada capa, las maletas para
+otra capa, la pista de despegue y navegación lo administra otra capa, y así sucesivamente.
+
+Otra característica a tener en cuenta es que cada capa es transparente para todas las demas, cada capa no se entera de
+otras cuestiones ajenas a la propia capa; se trata de que si se modifica algo que pertenece a una capa no modificar
+todas las demas.
+
+Se puede preguntar porqué 5 capas y no más. En caso por ejemplo que se tengan 100 capas, se dividen mcuhos problemas
+chicos no lleva a ninguna solución. Tener pocas capas quita el principio de dividir el problema, 5 son las que terminan
+balanceando el problema entre dividir y entender; además de que ese número fue establecido luego de varios estudios
+llevados a cabo por décadas, por lo que tiene un origen científico.
+
+\textbf{Modelo OSI}: modelo de referencia general de comunicación y más completo. Pero en la jerga siempre se utiliza
+el modelo de 5 capas explicado anterior. Modelo OSI es de referencia. El TCP/IP se aplica a algo real que son las
+redes de datos y está basado en el OSI.
+Si no se siguieran estos modelos sucedería lo que antes, donde cada fabricante hacía su propia red y para interconectarse
+era basante difícil; en cambio si se toma como modelo de TCP/IP es más fácil de relacionarla.
+
+\subsection{Lo que realizado por cada capa}
+
+\textbf{Capa Aplicación}: es la capa donde residen las aplicacione y sus protocolos. Ejemplo: el Skype de un host que se comunica con otro
+Skype de otro host. Skype no piensa en las otras capas, sólo en comunicarse con el otro usuario.
+Los protocolos más famosos son: FTP para transferrir archivos, el protocolo especifica cada vez que se envía un archivo;
+SMTP de correo, cuando se tansmite mediante ese protocolo no se transmite de forma arbitraria, sino como se especifica.
+Es por ello que se puede enviar mail entre distintos servidores como Yahoo y Gmail, porque ambos se comunican de la
+misma manera, con las mismas reglas.
+Protocolo HTTP es el que va a enmarcar cómo se deben presentar las páginas webs, cómo se deben presentar las
+imágenes, el cuerpo que debe tener la página, qué pasa si me trato de conectar y la página está caída, etc.
+Muchas veces se utilizan dos protocolos al mismo tiempo como por ejemplo en \emph{webmail} SMTP (quien levanta los
+mails) con HTTP (para ver la página web). Los paquetes acá se denominan mensajes, que son los que la capa transmitirá.
+
+\textbf{Capa transporte}: es la capa encargada de la forma en como se transportan los mensajes. 2 tipos de Servicio:
+Orientado a conexión(TCP) y servicio sin conexión (UDP). Los protocolos tienen determinada relación, dependiendo el
+servicio que la capa aplicación quiere dar; por ejemplo si la aplicación quiere enviar streaming utilizaría UDP, pero
+en cambio si quiere utilizar mensajes puede utilizar TCP. Notar que es la misma aplicación enviando datos mediante
+distintos protocolos según el servicio que se quiera dar.
+
+
+\textbf{Capa Red}: esta capa tiene como objetivo el ruteo de fuentes a destino. El Protocolo más conocido es el IP que es de
+enrutamiento. Aquí los los paquetes se llaman datagramas.
+¿Qué es lo que hace esta capa? Asegurarse que los paquetes sigan una determinada ruta para que lleguen a destino. Se
+realiza una ponderación por el camino más corto que tiene en cuenta la cantidad de nodos por los que va a pasar : cantidad
+de saltos que se pueda tener. Se debe generar un protocolo que se estime la cantidad de saltos que debe hacer. Es lo
+que se hace en la capa de red, es parte de lo que hace el protocolo IP; dentro del protocolo IP hay varios algoritmos
+que pueden determinar este tipo de caminos.
+
+\textbf{Capa Enlace}: esta capa se encarga de la transferencia de los paquetes de la capa de red entre nodos vecinos. En
+la de enlace lo que hace es establecer el enlace entre los nodos del camino establecido por la capa de Red.  La
+independicia de capas sirve par que en caso de que se cambie un enlace por ejemplo en el camino, no importa para la capa
+de red, solo le es pertinente para la de enlace. Aqui los paquetes se llaman tramas.
+Protocolos propios de esta capa: PPP, Ethernet, Wifi
+
+\subsection{Dispositivos por capas}
+
+Cada dispositivo puede procesar cierta capa, por ejemplo el modem que es de capa física no puede correr un protocolo de
+enlace.
+Los dispositivos de la capa de abajo NO pueden interpretar los de arriba, pero los de arriba SI pueden interpretar los
+de abajo suyo (Se puede ver mejor los hardwars que soportan según la capa donde opere en la filmina). Porque la
+información debe pasar por esas capas y por lo tanto lo debe saber interpretar.
+
+\subsection{Transferencia de datos mediante las distintas capas}
+
+¿Cómo se hace para correr los procotoclos y que cada capa cumpla su objetivo? La primer capa toma el dato que quiere
+mandar, por ejemplo una palabra, por lo que el dato es "Hola". La capa de aplicación le agrega un encabezado donde se
+determina algo para ser interpretada en la capa de aplicación del destinatario, como por ejemplo el destinatario al que
+se quiere enviar, su mail, el tipo de mensaje, etc. Le agrega su encabezado y se la pasa a la capa de transporte, estalo
+toma y entiede el mensaje "Hola" y el encabezado de la capa de aplicación como si fueran datos, por lo que para esta
+capa todo lo de la aplicación es dato, acto seguido lo que hace es agregarle su propio encabezado. Con ello se asegura la
+independencia de datos entre capas. Cada capa agrega su encabezado y toma como dato todos los encabezados de la capa
+inferior.
+La capa física sólo entiende de ceros y unos. No le importa absolutamente nada, no distingue paquetes, lo único que hace es
+convertir todo eso de datos en señales. El switch sólo lee datos de capa de enlace por ejemplo. En cambio el router si puede
+trabajar sobre los encabezados de capa 3.
+
+A la inversa llega el mensaje completo y cada capa le va sacando su propio encabezado para su propia capa, hasta que
+llegue hasta la capa de aplicación.
+
+\subsection{Clasificación de Red por cobertura}
+\begin{enumerate}
+    \item
+        LAN = red de cobertura local (oficina).
+    \item
+        MAN = red metropolitana.
+    \item
+        WAM = cobertura de area amplia
+    \item
+        SAN = redes de storgage, para almacenamiento
+    \item
+        PAN = red que se requiere estar enfrente com la red de Bluetthoot
+\end{enumerate}
+
+La red de distrubución geográfica no tiene mucho sentido. Por ejemplo la red de la UNAJ según los libros sería una MAN
+pero si se ve desde la organización se tomaría como como red LAN.
+
+\subsection{Entidades encargadas de los Protocolos}
+
+¿Quién se encarga de actualizar y hacer protocolos?  Organizaciones desentralizadas, que sacan los protocolos y los
+organizaciones que fabrican hardware y sofrware se adaptan a ellos.
+Por ejemplo: ISOC, IAB, IETF (aplicar protocolos al corto plazo), IRTF (investigar los protocolos a largo plazo).
+IANA, encagarda de la asignaciones de recursos con respecto a las direcciones IP. Lo que hace es venderle segmentos
+enormes a los ISP nivel 1 que a su vez particiona esas direciones y vende subdireciones más pequeñas a los ISP nivel 2,
+y asi hasta llegar al hogar.
+
+DNS: Mantiene una tabla con la relación entre las direcciones de dominio con las direcciones IP. Cada vez que se conecta
+a una página web, se comunica con un DNS, este le devulve a través de un protocolo la dirección que 32 bits.
+
+\end{document}

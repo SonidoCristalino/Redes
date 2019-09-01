@@ -1,0 +1,267 @@
+\documentclass[10pt, spanish]{article}
+
+\usepackage{geometry} %Necesario para poder equiparar los márgenes
+ \geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=20mm,
+     top=20mm,
+}
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+
+\usepackage{listings}
+\usepackage{color}
+
+\lstloadlanguages{C,C++,csh,Java}
+
+\definecolor{red}{rgb}{0.6,0,0}
+\definecolor{blue}{rgb}{0,0,0.6}
+\definecolor{green}{rgb}{0,0.8,0}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{cloudwhite}{rgb}{0.9412, 0.9608, 0.8471}
+
+\lstset{
+    language=csh,
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,
+    numberstyle=\tiny,
+    numbersep=5pt,
+    tabsize=2,
+    extendedchars=true,
+    breaklines=true,
+    frame=b,
+    stringstyle=\color{blue}\ttfamily,
+    showspaces=false,
+    showtabs=false,
+    xleftmargin=17pt,
+    framexleftmargin=17pt,
+    framexrightmargin=5pt,
+    framexbottommargin=4pt,
+    commentstyle=\color{green},
+    morecomment=[l]{//}, %use comment-line-style!
+    morecomment=[s]{/*}{*/}, %for multiline comments
+    showstringspaces=false,
+    morekeywords={ abstract, event, new, struct,
+    as, explicit, null, switch,
+    base, extern, object, this,
+    bool, false, operator, throw,
+    break, finally, out, true,
+    byte, fixed, override, try,
+    case, float, params, typeof,
+    catch, for, private, uint,
+    char, foreach, protected, ulong,
+    checked, goto, public, unchecked,
+    class, if, readonly, unsafe,
+    const, implicit, ref, ushort,
+    continue, in, return, using,
+    decimal, int, sbyte, virtual,
+    default, interface, sealed, volatile,
+    delegate, internal, short, void,
+    do, is, sizeof, while,
+    double, lock, stackalloc,
+    else, long, static,
+    enum, namespace, string},
+    keywordstyle=\color{cyan},
+    identifierstyle=\color{red},
+    backgroundcolor=\color{cloudwhite},
+}
+
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{blue}{\parbox{\textwidth}{\hspace{15pt}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
+
+\author{Emiliano Salvatori}
+\title{Redes de Computadoras\\
+    \large Practica I}
+\date{Agosto 2019}
+\pagestyle{headings}
+
+\begin{document}
+\maketitle
+
+
+% ----------------------------------------------------------------------
+%                       INTRODUCION
+% ----------------------------------------------------------------------
+
+\section{Redes de Computadoras e Internet}
+
+\subsection{¿Qué es una red? ¿Cuál es el principal objetivo de construir una red?}
+Una red de computadoras es un grupo de computadoras o dispositivos interconectados. El conjunto de computadoras,
+software de red, medios y dispositivos de interconexión forma un sistema de comunicación.
+El objetivo de una red es la de compartir recursos (dispositivos, información, servicios).
+
+La conexión se puede visualizar de la siguiente manera:
+\begin{itemize}
+    \item
+        Quien emite la señal a transportar es denominado *FUENTE* y su naturaleza es siempre un software (un programa
+        que envía un mensaje a otro usuario, un mensaje de correo electrónico, etc).
+    \item
+        El encargado de generar el pulso electromagnético para distribuirlo a la red es de tipo Hardware (placa de red o
+        placa madre)
+    \item
+        El medio de transmisión (cable coaxil, fibra óptica, bronce) y los dispositivos intermedios (centrales de
+        repetición, routers, servidores) que se ven entrometidos en el medio son también de tipo Hardware.
+    \item
+        Quien recibe el pulso electromagnético para luego codificar el mensaje es también un hardware.
+    \item
+        El destino, como en el caso anterior, podría ser un correo, un cliente de mensajería instantánea, etc, casi
+        siempre es un software
+\end{itemize}
+
+\subsection{¿Qué es internet? Describa los principales componentes que permiten su funcionamiento}
+Es una red de computadoras que interconecta millones de dispositivos de cómputo; siendo éstos últimos denominados como
+\emph{Hosts}.
+Internet es un conjunto descentralizado de redes de comunicación interconectadas que utilizan la familia de protocolos
+TCP/IP, lo cual garantiza que las redes físicas heterogéneas que la componen formen una red lógica única de alcance
+mundial.
+La misma se caracteriza por ser débilmente jerárquica, es decir que ninguna red impera por sobre las demás.
+Los principales componentes, es decir, aquellos que permiten su funcionamiento son:
+\begin{itemize}
+    \item
+        \textbf{Host}: son los sistemas terminal, es decir, es un ordenador que funciona como punto de inicio y final de
+        las transferencias de datos.
+    \item
+        \textbf{Enlaces de Comunicaciones}: es el medio de conexión entre dos lugares con el propósito de transmitir y
+        recibir información. Puede hacer referencia a un conjunto de componentes electrónicos, que consisten en un
+        transmisor y un receptor (dos piezas de un equipo terminal de datos) y el circuito de telecomunicación de datos
+        de interconexión. El medio por el cual operan estos enlaces pueden ser: fibra, cobre, radio, o satélite.
+    \item
+        \textbf{Routers/Switches}: Se denomina así a los dispositivos de conmutación de paquetes, es decir los que
+        re-envían paquetes y determinan el camino a recorrer de éstos, para llegar a un destino determinado.
+\end{itemize}
+
+\subsection{¿Qué es un protocolo?}
+Es un sistema de reglas que permiten que dos o más entidades de un sistema de comunicación se comuniquen entre ellas
+para transmitir información por medio de cualquier tipo de variación de una magnitud física. Se trata de las reglas o el
+estándar que define la sintaxis, semántica y sincronización de la comunicación, así como también los posibles métodos de
+recuperación de errores. Los protocolos pueden ser implementados por hardware, por software, o por una combinación de
+ambos.
+
+\subsection{¿Por qué dos máquinas con distintos Sistemas Operativos pueden formar parte de una misma red?}
+Porque para formar parte de una misma red, es indistinto el sistema operativo que se use, lo que condiciona si un host
+está o no dentro de una red es que esté compartiendo recursos para con los demás computadroas interconectados.
+
+\subsection{¿Cuál es la diferencia entre una red conmutada de paquetes y una red conmutada de circuitos?}
+La diferencia es que cuando una Red Conmutada de Circuitos establece una comunicación con determinado host, los recursos
+existentes en esa comunicación se dedican de forma exclusiva a la transferencia de datos entre las terminales.
+En cambio, cuando se establece una comunicación en una Red Conmutada de Paquetes, los recursos NO se dedican de forma
+exclusiva a los terminales involucrados, sino que los datos se envían en forma de bloques discretos.
+
+\vspace{5pt}
+\textbf{Conmutación de Circuitos}:
+
+\begin{itemize}
+    \item
+        Los recursos desde un terminal a otro son reservados al inicio de la llamada (transmisión de datos)
+    \item
+        Se reserva ancho de banda, enlaces, capacidad en switches
+    \item
+        Los recursos reservados son dedicados, no compartidos (el recurso es inactivo si no es usado por el dueño de la
+        llamada)
+    \item
+        Capacidad garantizada
+    \item
+        Se requiere una configuración de la conexión (call setup) previa al envío.
+\end{itemize}
+
+Los recursos de la red se dividen en pedazos y existen dos formas para ello:
+\begin{itemize}
+    \item
+        División en frecuencia FDM (Frequency Division Multiplexing)
+    \item
+        División en tiempo TDM (Time Division Multiplexing)
+\end{itemize}
+
+\vspace{5pt}
+\textbf{Conmutación de Circuitos}:
+
+\begin{itemize}
+    \item
+        Cada flujo de datos extremo a extremo es dividido en paquetes
+    \item
+        Distintos usuarios comparten los recursos de la red
+    \item
+        Cada paquete usa el ancho de banda total.
+    \item
+        Recursos son usados según son necesarios
+\end{itemize}
+
+
+Contención de recursos:
+\begin{itemize}
+    \item
+        Demanda acumulada de recursos puede exceder cantidad disponible
+    \item
+        Congestión: encolar paquetes, esperar por uso del enlace
+    \item
+        Almacenamiento y re-envío (store and forward): paquetes se mueven un tramo por vez.
+    \item
+        El nodo recibe paquetes completos antes de re-enviarlos.
+\end{itemize}
+
+\subsection{¿Analice de qué tipo de red es una red de telefonía y de cuál Internet?}
+Una red de telefonía es de un tipo de Red de Conmutación de circuitos, ya que al establecerse una llamada entre dos
+teléfonos, los servicios establecidos para esa comunicación se dedican exclusivamente para esa comunicación.
+En cambio Internet es de un tipo de Red de Conmutación de paquetes ya que las comunicaciones entre distintos
+dispositivos son enviados a través de la red en bloques discretos de información.
+
+\subsection{Problema}
+Dada la siguiente situación: el empleado Pablo Marquez que trabaja en la oficina Ventas (3er piso) situada en el
+Edificio A (en Bs. As.), envía una carta a Mario Pesada, que trabaja en la oficina de Personal de la empresa B en el
+Edificio Compañías SA ubicado en la ciudad de Madrid, España (donde funciona la empresa B en los pisos de 1 a 10 y la
+empresa C en los pisos 11 a 15). Determine:
+\begin{itemize}
+    \item
+        \emph{¿Cuáles son los pasos necesarios para que la carta llegue desde el origen al destino?}
+
+         Para esto es necesario que algún empleado de la A vaya hasta la oficinas de correo y deposite la carta para que
+         sea despachada hacia España. Para ello, será necesario que se corroboren los datos del destinatario. Una vez
+         realizado esto es posible enviar la carta via avión hacia el país de destino.
+         El avión puede hacer varias paradas antes de llegar a destino. Una vez en España, la oficina de correos
+         encargada será la que según la región en la que se encuentre la oficina B, la pueda clasificar según el
+         distrito. Una vez clasificada se despacha para ese distrito hasta llegar a la oficina de correos local, la cual
+         será la encargada de entregarle la carta a la oficina B mediante un empleado del correo.
+    \item
+        \emph{¿Qué información se usa en cada punto del trayecto para que la carta siga su recorrido?}
+
+         Es necesario saber cuál en cada paso intermedio cuál será el próximo fin antes de llegar al destino solicitado.
+         Es decir, una vez que por ejemplo, la carta llega a España, será necesario saber qué destino tomará la carta
+         para que llegue a Madrid.
+    \item
+        \emph{¿Siempre se usa el mismo transporte?}
+
+         No, se utilizan distintos transportes o medios, los cuales pueden ser: marítimo, áereo, pedestre,etc.
+    \item
+        \emph{Suponga que la carta está codificada usando algún método para que, en el caso de que alguien en el camino
+         abriera el sobre, éste no pueda leer el verdadero contenido de la misma ¿Quiénes deben poseer la información
+         necesaria para codificarlo y decodificarlo?}
+
+         Sólo deben poseer la información para decodificarlo aquellos que están en el extremo del recorrido, es decir el
+         emisario y el destinatario del mensaje.
+\end{itemize}
+
+\subsection{¿Qué ventajas tiene una implementación basada en capas o niveles?}
+
+(Sin respuesta)
+
+\section{Problemas}
+
+\subsection{Sea un grupo de usuarios que comparten un enlace de 2Mbps y cada uno transmite a una velocidad de 1Mbps,
+pero sólo durante 20\% del tiempo}
+
+\begin{enumerate}
+    \item
+        Si se utiliza conmutación de circuitos, ¿a cuántos usuarios puede darse soporte?
+    \item
+        Si en cambio se utiliza conmutación de paquetes, ¿por qué prácticamente no habrá retardo de cola antes del
+        enlace si dos o menos usuarios transmiten al mismo tiempo? ¿Por qué existirá retardo de cola si tres usuarios
+        transmite simultáneamente?
+    \item
+        ¿Cuál es la probabilidad de que un usuario dado esté trasmitiendo?
+\end{enumerate}
+
+
+\end{document}
