@@ -189,7 +189,6 @@ Los recursos de la red se dividen en pedazos y existen dos formas para ello:
         Recursos son usados según son necesarios
 \end{itemize}
 
-
 Contención de recursos:
 \begin{itemize}
     \item
@@ -203,16 +202,19 @@ Contención de recursos:
 \end{itemize}
 
 \subsection{¿Analice de qué tipo de red es una red de telefonía y de cuál Internet?}
+
 Una red de telefonía es de un tipo de Red de Conmutación de circuitos, ya que al establecerse una llamada entre dos
 teléfonos, los servicios establecidos para esa comunicación se dedican exclusivamente para esa comunicación.
 En cambio Internet es de un tipo de Red de Conmutación de paquetes ya que las comunicaciones entre distintos
 dispositivos son enviados a través de la red en bloques discretos de información.
 
 \subsection{Problema}
+
 Dada la siguiente situación: el empleado Pablo Marquez que trabaja en la oficina Ventas (3er piso) situada en el
 Edificio A (en Bs. As.), envía una carta a Mario Pesada, que trabaja en la oficina de Personal de la empresa B en el
 Edificio Compañías SA ubicado en la ciudad de Madrid, España (donde funciona la empresa B en los pisos de 1 a 10 y la
 empresa C en los pisos 11 a 15). Determine:
+
 \begin{itemize}
     \item
         \emph{¿Cuáles son los pasos necesarios para que la carta llegue desde el origen al destino?}
@@ -245,7 +247,17 @@ empresa C en los pisos 11 a 15). Determine:
 
 \subsection{¿Qué ventajas tiene una implementación basada en capas o niveles?}
 
-(Sin respuesta)
+Las ventajas de una implementación basada en capas es que permite separar la problematica de la transferencia de datos
+entre hosts en formas simples para afrontar cada una de ellas de forma individual.
+
+Esta modularización permite que cada capa sea transparente para todas las demas; cada nivel no advierte lo propio de los
+demas estratos. Esto permite una amplia versatilidad a la hora de modificar particularidades propias de cada nivel sin
+tener que verse afectado todo el conjunto en general.
+
+Las capaas es un modelo para entender la red física, es un marco teórico para que los individuos puedan hacer el sistema
+ma versátil posible.
+Se requiere una estructura para poder establecer la relación entre capas,para ello se requiere la modularización. Cada
+capa se comunica con la misma capa indpendientemente de las demás.
 
 \section{Problemas}
 
