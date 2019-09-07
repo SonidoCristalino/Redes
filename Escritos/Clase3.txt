@@ -1,0 +1,263 @@
+Clase III: Capa de RED
+Filmina nº 3.
+
+TCP/IP viene del modelo OSI pero aplicadoa RED.
+
+Funciones Claves:
+El objetivo es transportar segmentos de fuente a un destino. Esa fuente y
+destino son los hots: computadoras, eléfonos, etc. No importa qué paquete se
+pueda mandar sino que se envién un paquete de un punto a otro.
+[Ver la filimina nº 3]
+
+Datagrama IP porque el router examina la cabecra que genera la capa de red.
+Router puede analizar los encabezados de la capa de red. ¿cómo hace para
+transportar eso de transportar paquetes? Lo hace a atravez de dos funciones
+claves: el routeo y el reenvio.
+
+Ruteo: deermina una ruta de una punta a la otra, desde origen a destino.
+Reenvio: tien que ver con lo anerior, es mover paquetes desde una entrada del
+router a la salida (por ejemplo decidir la intersección de una ruta a seguir en
+        un viaje, para ir a una ciudad, se debe saber si sale por una ruta o
+        por la otra. El ruteo es para toda la red, es planificar la mejor ruta
+        enntre ciudades para un dstino dado).
+
+Para saber la mejor ruta los ruters corren algoritmos que van a determinar la
+mejor ruta para ir de un host a otro, una vez que terimna el algoritmo gnera una
+tabla de reenvio, esa tabla está conformada como si fuera un algoritmo de
+Dikstra. Evalúa dándole determinado peso entre routers.
+La mejor ruta la evalúa cada router. El peso lo asigna cada protocolo,
+   depende la mejor ruta.
+Una vez que el router pasa el paquete a otro, y se olvida, si cada router corre
+el mismo algoritmo todos llegan a  la misma conclusión de que la mejor ruta es
+una; el tema es que todos corran el mismo algoritmo y cuál usar.
+Cada ruter corre el algoritmo, genera la tabla, determina la mejor ruta, envía
+los paquetes; los algoritmos se corren cada determinado tiempo, para que se
+actualice la tabla de ruteo, todo esto se denomina Ruteo dinámico.
+Ruteo estático: es cuando se define por hardware y por dónde salir no
+determinado por los algorítmos de Red.
+
+en general lo que estiman es la cantidad de nodos que hay en la red para generar
+la mejor ruta, evalúa la menor cantidad de saltos. google maps lo genera
+mediante teoría grafos.
+Ejemplo una linea area: para ir de una ciduad a otra es muy complejo porque
+requiere evaluar muchas cosas, se puede hacer de un solo tramo, escalas, para
+ello depende de muchos factores. Para cada cambio de avión se requiere que haya
+un recalculo para que siga operando de la misma forma.
+La ponderación de la arista es multidimensional, es decir que se compara varias
+variables de distinta naturaleza, por eso que generalmente se simplifica por la
+cantidad de saltos que debe hacer el paquete.
+
+Establcimiento de conexión:
+Se llama, se estbalece un circuito y el canal será el mismo mienstas se esté
+conectado. No se evalua todo el tiemp la tabla, sino que se mantiene la misma
+tabla mientras se mantenga la llamada.
+
+Ve a cada paquete por separado, ve la cnexión destino y lo envía, por el mismo
+timpo de datos. Esto es lo que es Esablecimiento de conexión.  A diferencia de
+Frameraley: cada router SE mete en la comunicación paquete por paquete.
+
+Red d cirucitos virtuales: esto es en red [ver filmina]. No distingue entre si
+se está comunicado por UDP o TCP.
+En la capa de transporte depende del protocolo, se comunica entre aplicaciones,
+En la capa de transporte SI tiene en cuenta si transporta UPD o en TCP. todo es
+a nivel procesos,
+
+Son los dispositivos finales los que saben si hay que retransmitir o no. Para la
+red, para la capa de RED le es indistinto, no está metido en el protocolo, sólo
+envía paquetes.
+Capa de Red se pude decir que esté trabajando sin conexión, esto es por su
+naturaleza por la cantidad de usuarios que están consumiend en intenret. Si esto
+fuera CON conexión, cada rotur deberá de decidir por la ida yvuelta depaquetes,
+por si hay que retransmitir o no, le pone mucha más complejidad que hace
+más densa el transporte. Por eso es prefierile que traminta sin conexión.
+
+La capa de Red: servicio para datagramas individales y para un grupo
+    - entrega garantizada: se asegura que el paquete llegó, se debe hacer un
+    procesamiento entre nodos para que no se pierda.
+    [se saca de la filmina]
+        Servicios para datagramas individuales:
+        * Entrega garantizada.
+        * Entrega garantizada con retardo limitado (especifica el retardo de
+                host a host).
+        * Servicios para un flujo de datagramas:
+        * Entrega de datagramas en orden.
+        * Ancho de banda mínimo garantizado.
+        * Fluctuación máxima garantizada (restricciones en los intervalos de
+                tiempo entre paquetes).
+
+Modelo de servicio:
+    - Tasa de bit constante: reservo un ancho de banda mínimo. Por ejemplo en
+    una llamada se quiere garantizar que minimo se escuche bien, para ello s
+    debe reservar ciera garantía. Velocidad constante garantizada (CBR) que
+    garantiza la misma calidad. Para ciertos tipos de redes está bueno utilizar
+    CBR.
+    - Tasa d bits garanizado, se asegura el mínimo y si se tien emás, se
+    aprovecha, no todo es lo mismo, hay picos que hay por sobre la mínima.
+
+    La garantía de ancho de banda, la garantía sin peérdidas y la indicación de
+    congestión en interne NO está garantizada en la CAPA DE RED, todas estas
+    garantías la da la capa de transporte mdiante el protocolo TCP por ejemplo
+    [Se saca de la hoja nº 11]. Queda en claro que en la capa de red de internet
+    no da estas garantías.
+    ATM si las da, pero es otro tipo d arquitectura.
+
+    El concepto de internet es que cada conjunto de redes comparta protocolos
+    para comunicarse.
+
+Servicios con y sin conexión.
+Capa de datagramas provee servicio sin conexión en su capa de red.
+
+Circuitos virtuales: proveen sercico con conexión en su paba de red, ejemplo ATM
+
+Diferencias en los servicios de capa d eransporte:
+terminal a termina: se puede elegir utilizar el protocolo UPD o TCP. En la capa
+d red n se puede cambiar, o hago la arquitectura CON conexión o SIN conexión,
+interent se decidió que sea SIN conexión. Se pasa esa obligación de garantías
+a la capa de transporte.
+
+Red de ciruicios virutales:
+    Establecimiento de la llamada.
+    * Transferencia de datos.
+    * Finalización de la llamada.
+    * Cada paquete lleva un identificad
+
+[Filmina nº 14] es cómo se hace una llamada entre dos host. Esta conexión
+reserva recursos como si fuera una conexi telefonica. Hasta que no se corte la
+conexión no cede los recursos.
+
+Por el contrario las redes datagramas (que es el que utiliza internet).
+A medidia que los paquetes van llegando, se envían.
+Un paquete puede enviarse por una for
+Esta no dice que no vaya a mostrar un paquete asincrónico, esto se ordenan en
+otra capa.
+
+Tabla de reenvio de cada router en la filmina 19.
+Dos campos: dirección destino Host B, sale por interfaz de salida (dentro del
+router) Direcciones posibles 2^32 bits. Da mas millones de 4 mil millones de
+entradas, esto es imposible. Lo que hace es acotar entre rangos, si se encuentra
+entre determinados rango, sale por la interfaz 0, si está enntre uno y elotro,
+      entonces el b.
+
+Para ello hace hincapié en las direcciones administradas por el ISP
+Cada ISP tiene un nivel de direcciones. Cada router en ISP nivel 1 ve el rango
+determinado, luego el router del ISP nivel 2 entonces también evalúa el rango
+que tiene de ISP 2 y así acotando el rango.
+Lo imos que envia run paqete hsata Australia, lo que se hac es que por la
+dirección de rango se envía al ISP nivel 1 que se lo manda a otro país,  y en el
+otro país lo que hace cada router lo va filtrando hasta qe llegue a destino.
+
+¿por qué interfaz sale?
+11001000|00010111|00010110|10100001 sale por el 0
+
+11001000|00010111|00011000|10101010 Sale por el 1.
+    Porque la coincidencia es del prefijo más largo.
+
+Hacer en casa el rango que da:
+    Por la interfaz 0: (2^11)
+
+    Ver que los últimos 3 números son distintos:
+        11001000 00010111 00011000  = va por la 1
+        11001000 00010111 00011001  = va por la 2
+                               ---
+                                |
+                                +------> a partir del 001 va por la interfaz nº2
+
+        11001000 00010111 00011000  = Es un rango, NO una dirección porque
+        todavía faltan completar números de 32 bits, sólo son prefijos.
+
+En internet se utiliza red de datagramas [filmina nº 21]. Esto es así porque
+Los sistemas terminales "inteligentes" están en la periferia requiere que la
+complejidad la da la periferia.
+
+Internet utiliza la Red de datagramas, por una cuestión de uso y costumbre de la
+población, no significa que en un futuro se modifique a VC.
+
+QuS = calidad de servicio, para se reserva recurso para ofrecer una mínmia
+calidad. ¿Cómo se hace para brindar cierta calidad de servicio en Redes de
+datagramas que en VC? Es más fácil con VC.
+Como en Datagramas los paquetes van por cualquier parte, es difícil reservar
+recurso, es difícil articularloas. HOy en día esto no está implementado. Esto
+siempre está implementado en la capa de Red.
+
+Dos funciones claves de routers:
+    * Correr algoritmos/protocolos de ruteo (RIP, OSPF, BGP), cada protocolo
+    ejecuta su propoo algoritmo.
+    * Re-envío de datagramas desde enlaces de entrada a salida. No existe un
+    router entrada o salida, en realidad pueden ser bidireccinales, se dice
+    entrada y salida sólo por un tema de comprension.
+
+Entramado d conmuación: hace el intercambio de los pquetes. Procesador de
+enrutamiento es el que corre el algoritmo y que le provee la abla al entramado
+de conmutación. ---> el diagrama en la filmina nº 24 es lo que se toma en el
+parcial.
+
+
+[Filmina 25]
+Terinacion de linea: toma los pulsos de tensión, y las transforma enbit lógicos,
+           en 0 o 1.
+
+Puerto de entrada en el Router:
+Procesamiento de enlace de datos: depende el protocolo de la capa de enlace
+puede crrer determinado servicios de la capa de enlace. Acá es donde según el
+protocolo puede corregir errores. Sirve como nu filtro d error desde la entrada,
+          para que no pase al router. En caso de que llegue
+
+Buffer: los pone en una cola a medida que llega.
+Dada la dirección destino del datagrama, se obtiene el puerto de salida usando
+la tabla de re-envío de la memoria del puerto de entrada.
+Objetivo: que el procesamiento se realice en el puerto de entrada a la
+¿velocidad de la línea =  quiere decir que necesita que sea continuo, dinámico,
+    antes de que llegue, posicionar la línea para enviarlo.
+
+Se formará cola si los datagramas llegan más rápido que la tasa de re-envío de
+la estructura de switches. = Quiere decir que el conmutar la vía por donde
+saldrán los paquetes si es mas lento que lo que entra, se comienza a encolar,
+        por loque se tiene dos posiblidads o buffers muy grandes, o muuy chicos.
+        Lo que se tiene que tener en cuenta es dimensionar bien el buffer,
+
+Entramado de conmutación:
+------------------------
+    Conmutación de paquetes:
+    via memoria por bus del sistema: La rapidez del bus se mide según el ancho
+    de bus que tenga, que se mide por megaherz. YA NO SE USA.
+
+    Via bus: un bus compartido, no puede habe rma de un paquete por bus, de lo
+    contrario se complica.
+    De qué depende de que sea rápido o no un router, dependiendo de dónde se
+    coloque, no es lo mismo un router un ISP nivel 2 que para una empresa.
+
+Conmutación via red de interconexión:
+Tipo crossbar: Todas las conexiones en simulanea. Se puede mandar multiples
+paquetes al mismo tiempo por lo que es más rápido y más eficiente. Pero también
+depende de lo que quiera manejar, para una empresa es muchísimo, si es para un
+ISP 1 quizás es poco.
+
+
+Puerto de salida es igual al de entrada.
+El encapsulado al de capa de salida, ¿por qué no mantiene la misma cabera que se
+entregó? La capa de enlace se encarga de enviar de host a host, por lo que el
+enlace pueden llegar a cambiar, y cambian los protocolos, pero desde elpunto de
+visa de la cpaa de red, al ruter no le importa, lo envia.
+¿por que se necesita un buffer en la entrada qu en la salida? Es por el cambio
+de velocidad de transmisiónsalida, es para balancear los paquetes. Puede haber
+mayro capacidad de procesamiento pero en la salida menor capacidad de velocidad
+de envío en el enlace.
+
+Encolamiento en puerto de entrada.
+Ver la problemática que hay con el paquete rojo, para unlugar determinado, si
+hay muchos rojos para una misma salida y una entrada quiere enviar a esa misma
+salida un paquete rojo, lo detiene y se encolan no sólo elrojo sino el verde
+también.
+
+Politicas de descarte y envío:
+    Primero que llega primero que envía.
+    Colas podnderadas equitativas, se distribuya mejor el gráfico entre medio.
+    Se reparte el gráfico.
+
+    Descarte al ingresar a la cola:
+    El que se queda fuera, se descarta.
+    Otra forma, RED: a deerminados paquetes se marcan para eliminarlo, ¡¿con qué
+    criterio? Bueno se hace una ponderación para cada uno de los usuarios si es
+    que procesa muchos paquees y otro usuario se envía 1 paquete , para que no
+    quede afuera este último usuario lo que se hace es eliimnar los paquetes
+    marcados previamente para el usuario A.
