@@ -107,7 +107,7 @@ Modelo de servicio:
 Servicios con y sin conexión.
 Capa de datagramas provee servicio sin conexión en su capa de red.
 
-Circuitos virtuales: proveen sercico con conexión en su paba de red, ejemplo ATM
+Circuitos virtuales: proveen sercico con conexión en su capa de red, ejemplo ATM
 
 Diferencias en los servicios de capa d eransporte:
 terminal a termina: se puede elegir utilizar el protocolo UPD o TCP. En la capa
