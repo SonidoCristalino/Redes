@@ -462,14 +462,349 @@ a una página web, se comunica con un DNS, este le devulve a través de un protoco
 
 \subsection{Funciones claves}
 
-El objetivo es transportar segmentos de fuente a un destino. Esa fuente y destino son los hots: computadoras, eléfonos,
-etc. No importa qué paquete se pueda mandar sino que se envién un paquete de un punto a otro.
-[Ver la filimina nº 3]
+La función de la capa de red es por tanto tremendamente simple: transporta paquetes desde un host emisor a un host
+receptor. En la realización de esta tarea podemos identificar dos importantes funciones de la capa de red:
+
+¿Quiénes son los encargados de realizar este transporte de paquetes? El router a través de dos funciones claves:
+
+\begin{itemize}
+    \item
+        \textbf{Ruteo/Enrutamiento/routing}: determina una ruta de una punta a la otra, desde origen a destino.
+        La capa de red tiene que determinar la ruta o camino que deben seguir los paquetes a medida que fluyen de un
+        emisor a un receptor. Los algoritmos que calculan estas rutas se conocen como algoritmos de enrutamiento. Un
+        algoritmo de enrutamiento debe determinar, por ejemplo, la ruta por la que fluirán los paquetes para ir de un
+        Host situado en la ciudad/pais A hasta otro situado en la ciudad/país B.
+    \item
+        \textbf{Reenvio/Forwarding}: Tiene que ver con lo anerior, es mover paquetes desde una entrada del router a la
+        salida del mismo. Cuando un paquete llega al enlace de entrada de un router, éste tiene que pasar el paquete al
+        enlace de salida apropiado.
+\end{itemize}
+
+Un paralelismo con lo anterior se puede poner cuando un usuario quiere realizar un viaje en auto por el país. Decidir la
+ruta que se tomará para llegar a determinada provincia desde la casa del usuario sería el \emph{enrutamiento}. En
+cambio, llegado a una ciudad (que sería para el ejemplo como ser un router), decidir por qué calle agarrar para dar con
+la ruta que me llevará al próximo pueblo sería el \emph{reenvío}.
+
+El reenvío hace referencia a la acción local que realiza un router al transferir un paquete desde una interfaz de un
+enlace de entrada a una interfaz del enlace de salida apropiada. El enrutamiento hace referencia al proceso que realiza
+la red en conjunto para determinar las rutas terminal a terminal que los paquetes siguen desde el origen al des­ tino.
+
+Para saber la mejor ruta los ruters corren algoritmos que van a determinar la mejor ruta para ir de un host a otro, una
+vez que terimna el algoritmo gnera una tabla de reenvio, esa tabla está conformada como si fuera un algoritmo de
+Dikstra. Evalúa dándole determinado peso entre routers.
+
+Todo router tiene una tabla de reenvío. Un router reenvía un paquete examinando el valor de un campo de la cabecera del
+paquete entrante y utilizando después ese valor para indexarlo dentro de la tabla de reenvío del router. El resultado de
+la tabla de reenvío indica a cuál de las interfaces del enlace de salida del router será reenviado el paquete.
+Dependiendo del protocolo de la capa de red, este valor de la cabecera del paquete podría ser la dirección de destino
+del paquete o una indicación de la conexión a la que pertenece el paquete
+
+Una vez que el router pasa el paquete a otro, se olvida del paquete que envió. Si cada router corre el mismo algoritmo
+proporcionado por el protocolo que se ejecute,todos llegan a la misma conclusión de que la mejor ruta es una, y en base
+a ello es que se genera la tabla de reenvío; la problemática es es que todos corran el mismo algoritmo y cuál usar.
+
+Cada ruter corre el algoritmo, genera la tabla, determina la mejor ruta, envía los paquetes; los algoritmos se corren
+cada determinado tiempo, para que se actualice la tabla de ruteo; y todo esto se denomina \emph{Ruteo dinámico}.
+\emph{Ruteo estático}: es cuando se define por hardware y por dónde salir no determinado por los algorítmos de Red.
+
+En general lo que estiman a la hora de proveer una mejor ruta para los paquetes es la cantidad de nodos que hay en la
+red para generar la mejor ruta, evalúa la menor cantidad de saltos. Todo esto se conceptualiza mediante la teoría de
+grafos.
+La ponderación de las aristas existentes a lo largo de una ruta es multidimensional, es decir que se tienen en
+consideración  varias variables de distinta naturaleza, por eso que generalmente se simplifica por la cantidad de saltos
+que debe hacer el paquete.
+
+\subsection{Redes de Circuitos Virtuales y de Datagramas}
+
+La capa de transporte de Internet proporciona a cada aplicación la posibilidad de elegir entre dos servicios: UDP, un
+servicio sin conexión; o TCP, un servicio orientado a la conexión. De forma similar, una capa de red también puede
+proporcionar un servicio sin conexión o un servicio con conexión. Estos servicios de la capa de red con y sin conexión
+son paralelos en muchos sentidos a los servicios de la capa de transporte orientados a la conexión y sin conexión.
+
+En las principales arquitecturas de redes de computadoras utilizadas hasta la fecha (Internet, ATM, frame relay,
+etc.), la capa de red proporciona bien un servicio sin conexión host a host o un servicio orientado a la conexión host a
+host, pero no ambos. Las redes de computadoras que sólo proporcionan un servicio de conexión en la capa de red se cono­
+cen como \textbf{Redes de Circuitos Virtuales (VC)}; las redes que sólo proporcionan un servicio sin conexión en la capa de red
+se denominan \textbf{redes de datagramas}.
+
+\textbf{Redes de Circuitos Virtuales}: es cómo se hace una llamada entre dos host. Esta conexión reserva recursos como
+si fuera una conexión telefónica. Hasta que no se corte la conexión entro los dos hosts, no cede los recursos que se
+adquirieron para la realización de la llamada.
+
+Fases identificables en una comunicación de tipo VC.
+\begin{itemize}
+    \item
+        Establecimiento de la llamada.
+    \item
+        Transferencia de datos.
+    \item
+        Finalización de la llamada.
+\end{itemize}
+
+Luego:
+\begin{itemize}
+    \item
+        Cada paquete lleva un identificador del VC (no dirección de máquina destino).
+    \item
+        Cada router en el camino de fuente a destino mantiene el ''estado'' por cada conexión que pasa por él.
+    \item
+        Enlace y recursos del router (ancho de banda, buffers) pueden ser asignados al VC.
+\end{itemize}
+
+Por el contrario las \textbf{Redes Datagramas} (que es el que utiliza internet), a medidia que los paquetes van llegando, se
+envían. Un paquete puede enviarse por una for Esta no dice que no vaya a mostrar un paquete asincrónico, esto se
+ordenan en otra capa.
+En una Red de Datagramas, cada vez que un sistema terminal desea enviar un paquete marca el paquete con la dirección del
+sistema terminal de destino y luego introduce el paquete en la red. Esto se hace sin configurar ningún circuito virtual.
+Los routers de una red de datagramas no mantienen ninguna información de estado acerca de los circuitos virtuales
+(¡porque no existe ningún circuito virtual!).
+
+A diferencia de las redes de VC, en las redes de Datagramas:
+\begin{itemize}
+    \item
+        Tx pone dirección dirección destino destino en la cabecera del datagrama.
+    \item
+        No hay estado mantenido en cada router por cada conexión.
+    \item
+        Los paquetes se reenvían usando la dirección del Host de destino.
+    \item
+        Los datagramas pueden ser transmitidos por diferentes
+\end{itemize}
+
+Se implementa en Internet Red de Datagramas, por una cuestión de uso y costumbre de la población, no significa que en un
+futuro se modifique la arquitectura a VC.
+
+Como nota de color \textbf{QuS} es calidad de servicio, la cual es más fácil poder brindarla en servicios como VC que en
+Red de Datagramas ya que para la primera se reserva recurso para ofrecer una mínmia calidad. ¿Cómo
+se hace para brindar cierta calidad de servicio en Redes de datagramas que en VC? Es más fácil con VC.
+Como en Datagramas los paquetes van por cualquier parte, es difícil reservar recurso, es difícil articularloas. Hoy en
+día esto no está implementado. Esto siempre está implementado en la capa de Red.
+
+En algunas arquitecturas de redes, la capa de red cumple otra función decisiva que es la de \emph{establecer una
+conexión virtual} pero esto es sólo en las \textbf{Redes de Circuitos Virtuales (VC)}.
+
+Se establece un circuito y el canal será el mismo mientras se esté conectado. No se evalua todo el tiempo la
+tabla, sino que se mantiene la misma tabla mientras se mantenga la llamada.
+
+En los circuitos virtuales, al comienzo de la sesión se establece una ruta única entre las ETD (entidades terminales de
+datos) o los host extremos. A partir de aquí, todos los paquetes enviados entre estas entidades seguirán la misma ruta.
+Las dos formas de establecer la transmisión mediante circuitos virtuales son los circuitos virtuales conmutados(SVC) y
+los circuitos virtuales permanentes(PVC).
+
+\subsubsection{Circuitos Virtuales conmutados(SVC)}
+Los circuitos virtuales conmutados (SVC) por lo general se crean ex profeso y de forma dinámica para cada llamada o
+conexión, y se desconectan cuando la sesión o llamada es terminada. Un ejemplo de circuito virtual conmutado es la red
+telefónica tradicional así como los enlaces ISDN. Se utilizan principalmente en situaciones donde las transmisiones son
+esporádicas.En terminología ATM esto se conoce como conexión virtual conmutada. Se crea un circuito virtual cuando se
+necesita y existe sólo durante la duración del intercambio específico.
+
+\subsubsection{Circuitos Virtuales Permanente(SVC)}
+én se puede establecer un circuito virtual permanente (PVC) a fin de proporcionar un circuito dedicado entre dos puntos.
+Un PVC es un circuito virtual establecido para uso repetido por parte de los mismos equipos de transmisión.
+El circuito está reservado a una serie de usuarios y nadie más puede hacer uso de él. Una característica especial que en
+el SVC no se daba es que si dos usuarios solicitan una conexión, siempre obtienen la misma ruta.
+
+\textbf{Red de circuitos virtuales}: esto es en red. No distingue entre si se está comunicando por UDP o TCP.  En la capa
+de transporte depende del protocolo, se comunica entre aplicaciones, En la capa de transporte SI tiene en cuenta si
+transporta UPD o en TCP, todo es a nivel procesos.
+
+Los dispositivos finales los que saben si hay que retransmitir o no. Para la capa de RED le es indistinto, no está
+metido en el protocolo, sólo envía paquetes.
+En internet la Capa de Red trabaja SIN conexión (a diferencia de las Redes de circuitos virtuales), es decir que cuando
+se establece una conexión entre dos hosts, no se reservan recursos. Se diagrama de esta manera debido a la cantidad de
+usuarios y dispositivos conectados. Si esto fuera CON conexión, cada rotur deberá de decidir por la ida y vuelta
+depaquetes, por si hay que retransmitir o no, le pone mucha más complejidad que hace más densa el transporte. Por eso es
+prefierile que traminta sin conexión.
+
+\subsection{Modelos de Servicio de Red}
+
+Consideremos ahora algunos de los posibles servicios que podría proporcionar la capa
+de red. En el host emisor, cuando la capa de transporte pasa un paquete a la capa de red,
+entre los servicios específicos que la capa de red podría proporcionar se incluyen:
+
+\begin{itemize}
+    \item
+        \textbf{Entrega garantizada}: Este servicio garantiza que el paquete terminará por llegar a su destino.
+    \item
+        \textbf{Entrega garantizada con retardo limitado}: Este servicio no sólo garantiza la entrega del paquete, sino
+        que dicha entrega tendrá un límite de retardo especificado de host a host (por ejemplo, de 100 milisegundos).
+\end{itemize}
+
+Además, a un flujo de paquetes entre un origen y un destino dados podrían ofrecérsele los
+siguientes servicios:
+
+\begin{itemize}
+    \item
+        \textbf{Entrega de los paquetes en orden}: Este servicio garantiza que los paquetes llegan al des­
+        tino en el orden en que fueron enviados.
+    \item
+        \textbf{Ancho de banda mínimo garantizado}: Este servicio de la capa de red emula el comportamiento de un
+        enlace de transmisión con una velocidad de bit específica (por ejemplo, de 1 Mbps) entre los hosts emisor y
+        receptor (incluso aunque la ruta terminal a terminal real pueda atravesar varios enlaces físicos). Mientras que
+        el host emisor transmita los bits (como parte de los paquetes) a una velocidad inferior a la velocidad de bit
+        especificada, no se perderá ningún paquete y todos los paquetes llegarán dentro de un intervalo de retardo host
+        a host pre-especificado (por ejemplo, en 40 milisegundos.)
+    \item
+        \textbf{Fluctuación máxima garantizada}: Este servicio garantiza que el intervalo de tiempo transcurrido entre
+        la transmisión de dos paquetes sucesivos en el emisor es igual al intervalo de
+\end{itemize}
+
+\textbf{CBR en ATM}: El objetivo del servicio CBR es conceptualmente simple: proporcionar un flujo de paquetes (conocido como
+celdas en la terminología ATM) mediante un conducto virtual cuyas propiedades son las mismas que si existiera un enlace
+de transmisión de ancho de banda fijo dedicado entre los hosts emisor y receptor.  Con el servicio CBR, un flujo de
+celdas ATM se transporta a través de la red de tal forma que se garantiza que el retardo terminal a terminal de una
+celda, la variabilidad del retardo terminal a terminal de una celda (es decir, el jitter o fluctuación entre celdas) y
+la fracción de celdas que se pierden o que se entregan tarde sean todos ellos menores que una serie de valores
+previamente especificados. El host emisor y la red ATM acuerdan estos valores cuando la conexión CBR se establece por
+primera vez.
+
+\textbf{ABR en ATM}: Como con el modelo de servicio de Internet, las celdas se pueden perder con un servicio ABR. Sin
+embargo, a diferencia de Internet, las celdas no se pueden reordenar (aunque pueden perderse) y está garantizada la
+velocidad mínima de transmisión de celda (MCR, Mínimum Cell transmission Rate) de una conexión utilizando el servicio
+ABR. Si la red tiene los suficientes recursos libres en un instante determinado, un emisor también puede ser capaz de
+enviar con éxito cel­ das a una velocidad mayor que la mínima (MCR).
+
+Se debe recordar que ATM da garantías de ancho de banda, de que no haya pérdidas en los paquetes y la indicación de
+congestión interna, pero \textbf{NO es la arquitectura utilizada en Internet} en la Capa de Red.
+
+En la Capa de Red se puede implementar un protocolo de tipo UDP o de tipo TCP pero esto va en conjunto con su
+arquitectura, no es algo que se pueda modificar como lo hace la Capa de Transporte.
+
+Cuando un paquete se transmite desde un origen a un destino pasa a través de una serie de routers. Cada uno de estos
+routers utiliza la dirección de destino del paquete para reenviar dicho paquete. Específicamente, cada router tiene una
+tabla de reenvío que asigna direcciones de destino a interfaces de enlace; cuando un paquete llega a un router, éste
+utiliza la dirección de destino del paquete para buscar la interfaz del enlace de salida apropiado en la tabla de
+reenvío. Después, el router reenvía intencionadamente el paquete a esa interfaz del enlace de salida.
 
 
+\subsection{Arquitectura de Routers}
 
+Dos funciones claves de routers:
+\begin{itemize}
+    \item
+        Correr algoritmos/protocolos de ruteo (RIP, OSPF, BGP), cada protocolo ejecuta su propoo algoritmo.
+    \item
+        Re-envío de datagramas desde enlaces de entrada a salida. No existe un router entrada o salida, en realidad
+        pueden ser bidireccinales, se dice entrada y salida sólo por un tema de comprension.
+\end{itemize}
 
+Para el exámen del router se diagrama un esquema general de las distintas partes operante:
 
+\begin{itemize}
+    \item
+        \textbf{Puerto de Entrada} : El puerto de entrada realiza varias funciones. Lleva a cabo las funciones de la
+        capa física consistentes en la terminación de un enlace físico de entrada a un router. Realiza las funciones de
+        la capa de enlace de datos necesarias para interoperar con las funciones de la capa de enlace de datos en el
+        lado remoto del enlace de entrada. También realiza una función de búsqueda y reenvío (el recuadro más a la
+        derecha del puerto de entrada y el recuadro más a la izquierda del puerto de salida) de modo que un paquete
+        reenviado dentro del entramado de conmutación del router emerge en el puerto de salida apropiado. Los paquetes
+        de control (por ejemplo, paquetes que transportan la información del protocolo de enrutamiento) son reenviados
+        desde un puerto de entrada al procesador de enrutamiento. En la práctica, suelen agruparse varios puertos en una
+        única tarjeta de línea dentro del router.
+        Depende el protocolo de la capa de enlace puede correr determinado servicios de la capa de enlace. Acá es donde
+        según el protocolo puede corregir errores. Sirve como un filtro de error desde la entrada, para que no pase al
+        router. En caso de que llegue un error se descarta desde el principo y no permite que pase a las subsiguientes
+        partes del router.
+    \item
+        \textbf{Entramado de Conmutación}: Entramado de conmutación. El entramado de conmutación conecta los puertos de
+        entrada del router a sus puertos de salida. Este entramado de conmutación está completamente contenido dentro
+        del router.
+        La Conmutación de paquetes: via memoria por bus del sistema. La rapidez del bus se mide según el ancho de bus
+        que tenga, que se mide por megaherz. YA NO SE USA.
+        Lo que se utiliza es el \emph{Via bus}: un bus compartido, no puede habe más de un paquete por bus, de lo
+        contrario se complica.
+        De qué depende de que sea rápido o no un router, dependiendo de dónde se coloque, no es lo mismo un router un
+        ISP nivel 2 que para una corporación.
+        Conmutación via red de interconexión:
+        Tipo crossbar: Todas las conexiones en simulanea. Se puede mandar multiples
+        paquetes al mismo tiempo por lo que es más rápido y más eficiente. Pero también
+        depende de lo que quiera manejar, para una empresa es muchísimo, si es para un
+        ISP 1 quizás es poco.
+    \item
+        \textbf{Procesador de enrutamiento}: Procesador de enrutamiento. El procesador de enrutamiento ejecuta los
+        protocolos de enrutamiento, mantiene la información de enrutamiento y las tablas de reenvío y realiza funciones
+        de gestión de red dentro del router.
+    \item
+        \textbf{Puertos de Salida}:Un puerto de salida almacena los paquetes que le han sido reenviados a través del
+        entramado de conmutación y los transmite al enlace de salida. Así, el puerto de salida lleva a cabo la función
+        inversa de la capa física y de la capa de enlace de datos que el puerto de entrada. Cuando un enlace es
+        bidireccional (es decir, transporta tráfico en ambas direcciones), un puerto de salida del enlace normalmente
+        estará emparejado con otro puerto de entrada de dicho enlace en la misma tarjeta de línea.
+    \item
+        \textbf{Buffer}: pone los paquetes en una cola a medida que llegan.  Dada la dirección destino del datagrama, se
+        obtiene el puerto de salida usando la tabla de re-envío de la memoria del puerto de entrada.  El Objetivo es que
+        el procesamiento se realice en el puerto de entrada a la velocidad de la línea. Esto quiere decir que necesita
+        que sea continuo, dinámico, antes de que llegue, posicionar la línea para enviarlo.
+        Se puede ver la linea como un carril de un tren, y al tren como la ráfaga de paquetes a enviar, antes de ser
+        enviado por determinado carril (línea) es necesario que evaluar el destino del tren (paquetes) y modificar los
+        carriles según sea que vayan.
+
+\end{itemize}
+
+Se formará cola si los datagramas llegan más rápido que la tasa de re-envío de la estructura de switches. Esto quiere decir
+que el conmutar la vía por donde saldrán los paquetes si es mas lento que lo que entra, se comienza a encolar, por loque
+se tiene dos posiblidads o buffers muy grandes, o muy chicos.  Lo que se tiene que tener en cuenta es dimensionar bien
+el buffer,
+
+\textbf{Conmutación via red de interconexión}: Tipo crossbar, todas las conexiones en simulanea. Se puede mandar
+multiples paquetes al mismo tiempo por lo que es más rápido y más eficiente. Pero también depende de lo que quiera
+manejar, para una empresa es muchísimo, si es para un ISP 1 quizás es poco.
+
+\textbf{Tabla de Reenvio}: La tabla de reenvío es el producto de accionar los algoritmos de Capa de Red en cada Router.
+Se generan a través de dos campos que contiene la dirección destino y las interfaz por la que se enviará el paquete en
+caso de coincidir la dirección de envío con el de la cabecera del paquete.
+Las direcciones posibles son $2^32$ bits, por lo que se obtienen mas de millones de 4 mil millones de entradas; cantidad
+imposible de mantener una tabla y que cada router por cada paquete tenga que recorrer esas millones de direcciones para
+saber hacia dónde debe enviar la información. Por lo que se implementa de una manera más sencilla. Cada Router,
+dependiendo el nivel al que pertenezca (router ISP 1, 2 o 3) manejará distintos rangos de direcciones. Si el paquete
+recibido tiene una dirección comprendida entre un rango y otro, se enviará por la interfaz 1, si está comprendido entre
+otro rango, se enviará por 2,etc.
+
+Dependiendo del nivel del ISP seran los rangos que manejará la tabla del router. El paquete va pasando por routers que
+tienen distintos rangos, desde los rangos más generales (ISP 1) hasta más locales (ISP 3).
+
+Por ejemplo:
+Si se quiere enviar un paquete de datos a Australia, lo que se hace al despachar el paquete es mirar el bloque más
+significativo de la dirección destino, lo que hace que se rediriga a un router que tiene conexión con otro continente
+(ISP 1), una vez que el paquete llega allí, se vuelve a analizar el paquete evaluando su rango, en caso de estar ya en
+Australia, entonces lo toma un Router ISP 2, el cual lo vuelve a lanzar a la zona geográfica perteneciente a ese rango
+para que lo tome otro router ISP 1 que lo envía a una zona más localizada, como puede ser una conexión hogareña.
+
+En el siguiente ejemplo se puede ver cómo dependiendo de los últimos 3 dígitos, se envía a una interfaz o a otra.
+\begin{itemize}
+    \item
+        11001000 00010111 00011\textbf{000} : Se envía hacia la interfaz nº 1
+    \item
+        11001000 00010111 00011\textbf{001} : Se envía hacia la interfaz nº 2. Ver que a partir del rango 001 se envía a
+        esta interfaz.
+    \item
+        11001000 00010111 00011000: Por ejemplo, el siguiente es un rango y no una dirección ya que falta el último
+        octeto
+\end{itemize}
+
+Pregunta: ¿por qué no mantiene la misma cabera que se entregó? La capa de enlace se encarga de enviar de host a host,
+por lo que el enlace pueden llegar a cambiar, y cambian los protocolos, pero desde elpunto de visa de la Capa de Red, al
+ruter no le importa, lo envia igual.
+
+¿Por qué se necesita un buffer en la entrada y en la salida? Es por el cambio de velocidad de transmisión, es para
+balancear los paquetes. Puede haber mayor capacidad de procesamiento pero en la salida puede existir menor capacidad de
+velocidad de envío en el enlace.
+
+\emph{Encolamiento en puerto de entrada}: Ver la problemática que hay con el paquete rojo (Filmina nº 34) para un lugar
+determinado, si hay muchos rojos para una misma salida y una entrada quiere enviar a esa misma salida un paquete rojo,
+lo detiene y se encolan no sólo el rojo sino el verde también.
+
+Para ello se implementan lo que se denomina como \emph{Políticas de descarte y envío}:
+\begin{itemize}
+    \item
+        \textbf{Primero que llega primero que envía}: Colas podnderadas equitativas, se distribuya mejor el gráfico
+        entre medio. Se reparte el gráfico.
+    \item
+        \textbf{Descarte al ingresar a la cola}: El que se queda fuera, se descarta. Otra forma, RED: a deerminados
+        paquetes se marcan para eliminarlo, ¡¿con qué criterio? Bueno se hace una ponderación para cada uno de los
+        usuarios si es que procesa muchos paquees y otro usuario se envía 1 paquete , para que no quede afuera este
+        último usuario lo que se hace es eliimnar los paquetes marcados previamente para el usuario A.
+\end{itemize}
 
 
 \end{document}
