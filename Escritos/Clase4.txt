@@ -1,0 +1,418 @@
+Práctica nº1
+------------
+Se desea enviar un archivo desde un host A a un host B. La ruta desde el host A
+al host B está
+formada por tres enlaces cuyas velocidades de enlace son: R1=500kbps; R2=2Mbps y
+R3=1Mbps. (Tener en cuenta que Es el mismo tramo de ruta)
+    a) Suponiendo que no hay tráfico en la red ¿cuál es la tasa de transferencia
+    para el archivo?
+    Dependerá del tráfico que exista en la red. pero la tasa efectiva será R1
+    porque es la velocidad será. 
+    Una similitud es con la autopista y los autos al pasar cada peaje. 
+
+    b) Si el tamaño del archivo es de 4GBytes ¿cuánto tiempo tardará
+    aproximadamente en transferirse el archivo al host B?
+    c) Repita los incisos a) y b) si ahora R2 es igual a 100Kbps.
+
+Repaso de la clase nº3: 
+----------------------
+Objetivo de la capa de Red: 
+    Transportar segmntos de un lado a otro. Función principal: conectar un host
+    a otro. Realizar una comunicación entre host, lo hace a traves del routeo y
+    el reenvío. 
+    * Ruteo: determinar la mejor ruta para llegar de host a host
+    * Reenvio: mover los paquetes de un enlace a un enlace. 
+
+Internet se utilizan la red de datagrama. Se basa en una ruta fija, sino que la
+ruta va variando y los paquetes puden tomar distintas rutas sin importar el
+orden en que lleguen, la organización se encarga otra capa. 
+La virtual determinaba una conexión establecida y fija y se asemeja a la del
+teléfono. 
+Interior de un router, diagrama funcional
+
+Esquema de IP en TCP/IP: 
+
+El protocolo que más se usa es el IP, más importante en la capa de red, por el
+nombre del modelo, por eso es importante. 
+Cada protocolo es independiente a los anteriores, a las otras capas, sin embargo
+IP obtiene información de otras capas para mejor sus servicio. aún así Trata de
+ser lo más indpendiente posible. 
+
+Capa de red: 
+Protocolo IP
+    ¿Direccionamiento
+    ¿Formato de datagramas
+    ¿Manejo de paquetesk
+
+Tablas de reenvio, tiene unas direcciones basadas en IP. 
+
+Formato del datagrama: 
+Cada capa le agrega un encabezado y encapsula como un dato más, lo que viene de
+otra capa. Y cada capa le pone su propio encabezado, en este caso el de red. 
+
+Encabezado de Red: (Es lo que está en la filmina 5, todo eso es el encabezado de
+        Red)
+
+Cada renglon s de 32. 
+Data= es todo lo que viene de las demás capas
+
+ver: versión del protoclo IP (acá será el 4). Es importante, 
+
+HeadLen: cuán largo es el encabezado, NO es fijo, por sus opciones, por lo que
+puede ser variables, tiene una parte que es opcional. es para que cada
+dispositivo sepa dónde cortar, hasta donde está el encabezado y dónde sigue el
+dato.
+
+Tipo de sericio: es un numero que se tiene en cuenta la prioridad que se le
+puede dar al dato. Es por tipos d servicios que podrían tener más prioridad, por
+sobre algunos otros paquetes, no se utiliza mucho. Como por ejemplo telefonoía
+IP, SKype: Se conviene que esos paquetes, prioridad de servicios que sean de
+tiempo real. 
+
+Longitud total del datagrama en bites: Es el encabezado + el dato. 16 bits en
+bits. Esto define el tamaño máximo que puede albergar dentro de un paquete. 
+Es decir 65535, serían 65kb = tamaño máximo de un datagrama. El protocolo impide
+desde acá mandar paquetes más grandes (esto fue pensado ya hace tiempo, IP4). 
+
+--------------------------- Fragmentación de datagramas -----------------------
+Linea de 32bits para fragmentación y reesamble, eso lo hace la capa de red. 
+La capa de red determina la ruta y es el encargado de fragmentar el datagrama,
+en función de los MTU de los enlaces. UN datagrama se convierte en varios. Se
+debe saber cómo fragmentarlo. Acá no hace faltan que lleguen seguidos los
+datagramas fragmentos. Cada uno es un datagrama fragmentados se toman como
+También puede que al haber mas MTU puede tomar 3 datagramas y juntarlos en uno.
+Se se cambia el tipo de medio, el cable por ejemplo se modifica el MTU y por lo
+tanto se diversifica y se adapta a la red. 
+Si se envía más de 1500 el datagrama se dividiría.
+individuales. 
+    Identificador de 16bits: 
+    flags: 
+    fragment offset: 
+
+[Filmmina 8]
+
+Si se tiene un MTU de 1500 y se quiere transportar un paquete de 4000. Se
+generan 3 paquetes: 
+    Cada uno tene un encabezado de 20 + la cantidad de datos que se deben
+    dividir (1500 + 1500 + 1000). Recordar que se tiene 20 bytes de encabezado
+    IP. Ver la filmina
+
+Flag = un bit que identifica si hay mas segmentos para ensamblar o no. Flag = 1
+significa que faltan llegar datagramas. 
+Offset: posición en un buffer. 
+
+Achivo de 4000: 
+Parte de una posición 0 hasta una posciicón 3980 (por los 20 de cabecera)
+
+--- 3980
+
+--- 2960
+
+--- 1480
+
+--- 0 ------------> el offset lo que hace es tener en cuenta estos fragmentos
+para poder reensablamar todo de nuevo. Lo que permite saber es cómo volver a
+integrarlo. 
+A partir del offset y del largo permite saber cómo reensablmar porque sabe 
+offset * 8 porque está en bytes. 
+
+Ejemplo: 
+Un destino de una red IP recibe un fragmentos de tamaños 444,
+   444 y 253 bytes, ¿Qué puede decir usted respecto del MTU más
+   pequeño de la ruta? 
+   Se puede decir que el MTU será de 444. El datagrama es la suma de 444 + 444 +
+   253 - 40(porque se agregan dos cabeceras, cada una de 20, que no existían
+           originalmente)
+
+---------------------------
+
+linea de 32bits: 
+Time to live: contador. Algunos algoritmos de ruteo pueden llegar a fallar.
+Puede que el paquete quede deambulando por la red indefinidamente, con la
+cantidad de dispositivos conectados, se saturaría si no hubiera esto
+contemplado. Para asegurarse que esto no ocurra se pone este campo, cada router
+por el que pase el datagrama lo va a decrementar, el que llega a 0 no lo
+retrasmite más, lo elimina. 
+
+UpperLayer: Cual es el protocolo de la capa superior. El IP sabe qué protocolo
+se ejecuta en la capa superior. El router nunca retrasmite nada, pero es
+necesario. 
+
+Header checksum: mecanismo de deteccion de errores de cabecera, que la cabecera
+tenga integridad. Si hay problemas con esta cabecera se puede llegar a pedir
+retrasmición
+    Checksum: 1010100010010101010101100
+              | 1 | 2 | 3 | 3 | 4 | 6 | ----> suma: 19
+    Se pueden agarrar grups de 4 y pensarlos como un número. Se suman y esa suma
+    va en este header checksum. Si se llega haber un error en un bit, la cuenta
+    puede llegar a dar mal. Si da mal entonces se descarta, Es muy improblable
+    que al producirse un error siga dando el mismo resultado. 
+
+32bits: 
+direcciones emisor: Aca irían las direcciones IP
+Se dividen en grupos de 8 para mejorar la interpretación desde lo humano. Por
+practicidad. Se traducen a números decimales. 4 Octetos. 
+
+    El rango que va es desde: 0/255.0/255.0/255.0/255
+
+Cuántos dispositivos conctados: 2^32. 7 mil millones de personas existen en el
+mundo. 4 millones permite conectarse a internet, sin tener ambiguedad. Pero se
+conectan muchos más, más del doble. 
+Dispositivos conectados: 10 mil millones
+
+32bits: 
+direcciones receptor: Aca irían las direcciones IP
+
+32 bits: 
+Opcional: sirve para algunas funcionalidades. No importa. 
+
+Datos: Campo de datos puede ser variables, ya que no es lo mismo enviar,
+    imagenes, películas, audio. 
+
+Encabezado 192 bits de encabezado sin contar el campo opcional. 
+    Se envían SOLO de encabezados se transmiten 40bytes. Es ineficiente si se
+    mandan muchos paquetes con pocos datos. 
+
+
+Direccionamiento IP: 
+--------------------
+
+* Interfaz: límite entre el host y el enlace físico; o entre el router y
+cualquiera de sus enlaces. Vinculación del medio al dispositivo. 
+Computadora tiene interfaz que está dada por el adapardor de red, que me conecta
+con el canal y se genera una intefraz, un servidor puede ener más de una
+interfaz. 
+
+El router tiene más de una interfaz. 
+Compuadora = 1
+router = tiene varios, en la filmina 3. 
+
+La direccion IP está asociada a la interfaz. El router no tiene una dirección,
+   tiene 3 direcciones diferentes. Esta dirección está en la interfaz, dividido
+   4 grupos de 8 bits . [filmina 11] Router conecta 3 redes. 
+
+Dirección se parte en dos. 
+    * Net Id: Bits más significativos (los que están más a la izquierda).
+    Dirección de una subred. 223.1.1 (es lo mas significativo en la filmina)
+    223.1.2 el de la derecha. 
+    * host id: dispositivo de esa red .1, .2 (es lo menos significativo en la
+            filmina)
+
+Subred: dispositivos que tienen la misma Net Red, si esta es diferente, se está
+en otra red, en otra LAN , por lo tanto se tiene que comunicar utilizando otro
+router. 
+
+¿Cómo se hace para identificar una sub red de otra? 
+Una forma es ver el router y ver qué dispositivos están de un lado y del otro. 
+Cada una de esas islas pertenecen a una subred. Dentro de la misma red por mas
+que no haya intenret, se van a poder comunicar. 
+
+Filmina 14: Router divide redes, entre las interfaces al mismo 
+Entre los dos rotuters están formando una nueva subred, por ejemplo el 223.1.8.1
+y 223.1.8.0 entre los dos routers de abajo. 
+
+Un router requiere saber cuál es el NetId y el HostId. Para eso hay un subnúmero
+denomina máscara d subred, es un número que permite identifiar el Net y el
+hostId. 
+Lo que hace es poner en 1 Los bits más significativos y pone en 0 los menos. El
+netid termina en 1 y el host en 0. 
+
+223.1.1.2/24 --> dirección iP, se simboliza con 24 para indicar que se quedan
+    con los primeros 24byts más siniifcativos. 
+
+255.255.255.0 ---> Mascara tiene todos 1 donde tiene el HosId y ceros en el
+    hostID. Esto es la forma que tiene de identificar 
+    Si se hace una AND entre la dirección IP y la máscara y así se puede obtener
+    de forma rápida el hostId y el NetId. 
+
+Se reservaron ciertos bits más identificativos para hablar de clase. [Filmina
+16]. 
+    Antes existían tipos de clases (antiguas) y se reservaban determinados bits
+    más significativos. Esto se piensa así 
+        Clase A = subnet /8     2^8 redes diferentes de 2^24 host
+        Clase B = subnet /16    
+        Clase C = subnet /24    2^24 redes diferentes de 2^8 host
+
+        Por ejemplo: 192.168.1.1 ---> Red clase C. 
+
+Las subdivisiones entre clases ya han quedado obsoletas. Porque ahora con la
+máscara de red se puede definir la cantidad de bits que se puden rservar para
+los host y cuántos para las redes. 
+
+223.1.1.2/25 
+    --> dirección iP, se simboliza con 24 para indicar que se quedan
+
+Máscara de subred:
+    255.255.255.[Binario]
+    255.255.255.[10000000]
+    255.255.255.[128]       2^25 redes de 2^7 host
+
+223.1.1.2/26
+    255.255.255.[11000000] Mascara de red.
+
+Direcciones que se reservan de entre las clases de A, B, C. ¿Por qué? 
+
+* Al comienzo se pensó que cada máquina debía tener una dirección única en el
+planeta. Esto no es necesario porque si se tienen maquinas conectadas en red
+pero sin internet, entoncs no hace falta que las direcciones sean unicas. 
+* Para este propósito se reservó una subred de cada clase para crear redes
+privadas. 
+
+172.16.0.0/12 con 2 20 direcciones => 10101100.0001xxxx.X.X
+192.168.0.0/16 con 2 16 direcciones => 11000000.10101000.XX (Reservado de clase
+        C) Son para redes privadas. 
+
+Las direcciones con las que se conectan fuera de internet es una direccion
+pública. La interna o la hogareña es la de 192.168.1.1, pero la pública es otra
+
+* Unicast: destino a un host/interfaz en particular, son las más comunes. Ej:
+172.16.4.21
+* Broadcast: destino a todos los hosts en una red.  Ej: 255.255.255.255. Se
+manda un paquete a todos los host, por inundación se dice
+* Multicast: destinada a un grupo de hosts en una red o varias redes.
+* Anycast: destinada al primero que resuelva. IPv4 no hay casos especiales.
+ Ejemplo en filmina 19. 
+
+Ip reservadas que no son para hosts: 127.0.0.1 este numero se manda cuando se
+hace alución a su propia dirección. CUando la aplicación no lo pud resolver y
+quiere hacer alución a su propia dirección, manda esa. 
+
+* Dirección de una subred: la primera de las direcciones de la subred
+
+    223.1.1.2/24 ¿cuál es la dirección de red? Es el NetId pero con todos los
+    ceros atras: 
+
+     NetId    HostID
+    |223.1.1. | 2/24          ---> dir Red: 223.1.1.0
+
+Ejemplos: 
+    223.1.1.4/24             ---> dir de red 223.1.1.0 
+
+    Cuando se habla de una dirección de red, la misma debe terminar en cero. 
+
+    223.1.1.128/25      --> dirección de red porque el último octal termina en
+    cero, por lo que sería: 223.1.1.10000000/25 Hay que pensarlo en binario.
+    Hay que pensarlo entre la máscara y el final de la dirección terminada en
+    ceros (que puede ser en binario o en decimal)
+
+
+    223.1.1.128/28 --> dirección de red porque el último octal termina en 0. 
+
+Dirección de broadcast:
+    * Directed Broadcast: la última (unos)
+    * Ej: 172.16.255.255, 192.168.1.255
+    * Limited Broadcast: (all ones)
+    * 255.255.255.255
+    * ¿Este host¿, cuando aún no tiene a
+
+    Mascara: 223.1.1.0
+    Broadcast: 223.1.1.255
+
+    223.1.1.128/25 --> dirección de red porque el último octal termina en 0. 
+    Broadcast: 223.1.1.1011111
+
+    * Este host, cuando aún no tiene asignada una dirección: 0.0.0.0
+
+Dos estrategias para ampliar el número de dispositivos a conectarse a internet: 
+
+1) flexibilizar el tamaño de subredes: Direccionamiento CIDR. 
+2) permitir el uso de internet de redes privadas a través del uso Nat. Muchas
+máquinas conectadas en red hogareñas, todas ellas salen con la misma dirección
+pública en internet. Se procede con el protocolo NAT. 
+
+1) CIDR: Classless InterDomain Routing
+    * Porción de dirección de la red (subred) se hace de tamaño arbitrario
+    * Formato de dirección: a.b.c.d/x, donde x es el # de bits de la dirección
+    de sub-red
+
+        200.1.17.128/25: 
+            2^6 - 2:  direcciones IP posibles
+            Se le restan 2 porque : la de red y la de broadcast
+
+Un host ¿cómo obtiene su dirección de IP? Se puede cambiar forzdamente pero de
+la forma interna y la máscara de red. ¿quien maneja las direcciones públicas?
+Los ISP. Dependen del servicio que uno contrate, tendrá determinada dirección
+pública. 
+DHCP: protocolo que asigna directamente de forma automática a los host que se
+conecten. Es un servicio determinado, eso lo asigna un servicio, que lo tiene
+contratado sl proveedor de internet.
+Cuando se pone un ruter en el medio, se genera una nueva LAN, pero se conectan
+de forma externa con una contraseña determinada. 
+
+Este servicio viene implementado en el proveedor, es un servidor dinámico, que
+un host se conecta y el servidor le asigna una dirección. 
+Es dinámico porque cambia según los host se conectan y se desconctan. 
+
+¿Cómo se obtiene las direcciones públicas? 
+Las tiene los ISP, compran bloques de direcciones, con los bits más
+significativos. 
+ISP's block 11001000 00010111 00010000 00000000 200.23.16.0/20
+
+Se puede generar los subredes o host que le permita. Se puede jugar con los bits
+que están más a la derecha, en el ejemplo será de 12 bits. 
+
+2^32 bits = direcciones IP 
+
+[filmina 25]: 
+El ISP puede manejar la cantidad de redes y host que quiere conectar,  P.
+ISP's block
+11001000 00010111 00010000 00000000
+200.23.16.0/20
+Podría dividir su bloque en 8 bloques de direcciones contiguos de igualP.
+ISP's block
+11001000 00010111 00010000 00000000
+200.23.16.0/20
+Podría dividir su bloque en 8 bloques de direcciones contiguos de igual
+
+Si se quieren dividir en ocho organizaciónes distintas entonces se reservan 3
+bits porque se reservan con esto 8 organizaciones posibles 2^3 = 8
+
+En el ejemplo de filmina 25 qued para cada organización le quedan: 2^9 host
+diferentes
+En caso de que hayan 7 organizaciones = 8 subredes y una quedará libre. 
+
+DNS = servidor que asigna un nombre de donminoi a una dirección IP donde está el
+host donde está almacenada. El servidor físico puede cambiar de direccion IP,
+     pero el  DNS la modifica dinámicamente y para nosotros los humanos es
+     transparente. 
+     
+Protocolo NAT: 
+-------------
+Direcciones no alcanzan, direcciones privadas y acceden a internet y no
+pudieron. Salen con una misma red. 
+una sola red para conectarse a una red exerior, ISP no se tiene que dar varias
+direcciones para todos los hots, sino una sola para toda la red que se quiere
+conectar. 
+
+ipconfig
+Información de la ip asignada. 
+
+whatismyip.org ---> página que da información sobre la propia red. 
+
+¿Cómo se hace para salir a internet desde una red de computadoras? o
+Cada host qe se quiere comunicar a internet, un host tineq u comunicar a otro
+que está afuera envia el paquete a la dirección: Puerta de enlace
+predeterminada: 10.0.0.4, si una computadora se quiere comunicar dentro de su
+propia red lo hace sin problema, pero si se quiere comunicar con otra que NO
+esté, lo tiene que enviar a 10.0.0.4 que lo envía el router, que esl único que
+pude hacer eso de slair a inernet. 
+El paquete cuando sale de adentro hacia afuera, el protocolo lo que hace es
+cambiar la dirección de puerta de enlace y le pone la pública (118.76.29.7),
+        viaja ese paquete por la red como si fuera esa red una solo host. 
+
+Cando el paquete vuelve viene con nombre destino la pública, y el router la
+modifica por la interna.
+
+¿Cómo sabe cuando vuelve el paquete a qué host tiene que darselo? Mediante lo
+que se conoce como Código de puerto: es un número, cuando vuelve la respuesta a
+través de ese número de puerto, sabe a qué host tiene que enviarle ese paquete. 
+El router lo que hace es mantener una tabla con esos números de Código de Puerto
+y las direcciones de host de cada una de las máquinas. 
+Puerto 8080 para las páginas internet. 
+
+Router tiene un propio servidor de HCP para la red pública, cuando se conecta un
+nuevo host lo que hace es asignar automáticamente una dirección privada. 
+
+www.google.com.ar:200 --> consultar al servidor de google donde está hospedada
+la página mediante el código del puerto 200 (que seguro el servidor lo tendrá
+        configurado como cerrado)
