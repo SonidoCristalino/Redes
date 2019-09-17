@@ -806,5 +806,190 @@ Para ello se implementan lo que se denomina como \emph{Políticas de descarte y e
         último usuario lo que se hace es eliimnar los paquetes marcados previamente para el usuario A.
 \end{itemize}
 
+\section{Clase nº 4}
+
+\subsection{Repaso clase nº 3}
+
+Objetivo de la capa de Red:
+\begin{itemize}
+    \item
+        Transportar segmntos de un lado a otro. Función principal: conectar un host a otro. Realizar una comunicación
+        entre host, lo hace a traves del routeo y el reenvío.
+    \item
+        Ruteo: determinar la mejor ruta para llegar de host a host
+    \item
+        Reenvio: mover los paquetes de un enlace a un enlace.
+\end{itemize}
+
+Internet se utiliza la red de datagrama. NO se basa en una ruta fija, sino que la ruta varía, y los paquetes puden
+tomar distintas rutas sin importar el orden en que lleguen; de la organización y sincronización de los paquetes se
+encarga otra capa.
+La red virtual determinaba una conexión establecida y fija y se asemeja a la del teléfono.
+
+\subsection{Esquema de IP en TCP/IP}
+
+El protocolo que más se usa es el IP, es el más importante en la capa de red, por el nombre del modelo.
+Cada protocolo es independiente a las anteriores capas, sin embargo IP obtiene información de otras capas para mejor sus
+servicio, aún así trata de ser lo más indpendiente posible.
+
+En la tabla de reenvío de los routers, las direcciones que la componen están basadas en el protocolo IP.
+
+\subsection{Formato del datagrama}
+
+Cada capa le agrega un encabezado y encapsula todo lo demás, proveniente de otra capa como un dato más. Y cada capa le
+pone su propio encabezado, en este caso el de red.
+
+El \emph{Encabezado de Red} se puede ubicar en la filmina nº 5. Lo que se denomina como \emph{Data} en la estructura del
+datagrama, es información que proviene de las demás capas.
+
+\begin{itemize}
+    \item
+        \textbf{HaeadLen / Longitud de Cabecera}: Puesto que un datagrama IPv4 puede contener un número varia­ ble de
+        opciones (las que se incluyen en la cabecera del datagrama IPv4), estos 4 bits son necesarios para determinar
+        dónde comienzan realmente los datos del datagrama IP. La mayoría de los datagramas IP no contienen opciones, por
+        lo que el datagrama IP típico tiene una cabecera de 20 bytes.
+    \item
+        \textbf{Tipo de servicio}: Los bits del tipo de servicio (TOS, Type of service) se incluyeron en la cabecera de
+        IPv4 con el fin de poder diferenciar entre distintos tipos de datagramas IP (por ejemplo, datagramas que
+        requieran en particular un bajo retardo, una alta tasa de transferencia o una entrega fiable). Por ejemplo,
+        puede resultar útil diferenciar datagramas en tiempo real (como los utilizados en aplicaciones de telefonía
+        IP) del tráfico que no es en tiempo real (como por ejemplo el tráfico FTP). El nivel específico de servicio que
+        se proporcione es una política que determinará el administrador del router.
+    \item
+        \textbf{Longitud del datagrama}: Es la longitud total del datagrama IP (la cabecera más lo datos) en bytes.
+        Puesto que este campo tiene una longitud de 16 bits, el tamaño máximo teórico del datagrama IP es de 65.535
+        bytes. Sin embargo, los datagramas rara vez tienen una longitud mayor de 1.500 bytes.
+    \item
+        \textbf{Fragmentación del datagrama}: La capa de red determina la ruta y es el encargado de fragmentar el
+        datagrama, en función de los MTU de los enlaces. Básicamente, Un datagrama se convierte en varios. Se debe saber
+        cómo fragmentarlo. Acá no hace faltan que lleguen seguidos los datagramas fragmentados. Cada uno es un datagrama
+        individual. También puede que al haber mas MTU puede tomar 3 datagramas y juntarlos en uno. Si se cambia el
+        tipo de medio, el cable por ejemplo se modifica el MTU y por lo tanto esta capa permite diversificar y adaptarse
+        a la red.
+    \item
+        \textbf{Tiempo de vida}: El campo Tiempo de vida (TTL, Time-To-Live) se incluye con el fin de garantizar que los
+        datagramas no estarán eternamente en circulación a través de la red (debido, por ejemplo, a un bucle de
+        enrutamiento de larga duración). Este campo se decrementa en una unidad cada vez que un router procesa un
+        datagrama. Si el campo TTL alcanza el valor 0, el datagrama tiene que ser descartado.
+    \item
+        \textbf{Protocolo}: Este campo sólo se emplea cuando un datagrama IP alcanza su destino final.
+        El valor de este campo indica el protocolo específico de la capa de transporte al que se
+        pasarán los datos contenidos en ese datagrama IP.
+        Observe que el número de protocolo especificado en el datagrama IP desempeña un papel análogo al del campo que
+        almacena el número de puerto de un segmento de la capa de transporte. El número de protocolo es el elemento que
+        enlaza las capas de red y de transporte, mientras que el número de puerto es el componente que enlaza las capas
+        de transporte y de aplicación.
+    \item
+        \textbf{Suma de comprobación de cabecera}: La suma de comprobación de cabecera ayuda a los routers a detectar
+        errores de bit en un datagrama IP recibido. Esta suma de comprobación se calcula tratando cada pareja de 2 bytes
+        de la cabecera como un número y sumando dichos números utilizando aritmética de complemento a 1. Un router
+        calcula la suma de comprobación de cabecera para cada datagrama IP recibido y detecta una condición de error si
+        la suma de comprobación incluida en la cabecera del datagrama no coincide con la suma de comprobación calculada.
+    \item
+        \textbf{Direcciones IP de origen y de destino}: Cuando un origen crea un datagrama, inserta su dirección IP en
+        el campo de dirección IP de origen e inserta la dirección del destino final en el campo de dirección IP de
+        destino. A menudo el host de origen determina la dirección de destino mediante una búsqueda DNS.
+        Las direcciones son de tipo IP. Para una mejor lectura humana se separan en 4 octetos y se traducen a números
+        decimales. Cada octeto puede ir desde un rango de 0 a 255: \[0/255.0/255.0/255.0/255\]
+        Con esto se puede saber cuántos dispositivos conctados: $2^{32} = 4,294,967,296$ .7 mil millones de personas
+        existen en el mundo, pero sólo 4 millones de dispositivos se permiten conectar a internet, sin tener ambiguedad,
+        según el rango de direcciones IP.
+    \item
+        \textbf{Opciones}: El campo de opciones permite ampliar una cabecera IP. La idea original era que las opciones
+        de cabecera rara vez se emplearan: de ahí la decisión de ahorrar recur­ sos no incluyendo la información de los
+        campos opcionales en la cabecera de todos los datagramas. Sin embargo, la mera existencia de opciones complica
+        las cosas, ya que las cabeceras de datagrama pueden tener una longitud variable, por lo que no puede determi­
+        narse a priori dónde comenzará el campo de datos. Además, dado que algunos datagramas pueden requerir el
+        procesamiento de opciones y otros no, la cantidad de tiempo necesario para procesar un datagrama IP en un router
+        puede variar enormemente. Por estas razones las \emph{Opciones} fueron quitadas de la cabecera de IPv6.
+    \item
+        \textbf{Datos (carga útil)}: En la mayoría de las circunstancias, el campo de datos del datagrama IP contiene
+        el segmento de la capa de transporte (TCP o UDP) que va a entregarse al destino. Sin embargo, el campo de
+        datos puede transportar otros tipos de datos.
+\end{itemize}
+
+Se debe recordar si o sí se enviarán 40 bytes de encabezado por paquete. Por lo tanto es ineficiente si se envían muchos
+paquetes con pocos datos.
+
+\subsubsection*{Ejemplo de división de Datagramas}
+
+\emph{Si se tiene un MTU de 1500 y se quiere transportar un paquete de 4000 ¿Cuál sería la longitud de cada datagrama?}.
+
+Se generan 3 paquetes: Cada uno tiene un encabezado de 20 bytes, más la cantidad de datos que se deben dividir (es
+decir: 1500 + 1500 + 1000). Recordar que se tiene 20 bytes de encabezado IP por cada nuevo datagrama que se fragmente.
+
+\emph{Flag}: un bit que identifica si hay mas segmentos para ensamblar o no. Si el campo Flag se encuentra 1 significa
+que faltan llegar datagramas.
+
+\emph{Offset}: Campo que permite reconstruir los datagramas fragmentados indicando la posición en un buffer. Ejemplo:
+
+Se quiere transmitir un archivo de 4000 bytes mediante una red que tiene 1500 de MTU. Se divide en 3 datagramas y en
+cada uno de ellos se indica en el offset hasta dónde llega el dato que contiene.
+\begin{itemize}
+    \item
+        \textbf{Offset}: 3980
+    \item
+        \textbf{Offset}: 2960
+    \item
+        \textbf{Offset}: 1480. Se debe tener en cuenta que 20 bytes son para la cabecera. Si se generan dos paquetes de
+        más serán 40 bytes que irán ''de más''.
+    \item
+        \textbf{Offset}: 0. Desde acá se comienza a reenzamblar el datagrama. El offset se encuentra en cero por lo
+        tanto el router sabe que a partir de este datagrama será necesario reensamblar, por lo que lo coloca al comienzo
+        del buffer. Con el campo \textbf{Longitud del datagrama} le es posible al router poder desde dónde empieza y
+        dónde termina el datagrama fragmentado, permite que se reenzamble. Quien reensambla los paquetes \textbf{NO} son
+        los routers de red sino los \emph{sistemas terminales}.
+\end{itemize}
+
+Problema: \emph{Un destino de una red IP recibe varios fragmentos de tamaño 444, otro de 444 y otro de 253 bytes. ¿Qué
+se puede decir respecto del MTU más pequeño de la ruta?}.
+
+Se puede decir que el MTU de la ruta será de 444. Ya que se puede ver que es el límite de dos paquetes, mientras que el
+de 253 es el restante. El tamaño \emph{original} del datagrama es la suma de:
+\[(444 + 444 + 253) - 40 = 1101\]
+
+Se debe recordar que se resta 40 porque son dos datagramas de más que se crearon por la desfragmentación dada por el MTU
+de 444 bytes.
+
+\subsection*{Direccionamiento IP}
+
+\textbf{Interfaz}: límite entre el host y el enlace físico; o entre el router y cualquiera de sus enlaces. Vinculación
+del medio al dispositivo. Computadora tiene interfaz que está dada por el adapardor de red, que me conecta con el canal
+y se genera una intefraz, un servidor puede tener más de una interfaz. El router tiene más de una interfaz.  Puesto que
+la tarea de un router consiste en recibir un datagrama por un enlace y reenviarlo a algún otro enlace, un router
+necesariamente está conectado a dos o más enlaces. El límite entre el router y cualquiera de sus enlaces también se
+conoce como interfaz.
+
+La direccion IP está asociada a la \emph{interfaz}. El router no tiene una dirección, tiene 3 direcciones diferentes.
+Esta dirección está en la interfaz, dividido 4 grupos de 8 bits. En la filmina nº 11 por ejemplo, el Router conecta 3
+redes.
+
+La dirección IP se puede dividir en dos partes:
+\begin{enumerate}
+    \item
+        \textbf{Net Id}: Bits más significativos (los que están más a la izquierda).  Dirección de una subred. 223.1.1
+        (es lo mas significativo en la filmina) 223.1.2 el de la derecha.
+    \item
+        \textbf{Host Id}: dispositivo de esa red .1, .2 (es lo menos significativo en la filmina)
+\end{enumerate}
+
+\textbf{Subred}: dispositivos que tienen el misma Net Id, si esta es diferente, se está en otra red, en otra LAN , por
+lo tanto se tiene que comunicar utilizando otro router.
+
+\emph{¿Cómo se hace para identificar una sub red de otra? }
+Una forma es ver el router y ver qué dispositivos están de un lado y del otro. Cada una de esas islas pertenecen a una
+subred. Dentro de la misma red por mas que no haya internet, se van a poder comunicar.
+
+Un router requiere saber cuál es el NetId y el HostId. Para eso hay un subnúmero denomina máscara d subred, es un número
+que permite identifiar el Net y el hostId. Lo que hace es poner en 1 los bits más significativos y pone en 0 los menos.
+El NetId termina en 1 y el HostId en 0.
+
+Por ejemplo:
+\[223,1,1,2/24\]
+
+En la anterior dirección iP, se simboliza con 24 para indicar que se quedan con los primeros 24byts más siniifcativos.
+
+
+
 
 \end{document}
