@@ -987,9 +987,208 @@ El NetId termina en 1 y el HostId en 0.
 Por ejemplo:
 \[223,1,1,2/24\]
 
-En la anterior dirección iP, se simboliza con 24 para indicar que se quedan con los primeros 24byts más siniifcativos.
+En la anterior dirección iP, se simboliza con 24 para indicar que se quedan con los primeros 24byts más significativos.
+
+Ejemplo:
+
+\emph{223.1.1.2/24} ¿cuál es la dirección de red? La misma sería el NetId pero y con todos los ceros por detrás:
+\begin{itemize}
+    \item
+        \textbf{NetId}: Dirección de Red, resultaría 223.1.1.0
+    \item
+        \textbf{HostID}: 2/24
+\end{itemize}
+
+Otro ejemplo:
+
+\emph{223.1.1.4/24}: La dirección de Red sería 223.1.1.0
+
+\emph{255.255.255.0}: Mascara tiene todos 1 donde tiene el NetId y ceros en el HostID. Esto es la forma que tiene de
+identificar Si se hace una AND entre la dirección IP y la máscara y así se puede obtener de forma rápida el hostId y el
+NetId.
+
+Otro Ejemplo:
+
+\emph{223.1.1.128/25} Es una dirección de red porque el último octal termina en
+cero, por lo que sería: 223.1.1.10000000/25.
+Hay que pensarlo en binario siempre, por más que el número esté escrito en decimal. Hay que pensarlo entre la máscara y
+el final de la dirección terminada en ceros (que puede ser en binario o en decimal).
 
 
+\emph{223.1.1.128/28} La misma es una dirección de red porque el último octal termina en 0.
 
+
+\subsubsection*{División en las direcciones IP}
+
+Antes de que se adoptara el enrutamiento CIDR, la parte de red de una dirección IP
+estaba restringida a longitudes de 8, 16 o 24 bits, un esquema de direccionamiento conocido
+como direccionamiento con clases, ya que las subredes con direcciones de 8, 16 y 24 bits
+se conocían, respectivamente, como redes de clase A, B y C.
+\begin{itemize}
+    \item
+        \textbf{Clase A} : subnet :/8, lo que daría: $2^8$ redes diferentes de $2^{24}$ host
+    \item
+        \textbf{Clase B} : subnet :/16
+    \item
+        \textbf{Clase C} : subnet :/24, lo que daría: $2^{24}$ redes diferentes de $2^8$ host
+\end{itemize}
+
+Por ejemplo: 192.168.1.1 se puede decir que es una Red Clase C.
+
+Las subdivisiones entre clases ya han quedado obsoletas. Porque ahora con la máscara de red se puede definir la cantidad
+de bits que se puden rservar para los host y cuántos para las redes.
+
+Direcciones que se reservan de entre las clases de A, B, C. ¿Por qué?
+
+\begin{itemize}
+    \item
+        Al comienzo se pensó que cada máquina debía tener una dirección única en el planeta. Esto no es necesario porque
+        si se tienen maquinas conectadas en red pero sin internet, entoncs no hace falta que las direcciones sean
+        unicas.
+    \item
+        Para este propósito se reservó una subred de cada clase para crear redes privadas.
+\end{itemize}
+
+
+\subsubsection*{Máscara de subRed}
+
+Las mismas se pueden simbolizar de distintas maneras:
+\begin{itemize}
+    \item
+        255.255.255.[Binario]
+    \item
+        255.255.255.[10000000]
+    \item
+        255.255.255.[128]: lo que daría $2^{25}$ redes de $2^7$ host
+\end{itemize}
+
+Por ejemplo: 223.1.1.2/26
+
+Significaría: 255.255.255.[11000000]
+
+Existe otro tipo de dirección IP, la dirección de difusión o de \emph{Broadcasting}: 255.255.255.255. Cuando un host
+envía un datagrama cuya dirección de destino es 255.255.255.255, el mensaje se entrega a todos los hosts existentes en
+la misma subred.  Opcionalmente, los routers también reenvían el mensaje a las subredes vecinas (aunque habitualmente no
+lo hacen).
+
+\textbf{Dirección de broadcast}:
+\begin{itemize}
+    \item
+        Directed Broadcast: la última (unos)
+    \item
+        Ej: 172.16.255.255, 192.168.1.255
+    \item
+        Limited Broadcast: (all ones)
+    \item
+        255.255.255.255
+    \item
+        Este host, cuando aún no tiene a
+    \item
+        Mascara: 223.1.1.0
+    \item
+        Broadcast: 223.1.1.255
+
+\end{itemize}
+
+\subsubsection*{Tipo de conexiones}
+\begin{itemize}
+    \item
+        \textbf{Unicast}: destino a un host/interfaz en particular, son las más comunes. Ej:
+        172.16.4.21
+    \item
+        \textbf{Broadcast}: destino a todos los hosts en una red.  Ej: 255.255.255.255. Se
+        manda un paquete a todos los host, por inundación se dice
+    \item
+        \textbf{Multicast}: destinada a un grupo de hosts en una red o varias redes.
+    \item
+        \textbf{Anycast}: destinada al primero que resuelva. IPv4 no hay casos especiales. Ejemplo en filmina 19.
+\end{itemize}
+
+Las direcciones con las que se conectan fuera de internet es una direccion pública. La interna o la hogareña es la de
+192.168.1.1, pero la pública es otra
+
+Ip reservadas que no son para hosts: 127.0.0.1 este numero se manda cuando se hace alución a su propia dirección. Cuando
+la aplicación no puede resolver una dirección y quiere hacer alución a su propia dirección, manda esa.
+
+\subsection*{Estrategias para aumentar las conexiones}
+
+Existieron dos estrategias para ampliar el número de dispositivos a conectarse a internet:
+
+\begin{enumerate}
+    \item
+        Flexibilizar el tamaño de subredes: Direccionamiento CIDR.
+    \item
+        Permitir el uso de internet de redes privadas a través del uso Nat. Muchas máquinas conectadas en red hogareñas,
+        todas ellas salen con la misma dirección pública en internet. Se procede con el protocolo NAT.
+\end{enumerate}
+
+\subsubsection{CIDR}
+
+\textbf{CIDR}: Classless InterDomain Routing
+\begin{itemize}
+    \item
+        Porción de dirección de la red (subred) se hace de tamaño arbitrario
+    \item
+        Formato de dirección: a.b.c.d/x, donde X es el \# de bits de la dirección de sub-red.
+\end{itemize}
+
+Por ejemplo:
+
+\emph{200.1.17.128/25}: $2^6 - 2$ direcciones IP posibles, ya que se le restan 2 porque : la de red y la de broadcast
+
+Un host ¿cómo obtiene su dirección de IP? Se puede cambiar forzdamente pero de la forma interna y la máscara de red.
+¿quien maneja las direcciones públicas?  Los ISP. Dependen del servicio que uno contrate, tendrá determinada dirección
+pública.
+
+\textbf{DHCP}: protocolo que asigna directamente de forma automática a los host que se conecten. Es un servicio
+determinado, eso lo asigna un servicio, que lo tiene contratado sl proveedor de internet.
+Este servicio viene implementado en el proveedor, es un servidor dinámico, que un host se conecta y el servidor le
+asigna una dirección.  Es dinámico porque cambia según los host se conectan y se desconctan.
+
+Cuando se pone un ruter en el medio, se genera una nueva LAN, pero se conectan de forma externa con una contraseña
+determinada.
+
+\emph{¿Cómo se obtiene las direcciones públicas? }
+Las tiene los ISP, compran bloques de direcciones, con los bits más significativos.  ISP's block 11001000 00010111
+00010000 00000000 que sería: 200.23.16.0/20
+
+\textbf{DNS}: servidor que asigna un nombre de donminoi a una dirección IP donde está el host donde está almacenada. El
+servidor físico puede cambiar de direccion IP, pero el  DNS la modifica dinámicamente y para nosotros los humanos es
+transparente.
+
+\subsubsection{NAT}
+
+Direcciones no alcanzan, direcciones privadas y acceden a internet y no pudieron. Salen con una misma red.
+una sola red para conectarse a una red exerior, ISP no se tiene que dar varias direcciones para todos los hots, sino una
+sola para toda la red que se quiere conectar.
+
+Para saber información pública de la red por la que se está saliendo se puede visitar: \emph{whatismyip.org}. También
+permite generar mucha información acerca de la red que se está utilizando.
+
+\emph{¿Cómo se hace para salir a internet desde una red de computadoras?}
+
+Cada host que se quiere comunicar a internet, un host tiene que comunicar a otro que está afuera envia el paquete a la
+dirección: \emph{Puerta de enlace} predeterminada: 10.0.0.4; si una computadora se quiere comunicar dentro de su propia
+red lo hace sin problema, pero si se quiere comunicar con otra que NO esté, lo tiene que enviar a 10.0.0.4 que lo envía
+el router, que es el único que pude hacer eso de salir públicamente a inernet.
+
+El paquete cuando sale de adentro hacia afuera, el protocolo lo que hace es cambiar la dirección de puerta de enlace y
+le pone la pública (118.76.29.7), viaja ese paquete por la red como si fuera esa red una solo host.
+
+Cando el paquete vuelve viene con nombre destino la pública, y el router la modifica por la interna.
+
+\emph{¿Cómo sabe cuando vuelve el paquete a qué host tiene que darselo?}
+
+Mediante lo que se conoce como \emph{Código de puerto}, el cual es un número, cuando vuelve la respuesta a través de ese
+número de puerto, sabe a qué host tiene que enviarle ese paquete. El router lo que hace es mantener una tabla con esos
+números de Código de Puerto y las direcciones de host de cada una de las máquinas. Por ejemplo: el Puerto 8080 sirve
+para las páginas internet.
+
+El Router tiene un propio servidor de HCP para la red pública, cuando se conecta un nuevo host lo que hace es asignar
+automáticamente una dirección privada.
+
+\emph{www.google.com.ar:200} si se escribe en la barra del navegador la anterior consulta, lo que hace es consultar al
+servidor de google donde está hospedada la página mediante el código del puerto 200 (que seguro el servidor lo tendrá
+configurado como cerrado)
 
 \end{document}
