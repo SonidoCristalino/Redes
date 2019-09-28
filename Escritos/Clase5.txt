@@ -1,0 +1,248 @@
+[filmina nº 4]
+
+-------------
+Protocolo NAT: 
+-------------
+Lo que hace es ejecutarse en el ruter, cada dispositivo que se quiera conectar en el exterior, cambia la dirección
+privada para hacerla pública. La reemplaza por su inteface de salida, la dirección de fuente tiene la pública. 
+Cuando el paquete vuelve el roter vuelve a transformar la dirección pública o privada. 
+¿Cómo sabe qué máquina tiene que entregar el paquete? Por el puerto que escucha para distintas aplicaciones. Si es por
+ejemplo una página web, sería puerto 80. 
+Puerto es distinto para cada una de las máquinas que están en la red. Si varias computadoras hacen una peticióna a la
+misma web, lo que sucede es quepor cada paquete tendrá el número de puerto que tiene cada una de las máquinas, que son
+distintas. 
+Se puedn reservar puertos para diferentes máquinas. 
+
+Campo de puerto: 16 bits, número reservado: 8080 por ejemplo para web. Tiene un máximo 65000 usuarios en una sola LAN
+(no es posible que supere esto). 
+
+Los ruters son de capa 3 nomás, por lo que viola el argumento de extremo a extremo porque es una funció nque no debería
+de cumplir el ruter. Sería ideal que no la cumpla el ruter; con la nueva versión 6 IP va a contemplar mayor rango de
+direciones para no hacer nateo (NAT) de direcciones. 
+
+
+ICMP: Informe de errores y señalización de routers (cómo es que se comunican los ruters entre si)
+ICMP: Internet Control Message Protocol. IP no es fiable, porque no ofrece garantías. El grueso de los errores no lo
+corrigue la capa de red. 
+Lo que hace este protocolo es: 
+    * Protocolo IP no es fiable, los datagramas IP pueden perderse o llegar defectuosos a su destino.
+    * ICMP informa al origen si hubo algún error en la entrega del mensaje.
+    * Informa errores y mensajes de control.
+    * Informa sobre errores pero no toma decisiones sobre estos Mensaje ICMP
+    * Los mensajes ICMP se encapsulan como parte del área de datos del protocolo IP:v
+
+Se envían datagramas de control, como ejemplo cuando se realiza un ping a una dirección ip, sirve a la red para saber el
+estado de conexión de determinado host. 
+Esto lo utiliza también un browser de internet cuando no se puede conectar. 
+
+* Red destino inalcanzable: Quiere decir que el router ese no está respondiendo, es problema de toda la red. También se
+pueden hacer ping a las computadoras que están en la misma red. 
+* Host destino inalcanzable: la máquina no está activa pero la red funciona correctamente. 
+
+Sirven para comunicar los rotuers entre si: 
+    * Anuncio de router
+    * Descubrimiento de rout
+
+Cabecera IP errónea: tiene un header checksum, sólo de la cabecera, si da mal entonces ICMP anuncia esto. 
+
+--------
+  IPV6: 
+--------
+Aumentar el espacio de direcciones, es la motivación inicial. También permite cambiar el encabezado para agilizar el
+envío y el recibo, y también Cambiar encabezado para facilitar QoSk: para poder darle mayor prioridad dependiendo del
+paquete, si proviene de una aplicación de streming o de llamada tendrá por ejemplo más prioridad que un pedido de una
+soliciud de página web por ejemplo. 
+El nuevo IP Evita el Nateo (utlizar el protocolo NAT). El encabezado se duplicó, la fragmentación no está permitida. 
+Permite direcciones anycast: 
+Se elimina el checksum. Se elimina el campo de opciones. Y hay ua nuvea versión ICMP para que labure con este protocolo.
+iderablemente el reenvío IP dentro de la red.
+Checksum: eliminada enteramente para reducir tiempo de procesamiento en cada router al ser redundante, ya está en capa
+de transporte y de enlace (Ethernet).
+
+Se elimina la linea de fragmentación, más espacio para la dirección de origen y destino. 
+
+¿Cómo sabe el receptor cuado es IPV4 o IPV6? Lo que se denomina tunelización, los ruters laburan con IPV6, pero también
+acepta el V4, esto se hace mediante el tunelling[filmina 38].
+El ruter B a C (que no admite 6), el encabezado de v6 lo manda a datos y le manda una cabecera para que C lo pueda
+entender, En su interfaz el B tiene la 4 y la 6, y cuando transmite a C es a través de versión 4, lo recibe E que sabe
+que el campo de vesión es 6, entonces sabe que el campo de datos está el encabezado 6, descarta el encabezado del 4 y
+toma el de 6. La tunelización lo que hace es modificar el encabezado para que lo pueda entender un versión de 4. 
+Esto es posible porque los ruters saben mediante el NETId que tiene una versión u otra. 
+
+---------------------------------------
+            Clase 5: 
+---------------------------------------
+
+La función de la capa de Red es que llegue un paquete de un host a otro host. 
+Las fuciones claves para realizar lo anterior: ruteo y reenvío. 
+
+-------------------
+Protocolos de ruteo: 
+-------------------
+
+Corren algoritmos de ruteo, consiste endeterminar buenas rutas a través de los ruters, desde los emisores hasta los
+recpectores. Los caminos desde una computadora a otra, es mucho. El algoritmo se corre cada cierto tiempo, el tiempo lo
+determina el protocolo que se está corriendo. 
+El algoritmo determina la mejor ruta y a partir de ahí genera la tabla de re-envío. Determina internamente desde qué
+interfaz del router se enviará un pquete una vez que llegue. 
+Los paquetes de datagrama NO siguen una ruta definida, a difrencia de ATM, que se reserva recursos entre un punto y al
+otro y pasa siempre por el mismo lado. 
+
+Cada ruter debe determinar la ruta óptima. Para poder hacerlo se reuqiere ponderar los enlaces, para ello se utiliza
+grafos. 
+UN grafo consiste en un conjunto de nodos y aristas que conectan los nodos, pudno haber aristas entre los nodos y llegar
+mediante las demás aristas, debe ser conexo. Cada grafo es una función G, N conjunto de nodos(ruters) y los E que serán
+las arisas (enlaces físicos). 
+Ponderar el costo de arista, de una conexión, dependerá de muchas cosas. Será una ponderación multidimensiaonal, porque
+tiene magnitudes distintas, y todo ello debe ser medible ¿cómo se puede pensar que una ruta/enlace es mjor o la otra? 
+Costo determinado por: longitud física del enlace, velocidad del enlace, costo monetario asociado, etc.
+UNa vez que el rotuer ya hizo la tabla, dispone la interfaz, llega el paquete y lo manda sin la necesidad de seguirlo,
+lo patea para determinada interfaz y listo. Los otros ruters también deben haber corrido el algoritmo y llegado al mismo
+tiempo el mismo resultado. Cada ruter debe conectarse con los demás ruters. Los enlaces son bidireccionales, en la
+filmina también los costos son bidireccionales, es decir, son iguales. Pero ISP enlaces asimetricos, ancho de subida y
+bajda, no tiene el mismo ancho de banda de ida que de vuelta, pero de esto se desentiende y se hace igual. 
+
+[Filmina nº 9]: 
+Costo a dos nodos que no están conectados entre si, es infinito. El costo entre u e y también es infinito, se hace a
+priori. Vecinos si hay un enlace que los une. Costo total es la suma total de nodos que pasen por el medio del camino
+elegido. 
+Algoritmo de ruteo: determinar el costo mínimo 
+
+Clasificación de algoritmos de 2 tipos: 
+
+* Un algoritmo global: Cada roter debe conocer a todos los ruters de forma indirecta, es decir que los consulta. Se va a
+valer de la info de todos los nodos y enlaces que hay en la red. Se denominan Algoritmos de Estado de Enlace, y son
+centralizados. 
+Se basa en el conocimiento global y completo de la red (conectividad y costos de los enlaces).
+¿ Requiere que el algoritmo adquiera esta información antes de realizar el cálculo
+
+* Decentralizado: Solo va a saber el costo que tiene hacia sus vecions y lo que los vecinos le dicen de los otros
+vecinos pero no los consulta él mismo, sino que se basa en información de la demás red de otras. 
+La información se propaga entre ruters vecinos. 
+
+Estaticos: Se usan cuando se tiene un conjunto de nodos que no varían mucho. 
+
+Dinamicos: es cuando cambia el tráfico y al mismo tiempo se cambia la ponderación. Se está ejecutando todo el tiempo .
+Son más suceptibles a problemas, porque las rutas cambian muy rápido. 
+
+Algoritmo de Dijsktra: [Filmina 16]
+    Es un algritmo global, porque se saben todos los costos. Se logra bajo difusión de estado de enlace, manda paquetes
+    que se interrogan entre ellos. Cada uno reporta su estado. Todos los nodos tienen la misma información, por lo que
+    todos sabrán en un momento dado cuál será la mejor ruta para llegar de un lado a otro. 
+    Tabla de reenvío debe saber por dónde mandar o calcular los caminos posibles entre ditintos host. 
+    Para cada iteración, y se descrubren mayores rutas mejores, entoncs se actualiza la ponderación de las aristas. 
+    En la inicilización, pondera la arista entre sus vecinos, y en los demás que no son vecions, es decir que no tiene
+    aristas conecadas, es infinito; luego en las otras iteraciones va descubriendo van ia ir sumando las ponderaciones
+    de los distintos caminos. 
+
+[filmina  19] Ejemplo: 
+
+Paso  0 (iniciazliación):  Lo que se sabe es el costo que se tiene hacia los vecinos. N' es los que se van descrubrindo.
+    Costo a V = 2, porque es vecino, a travez de la interfaz U, propio. 
+    Costo a W = 5 a través de U, propio
+    Costo a X = 1 ---> minimo, es directo, es decir es vecino, a través de U, propio. 
+    Costo a X = infinito. 
+    Costo a z = infinito
+
+Paso 1: 
+    Descubro a X. 
+    Costo de ir a v es el mínimo es el costo de ir a V (2) + el costo de ir a X + el costo de ir a x por v. 
+                    Se compara a 2 con el costo de =              1           +   2 = 3 mayor que 2
+                    Por lo que sigue siendo mejor ir por V. 
+
+    Costo de ir a W es el mínimo es el costo de ir a X (5) + el costo de ir a X + el costo de ir a x por W. 
+                    Se compara a 5 con el costo de =              1           +   3 = 4 es menor que 5
+                    Por lo que conviene ir por X. 
+
+    Costo de ir a Y es el mínimo es el costo de ir a X (infinito) + el costo de ir a X + el costo de ir a x por y. 
+                    Se compara a infinito con el costo de =                1           +   1 = 2 es menor que 5
+                    Por lo que conviene ir por X. 
+
+    Costo de ir a z es el mínimo es el costo de ir a X (infinito) + el costo de ir a X + el costo de ir a z por y. 
+                    Se compara a infinito con el costo de =                1           +   infinito = sigue siendo
+                    infinito
+    
+Todo esto es para sacar la tabla de reenvío, en la filmina 20 lo que se explica es por dónde tiene que salir para llegar
+a deteminardo lugar, por qué interfaz debe salir. 
+El algoritmo de dijstra es de orden cuadrático, si se agregan 10 ruters, debe hacer 100 operaciones, por lo que se
+vuelve más costoso. Otras implementaciones posibles por ser más óptimas. 
+
+-------------------------------------------
+Segunda parte de la clase en la informática: 
+-------------------------------------------
+En windows para configurar la iP: 
+
+    Se pone en la línea de comandos: 
+    $ ipconfig: 
+        192.168.0.126 --> puerta de enlace
+        192.168.0.101
+        192.168.0.82
+        192.168.0.81
+
+        Puerta de enlace: 
+            192.168.0.126
+        Mascara de sub red: 
+            255.255.255.126
+        
+Puerta de enlace: es donde el host envía los paquetes para que salga hacia afuera. 
+Whatismyip.com ----> 170.210.158.14 es la Ip pública que tira la página. Es la dirección que sale afuera. 
+    Lo que hace la página es leer el datagrama que le enviamos y lee la dirección de retorno. 
+
+En la línea de comando: 
+NSlookup: lo que hace es dar la dirección donde se hospeda determinada web, porque se consulta a los DNS, tanto se puede
+consultar la ip de una página web o lo que tiene la ip. por ejemplo: 
+    "nslookup unaj.edu.ar"
+        Se obtiene lo siguiente: 170.210.44.19, que si se ve se tiene el mismo NetID que la dirección pública que tiró
+        la página whatmyip.com
+
+La página web tiene reservado el puerto 80. Lo que se hace es que dentro de una red pueda estar en un servidor con una
+página web, lo que hace es configurar el ruter de entrada (el que maneja la puerta de enlace) y decirle que cada
+petición que venga de afuera consultando por la web, lo mande al puerto 80, que es el servidor en la red interna.
+Convierte la IP pública, a la privada, como por ejemplo 192.168.0.126:80 y la reenvía al servidor. Ver que detrás de la
+ip viene el puerto al que quiera . 
+
+Ping: send ICMP ECHO_REQUEST to network hosts
+
+Lo que se hace es: 
+    nslookup www.ole.com.ar ---> devuelve la ip donde está hospedada la página web. Devuelve 3 direcciones: 
+        1) ip versión 6, que tiene un número más largo, cada caracter son 4 bits. 
+        2) Ip 4
+        3) Ip 4
+
+    Con alguna de estas direcciones hacer ping [ip]
+    Manda 4 datagramas de 16 bits cada uno, mide el tiempo de respuesta, se puede saber si hay mucha latencia, puede que
+    haya pérdida de paquetes: puede haber algo mal dimensionado. 
+
+------------
+PacketTracer
+------------
+En la versión de la computadora 1.3
+
+Parte de abajo inferior (tiempo real, simulación). Lo que se hace es simular una red en la práctica. 
+
+Grupos: 
+    Switch
+    Ruters
+    Dispositivos inalámbricos
+
+Arrastrar una PC al grupo de trabajo. Doble click en la PC. Los módulos se encuentran sobre la izquierda, ssi se pasa
+por arriba de ellos se pude ver la descripción qué hace cada uno. 
+Se pueden modificar las placas que tienen, se pueden modificar distintos módulos. 
+
+Parte de arriba (al lado de físico) en Config y permite cargar las direcciones de configuraciones generales. Si se toma
+a travez de DHCP, el gateway. 
+Configuración global -> interface -> faz ethernet. 
+
+DHCP -> Estatico : se puede configurar una Ip 
+
+Solapa de al lado : Escritorio, simula los distintos servicios que puede brindar la computadora: simbolos de sistema, un
+terminal, un browser, todo servicio que tiene una computadora común. 
+
+Arrastrar otra computadora al lugar de trabajo. Para conectar: con un cable entre las dos, (se encuentran donde está el
+        rayito) Se requieren cables UTP (cobre directo y cobre cruzado) ¿Cuál se usa? 
+Cruzado: si se quiere que las dos estén conectado. 
+
+Conectar donde dice switch (el genérico)
+
+
+
