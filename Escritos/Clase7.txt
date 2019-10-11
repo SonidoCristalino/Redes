@@ -1,0 +1,294 @@
+Capa de Red(repaso):
+-------------------
+Lo que se vio: modelos de capas, capa de enlace, y ahora capa de enlace. 
+Capa de red: conectar host con otros, que paquetes lleguen de un lado a otro, través de un ruteo y reenvío.
+Cómo se determinan esas rutas: mediante algoritmos: 
+    - Globales: se denominan todos los nodos conocen a todos los otros nodos, todos los demas enlaces
+    - Vector distancia: cada nodo conoce a sus vecinos, y conoce las trayectorias estimando según la información que les
+    dan los demas. 
+
+Protocolos principales, los host tienen que estar identificaods, numerados, mediante el protocolo TCP/IP. 
+
+Capa de Enlace:
+--------------
+Lo que se quiere entender es los servicios. Los servicios requeridos: 
+
+    * Detección y corrección de errores
+    * Compartición de canales broadcast: acceso múltiple
+    * Direccionamiento de la capa enlace
+    * Transferencia de datos confiable y control de flujo.
+    * Descripción e implementación de varias tecnología
+
+    Adicional: 
+        - Canales broadcast: canales compartidos por varios usuarios. Acceso múltiple hacia varios usuarios. 
+        - Se requieren dos tipos de direccionamiento. 
+        - Emisor y receptor: dos interfaces que se tengan, ya no es un host y otro host en esta capa. 
+
+Direfencia entre capa de red y de enlace: 
+    En la capa de red conecta dos host, el de enalce es nodo a nodo. 
+    El objetivo es asegurarse de que 
+
+¿Por qué se requiere la capa de enlace? Porque varían los tipos de enlace, porque se puede tener un cable, de un
+nodo a nodo, luego se pude tener un access point con conexión wifi, inalambrica. 
+Cada enlace va a tener un protocolo a nivel enlace, si está mal el paquete entre nodos, hace que no se propague entre
+toda la red, sino que se determine entre nodo a nodo. 
+Nodos: ruters, y los dispositivos en el medio: switch, access ponti, que una cualquier enlace (el enlace es la
+        comunicación que conectan dos nodos adyacentes). 
+Enlace: puede ser cableados como inalámbrico. Switch conecta varias computadoras, NO es un ruter. Switch hace una red
+local, se puden intercomunicar entre los host de la misma red. Si se conecta un swtich con otro, no funciona, para
+conectar dos redes se requiere un ruter. 
+
+Trama (o frame): es el paquete de la capa de enlace, que encapsula a los datagramas. 
+
+Si se tienen dos tipos de enlace, el protocolo EN CAPA DE ENLACE serán distintos, La capa de red le da lo mismo, no se
+da cuenta de este enlace.
+
+Ejemplos de protocolos de capa de enlace son:
+    * Ethernet
+    * LAN inalámbricas 802.11 (WiFi)
+    * Token ring: no se utiliza para internet
+    * PPP.
+
+Cada protocolo provee servicios distintos. Transferencia de datos en capa de red ¿es confiable? No es confiable, a nivel
+capa de red, NO es confiable, quiere decir que a la capa de red no le importa, quizás otra capa si le importa. La cosa
+funcina bien por la independencia de tarea. 
+
+Accesos al Enlace: 
+    Protocolos MAC. ¿Para que se necesitan estos? porque quizás los medios están compartidos, se requiere que alguien
+    los arbitre. El bus de datos es compartido por ejemplo, no es dedicado, quien arbitra es el bus de control, a través
+    de las señales de control lo controla el microprocesador. Esto es una anoalogía por lo que se requiere necesitar un
+    estado de Enlace. 
+
+Dirección Mac: identifica fuente y destino. Diferentes a las direcciones IP, requiere direcciones MAc para identificar
+cada enlace. A nivel la capa de red la dirección de destion y origen son la misma a travez de toda la red. 
+La dirección de destion y origien son para cada enlace, es saber de qué punto de enlace sale y hasta dónde debe llegar.
+
+Garantiza el transporte del datagrama a través del enlace sin errores (Entre Entre nodos adyacentes adyacentes).  Se
+utiliza en enlaces con altas tasas de error. Se evita de llenar los paquetes con errores en toda la red. Se corrige a
+nivel enlace; el nivel de errores es más robusto a nivel de capa de enlace, más los controles de errores a través de la
+red, lo hace que tenga pocos errores en general. 
+
+Control de Flujo:
+    * Capacidad limitada de almacenamiento en buffer de los nodos: Evita que el nodo se sature. Cuando se comeinza a
+    inundar el buffer, lo que hace es disminuir el tránsito de datagramas entre nodos. 
+    * Proporciona un mecanismo de control de flujo para evitar que el nodo emisor abrume al nodo. 
+
+Detección de errores: 
+Detección de errores de bit, causados por atenuación de señal y ruido.
+    * Pide al transmisor retransmisión o descartar la trama: dependiendo de si es TCP o UDP, si es TCP, trata de
+    retransmitir, si es UDP, lo deja pasar. 
+    * Es más sofisticada que la proporcionada por la capa de transporte y red: se corregían determinados errores, pero
+    en esta capa la detección de errores es muchísimo más robusta. 
+    * Se implementa en hardware: Es sumamemte rápido, porque se genera mediante control electrónico y no a nivel
+    software. El problema es que el control electrónico es más rápido que el software. 
+
+Mediante una secuencia de bits, se puede determinar si hubo error. H ay códigos permiten determinar en dónde está el
+error, el problema es que requieren bits de redundancia, son necesarios para saber en qué bit se produce el error
+(diferencia con la detección de errores vista en arquitectura, que sólo detecta si hay error pero NO en qué bit). Para
+saber en qué lugar hubo un error, entonces se requieren bits de redundancia, que son más bits en la transmisión, el
+problema de ello es que la tasa efectiva decrece a medida que se agregan más bits en el envío. Los bits de redundancia
+permiten determinar mejor la comunicación. UNa analogía es cuando se deletrea cuando se habla por teléfono, y se indica
+A, de Andres, B de Barco, los bits de redundancia sería en este caso "ndres" y "arco". 
+Esto se agregan más o no dependiendo del enlace en el que se transmita, por ejemplo si es fibra opptica, se utiliza otro
+protocolo que utiliza menos bits de redundancia, lo mismo que cuando el enlace es inalámbrico,se utilizará otro
+protocolo que utilice más bist de redundancia. 
+
+Semi-duplex y full-duplex:
+    * Full-duplex : los nodos de ambos extremos transmiten paquetes al mismo tiempo. Es decir que en el enlace, se puede
+    transmitir ida y vuelta al mismo tiempo. 
+    * Semi-duplex : los nodos no terminan de transmitir y recibir al mismo tiempo. El canal es bidireccional, pero se
+    requiere que cuando se hable uno, el otro no. Como los Nextel. 
+
+Cada interface iene un dispositivo denominado Adpatador de Red. El protocolo depende del Adaptador de Red (dispositivo
+lógico y físico) Diferencia física entre un adaptador de etehernet y el access point es que uno utiliza rj45 y el otro
+utliza una antena. 
+La capa de enlace es implementada mayoritariamente en un adaptador de red (NIC) ¿ Tarjetas Ethernet ó 802.11 (WiF
+El adaptador ya está implementado onboard, es decir que por ejemplo el conector rj45 ya viene quemada en la placa. 
+Adaptador de red, es el que permite transmitir en los enlaces. 
+
+* Lado transmisor:
+    - Encapsula el datagrama en una trama.
+    - Agrega bits de chequeo de errores, control de flujo, etc.
+    - Transmite la trama al enlace
+
+* Lado receptor
+    - Recibe la trama y extrae el datagrama.
+    - Busca errores, control de flujo, etc
+    - El adaptador es semi-autónomo
+
+Adaptador es semi autónomo, porque labura en hardware y trabaja en capa de enlace y en capa física
+
+Para la detección de errores lo que llega [Filmina 10] es d' y EDC' que al principio no se sabe si es ok o no, por lo
+que se debe evaluar. 
+
+3 técnicas de detección de errores:
+    - Comprobación de paridad: bit de paridad. Lo que hace el transmisor es poner un bit más y pone un bit para que la
+cantidad de 1 sea par o no. Cuando llega del otro lado, si hay un error un 1 se convierte en un 0 en caso de error. Por
+lo que habrá un 1 de más, por lo que no es par [ejemplo en la filmina 12].  El que cuenta es el receptor. Si existen dos
+errores, el bit de paridad no lo detectará. El algoritmo matricial NO interesa. Sólo detecta errores impares. 
+
+    - Suma de comprobación (cheksum): [los pasos está en la filmina 13]. Hay un campo de checksum en datagrama que
+    permite tener un checksum para saber si hay errores en la cabecera. 
+    Se agarran grupos de 16 bits, que no se sabe la info que transportan, se interpreta como un número de 16 bits, por
+    ejemplo que sea el número '21', los otros 16, dan '7' y el otro '5', por lo que se suma y se pone el 33 en binario.
+    En otro otros se pone esto, y el receptor agarra los 3 númemeros de 16, los convierte a un número como hizo el
+    transmisor, los suma de nuevo, y si da un numero distinto a 33, pide retransmisión. Si hay overflow, lo deja pasar. 
+    Es muy poco problable que se pase un error es muy baja, cuanto más larga la cadena la probabilidad es mucho más
+    baja la probabilidad de que pase un error. Requiere poca sobrecarga de bits. 
+
+    - Código de redundancia cíclica (CRC): Funciona en base a polinomios. Se tratan los bits de datos como coeficientes
+   de polinomios, polinomio generador =  101 = 1*X^2 + 0*X^1 + 1*X^0. Se piensa con coeficiente entre ceros y unos. 
+   Se elige un patrón generador al azar, que el más significativo tiene que ser 1. En el caso anterior, 101 el bi más
+   significativo es 1 y el valor es 2 + 1 = 3, R + 1. 
+    Cada el receptor divide el número divisible por el generador, si hay error entonces el resto será distinto de 0. 
+   A la cadena enviada se le concatena un número divisible por el generador. El polinomio generador lo sabe tanto el
+   emisor como el receptor. Cuanto más grande es el generador, se le tiene que agregar más bit de número divisible. Si
+   el resto de la división es otra cosa que no sea cero, entonces es error. Cuanto mas grande el polinomio generador,
+    menor probabilidad de errores pero mas bits requeridos para generar la divisisón, por lo que se vuelve más pesado el
+   datagrama a enviar. 
+
+    Filmina 18: 
+    D = 101110 (dato que se envia)
+    G = 1001 (polinomio generador) siempre es r + 1. 
+    r = 3 bits (resto)
+
+    Se completa el Dato con cero atrás, se divide por el polinomio generador, se obtiene el resto y al resultado se le
+    agrega el resto y ese es el número que se envía. 
+    Dependiendo del resto, se sabe dónde está el error. 
+
+Protocolos de acceso múltiple: 
+-----------------------------
+Punto-a-apunto: 
+    - Acceso discado usando Point-to-Point Protocol (PPP)
+    - Enlaces punto-a-punto entre switch Ethernet y host (computadora)
+
+Broaddcast (cable o medio compartido): 
+    - Múltiples nodos emisores y receptores conectados a un único enlace.
+    - Ethernet y redes LAN inalámbricas son ejemplos de acceso múltiple.
+    - Flujo de subida en HFC (Hybri
+
+* Puede haber dos o más transmisiones simultáneas en distintos nodos por lo que habría una Interferencia. Se 
+Esto se conoce como colisión si un nodo recibe dos o más señales al mismo tiempo. 
+
+Protocolos de acceso múltiple: 
+    - Algoritmo distribuido que determina cómo los nodos comparten el canal, es decir determina cuándo un nodo puede
+    transmitir. 
+    - Son los mensajes para ponerse de acuerdo sobre cómo compartir el mismo canal. 
+
+En internet se tiene un medio desentralizado, donde no hay uno quién defina o arbitre quién transmite o no. Esto por
+ende lo tiene internalizado cada nodo. 
+Cada nodo va a querer transmitir a todo R, que utilice toda la tasa. Cuando se mete otro, entonces la tasa será de R/2.
+Por lo tanto será R/M (este es un ideal que no existe, lo mejor posible que se quiera). 
+Debe ser fácil y que no sea costoso. 
+
+Protocolos Mac, 3 clases: 
+    * Canal subidivido: particinar el canal y cada usuario se le da un espacio dentor de ese canal. Se divida el canal
+    en varios pedazos. Asigna pedazos al nodo a su uso exclusivo. El punto dos anterior, se puede salvar, pero no cumple
+    con el primer punto de l acceso Múltiple ideal [filmina 21]. 
+    * Acceso Aleatorio: canal no es dividido, no se divide el canal, ocurre colicciones, todos tranmiten a lo más alto
+    de su tasa. CUmple el punto 1 pero no del dos [filmina 21]
+    * Toma de turnos: de alguna manera busca lo mejor de los anteriores dos, cuando se quiera transmitir se le da más
+    prioridad a uno o más, se le da más tiempo de transmisión a quien quiera transmitir más cantidad de datos
+
+
+Canal Subdivido: 
+TDMA: (multiplexación por división en el tiempo) Se accesde al canal por rondas, se tienen 4 usuarios por lo que el
+tiempo se divide en 4 ranuras, Si uno solo quiere transmitir, como la división ya está establecida en 4 lo que hará es
+que el rango será de R/N, sólo podrá tranmitir a la tasa más efectiva el 4to de tiempo. Hay ranuras vacías [filmina 23]
+por lo que las ranuras NO aprovechan todo. 
+FDMA: Se divide el espectro en bandas de frecuencias. Todos transmiten en cualquier momento, pero a una tasa reducida,
+si se tiene 4 usuarios con 10 mb, cada uno transmitirá 10/4, por lo que es lo mismo al anterior. 
+Los canales de televisión se transmite así. Cada uno transmite a un rango de frencuencia asignada. 
+
+Accesos aleatorios: 
+------------------
+Si dos nodos transmiten hay una colisión y se retransmitirá hasta que pase el dato. Se transmitirá luego de determinado
+tiempo, porque si se retransmite a la misma cantidad de tiempo, entonces de nuevo habrá colisión, por lo que se quiere
+que sea aleatorio, pero tampoco TAN aleatorio. 
+
+* ALOHA Ranurado: 
+Se envían tramas de todos los usuarios, de igual tamaño. El tiepmo es dividio en ranuras,  y las mismas las pueden
+ser utilizados por cualquier usuarios. Si solo un usuario quiere transmiteir , entonces utilia todas las ranuras, por lo
+qeu transmite a tasa R (cumple el punto 1). Ranura = espacio de tiempo. 
+Si hay 3 usuarios, entonces habrá colisión, esperaran determinadas ranuras de forma aleatoria, no es tiempo, es
+ranuras. Si hay colisión, el nodo retransmite la trama en cada ranura siguiente con la probabilidad p hasta que la
+transmisión sea exitosa. El problema acá es que cuanto mayor cantidad de usuarios es menos eficiente. La eficiencia para
+el usuario es de 9 ranuras, en cambio implementarlo en el anterior protocolo daría 3 (por ser 3 los usuarios), acá se
+transmitió a 1/9 bits por segundo. La cantidad de Ranuras para poder transmitir se deterina de forma aleatorioa. 
+
+Ventajas
+    - Un único nodo activo puede transmitir continuamente a tasa máxima del canal. El punto 1 se cumple 
+    - Altamente descentralizado.
+
+Desventajas
+    - Colisiones, las ranuras se desperdician.
+    - Ranuras no ocupadas.
+    - Nodos podrían detectar la colisión en menor tiempo que el de transmitir un paquete.
+    - Requiere la sincroniz
+
+Eficiencia: fracción (a largo plazo) de uso exitoso de ranuras cuando hay muchos nodos y cada uno tiene muchas trama
+para enviar. [Filmina 28]
+Se obtiene un 0.37 de tasa de transmisión. Cuando son pocos usuariosa quizás sea necesario que se tranmiste con otros
+protocolos, pero cuando se tienen muchísimos más se podría utilizar Aloha Ranurado. Parece que sea 0.37 sea poco, pero
+cuando son miles de usuarios transmitiendo es alta. En promoedio será 37%. 
+
+* Aloha no ranurado: 
+Es más simple, no hay sincronización: Porque no se divide en ranuras fijas
+Cada uno transmite en el momento que quiera. Se puede llegar a tener es doble colisión, se puede colisionar en distintos
+puntos, tanto al comienzo como al final. La eficiencia es la mitad del aloha ranurado. 
+
+CSMA: [filmina 32]
+Cada uusario que quiera transmitir sondea el canal antes de tranmisitir, lo sondea mediante medición. Posterga la
+transmisión un tiempo aleatorio, en caso de detectar que hay otros transmitiendo. Puede haber colisión porque cuando se
+detecta que no hay nadie, comienza a transmitir, pero hubo otro que también luego de un tiempo muy reducido, comienza a
+transmitir. Las colisiones se pueden ver en la filmina 33. Se puede ver que comienzan a transmitir en una distancia de
+tiempo muy corta, pero hay interferencia cuando se superponen. 
+
+CSMA/CD (con deteccion de colisiones). 
+Cuando encuentra que hay colisiones, entonces deja de transmitir. Puede pasar con varios usuarios, dejan de transmitir
+los dos los que haya, lo que permite es que se reduce el mal uso del canal. [En la filmina 35 se ven las colisiones]
+
+En la práctica:
+    - Fácil en LANs cableadas: se mide la potencia de la señal, se compara señales transmitidas con recibidas
+    - Difícil LANs inalámbricas: receptor es apagado mientras se transmiten. El emisor y receptor están en la misma
+    antena y se va alternando. 
+
+Lo bueno es que ahorran el uso del canal [siguiendo la filmina 35]. 
+
+
+Toma de turnos: 
+--------------
+Busca lo mejor de compartición de canal y acceso aleatorio. 
+
+* Nodo maestro
+    - ¿invita¿ a nodos esclavos a transmitir en turnos.
+    - Limita la cantidad de tramas que pueden transmitir dichos nodos.
+    - Detecta si un nodo dejo de transmitir.
+
+* Ventajas:
+    - Elimina colisiones y particiones vacías.
+    - Mejora eficiencia.
+
+* Desventajas:
+    _ Retardo de sondeo.
+    _ Latencia.
+    _ Punto ú
+
+Token = paquete que tiene un encabezado, y con datos a transmitir. Es el único dato que se puede transmitir por el
+canal. Cuando se quiere comiunicar lo que se hace es agarrar el token, lo carga, y el token pasa. Sólo pasa eso cuando
+el token está vacío, que se indica con un flag. Se utilizaba con algunas arquitecturas viejas. 
+
+Resumen de protocolos MAC: 
+    Subdivisión del canal: por tiempo, frecuencia, o código
+
+    Subdivisión aleatoria (dinámica),
+        - ALOHA, ALOHA-R, CSMA, CSMA/CD
+        - Sensado de portadora: fácil en algunas tecnologías (cable), difícil en otras (inalámbricas)
+        - CSMA/CD (collision detection) es usado en Ethernet
+        - CSMA/CA (collision avoidance) es usado en 802.11(Wifi)
+
+    Toma de turnos
+        - Consultas desde un sitio central, o pasando un token. 
+
+Clase que viene hay que repasar Clase7. Se sigue con el Packet Tracer. Se va a dar el enunciado del TP final.
+Realizar las prácticas y poner éfnasis en subneting. 

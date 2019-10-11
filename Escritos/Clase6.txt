@@ -1,0 +1,213 @@
+Tres clases para el examen: 
+    Clase 8 NO SE da porque es el packet tracer. 
+    Por  lo tanto faltan 3 clases nomas. 
+
+------------------
+REPASO DE LA CLASE: 
+------------------
+Capa de red. Protocolo principal : ip, icmp. Tareas: ruteo y reenvío. Objetivo: de host a host. Para generar esto
+requiere protocolos, que utilizan diferentes algoritmos. Se utilizan los grafos y se clasifican en dos grupos: globales
+(conoce todos los demas) decentralizado que conoce sólo los vecinos.  Hacer el algoritmo de Dijskstra en la filmina. Lo
+que se hace al terminal el algoritmo, se vuelca a la tabla de reenvío y se corre cada determinado tiempo que lo
+determina el protocolo de red. Cada nodo tendrá su propia tabla.  Orden cuadradro, si se duplican los nodos, se
+cuadriplican la cantidades de cuentas. Algoritmo global = dijsktra 
+
+------------
+CLASE DE HOY: 
+------------
+Vector distancia, es distribuido pero no conoce los demas, sólo conoce los nodos vecinos. Calcula la distancia de los
+demás (que no son vecinos), mediante lo que le indican los vecinos. Iterativo: hasta que no haya mas información para
+intercambiar. Es por iteraciones, en cada iteración se comparte la info entre vecinos, cuantas más veces itera mayor
+información (El vecino informa de sus vecinos y esos vecinos informan a los demás, etc). Lo bueno es que no tienen que
+estar sincronizados, si no hay cambios entonces el algoritmos converge a la ruta de minimo costo. 
+
+Ejemplo: 
+H -----------> [A] ----------> [B]
+    Costo: 5        10
+                |
+                +---> conoce sólo a B y que es 10 de A a B eso se lo informa A a H, H no sabe qué es lo que hay. 
+
+H conoce sólo a A, pero la información que le llega de A a B sólo es mediante el conocieminto de A, no porque lo sepa
+porque llegue. Sino mediante A. Entre A y B puede haber millones de nodos, pero para H es lo mismo. 
+Cada nodo calcula la distancia mediante lo que sabe lo que llega hasta sus vecinos y la distnacia de llegar a B lo que
+A le indica. 
+
+Se utiliza la ecuación de Bellman-Ford: 
+    d u (y)= min {c(u,x)+d x (z); c(u,v)+d v (z); c(u,w)+d w (z)}=
+    min { 1+3 ; 2+5 ; 5+3 } =
+    min { 4 ; 7 ; 8 } = 4
+
+    C(u,z) = costo entre U y Z
+    dx(z) = distancia hasta z mediante X (que la distnacia de z se la informa x). 
+
+    Cada nodo calcula el costo hacia los vecions, lso que no son vecinos le pone infinito. Esto lo guarda como vectores,
+    lo envía a los vecinos y los vecinos generan nuevamente esta información y la vuelven a enviar. Y así recopila
+    información.  En la filmina 29 de la Clase 5 se puede ver cómo es que se comunican los vectores generados mediante
+    3 iteraciones. 
+    [en la filmina 29] En este algoritmo X no lo sabe que entre Y y z hay una distancia de 1, no sabe si hay mil nodos o
+    sólo 1. Cada uno de los nodos genera su propia tabla de vectores y luego se intercambian entre nodos. 
+
+    Dx(y) = distancia de X a Y. 
+    C(x,Y) + d (y)  = Costo de llegar a Y mediante X + la distancia a Y
+
+    Formula de Bellman-Ford:
+    La función min lo que hace es evaluar el menor de los argumentos. 
+        D x (y) = min{c(x,y) + D y (y), c(x,z) + D z (y)}
+                = min{   2   +  0     ,    7   +  1}
+                = min{       2        ,        8   }
+                = 2
+    [Filmina 30] Se modifica x y z porque realiza el cálculo de Bellman-Ford. 
+    Cuanto más nodos tenga, más va a tardar en converger. 
+    
+    ¿Cómo repsonde este algoritmo frente a la cambio en los costos? Si hay tráfico por ejemplo, se le asigna otro valor,
+    Se actualiza la información de ruteo, se actualiza los propios vectores distancia, se lo comunican a los vecinos, y
+    se hace todo el algoritmo. Lo que tiene este algoritmo es : "Buenas noticias viajan rápido, pero las malas viajan
+    lento" 
+    Cuando aumenta el costo entre host, se complica el algoritmo [filmina 35] El problema que tiene es que se actualiza
+    desde x a Y = 6, pero el problema que tiene ahí es que z actualiza con la información de y, esto se prolonga en las
+    iteraciones y se vuelve un problema. Lo que no se está dando cuenta Y es que todo está pasando a través de él, y no
+    tiene en cuenta que los host vecinos pasarán por él. Este proceso se repite 44 veces, y ahí recien comienza a
+    cambiar el camino, porque evalua el paso de 44 con respecto al otro costo (también mal calculado de por ejemplo 45)
+    por lo que será más beneficioso ir por 44. 
+
+    Por ejemplo: 
+    H -----------> [A] ----------> [B]
+        Costo: 5        10
+    Ahora si entre A y B termina, se cae. entonces 
+    H -----------> [A] -----//  [B]
+        Costo: 5        
+
+    Pero A tiene la tabla anterior, por lo que sabe que para llegar a B, pude enviarlo a H y H lo envía a B mediante A +
+    B, Entonces A lo que hace entre infinito A/B y A/H/B (un número menor) se lo envía a H, H lo ataja y como la única
+    manera que tiene de llegar a B es mediante A, lo vuelve a enviar a A, y así se reenvían entre H y A. 
+
+    Para ello se soluciona mediante lo que se denomina Reversa envenenada: cuando un router detecta que está pasando por
+    si mismo los que antes costaba más, automáticamente le asigna al otro enlance a infinito para  forzar a que no se
+    pase por ello. 
+    
+----------> Hasta acá algoritmos. 
+
+Red plana: todos los nodos de forma jerárquica, son iguales. El problema es que esto no pasa en la vida real. No se
+podrían almacenar en una tabla de ruteo, porque son grande enorme. 
+Cada red puede querer controlar el ruteo de la forma que se quiera. 
+
+Ruteo Jerárquico: Se agrupan los ruters en cada ruters, en lo que se denomina región autónoma. Cada ISP controla
+determinados routers que denominann reginoes autónomas. 
+Dos tipos de ruteos: 
+    * Interno: intra-as, si me tengo que conectar dentro de mi sistema autónomo [filmina 41: AS3, AS2, AS1]. Cada
+    administrador maneja un sistema autónomo, si es que se quiere monitorear la densidad de tráfico. 
+    * Extero: inter se comunica entre los sistemas autónomos. Es como Internet. 
+
+    Esta diferencia lo que permite es que manejar mejor la performance para generar mejores rutas, y no generar tablas
+    enormes. 
+    Cada As se maneja como un sólo ruter, vista desde otra AS. 
+
+Dentro de un sistema autónomo se debe tener el mismo protocolo de ruteo.  Router de frontera/borde/gateway, es el que
+comunica distintos sistemas autónomos.  El tema es cómo llegar al router de borde (frontera). 
+Lo que hace es si a un router le llega una dirección que no sea propia de mi red, entonces lo que hace es enviar
+directamente el paquete a la puerta de enlace. 
+Puerta de enalce predeterminada: dirección que me saca de mi propia red. Cualquier paquete que NO esté dentro de mi red,
+       se considera que está afuera, y para ello se envía directamente a la puerta de enlace predeterminada. 
+
+El problema es cuando se tienen varios ruters de fronter, que comunica diferentes AS. Para ello requiere correr dos
+protocolos: uno que corre entre los sistemas autónoms y otro intra (que es adentro). En la filmina 42 una cosa es
+enviarla en 1b y otra es 1c. ¿Cómo sabe? Bueno, para eso corren protocolos dnominado inter-as. 
+[Filmina 46 : mejor leerlo del libro]
+
+Se puede complejisar más cuando se tienen más AS todas interconectadas. Multiple elección entre múltiples AS. 
+Cuando se tienen otros AS, se deben hacer cálculos para saber el mejor camino para llegar AS4, si es mediante As2 o as3;
+para solucionar esto, para no complejizarlo, lo que se hace es calcular dentro de As1 si es mejor 1c o 1b, se elige la
+menos costosa y se envía ahí y el otro As lo resolverá de la misma forma. 
+
+Protocolos de Intra-AS: 
+---------------------
+* Dentro del sistema autónomo (AS: autonomous systems)
+    *También son conocidos como Interior Gateway Protocols (IGP)
+* Protocolos de ruteo Internos a los AS más comunes:
+    * RIP: Routing Information Protocol (vector-distancia)
+    * OSPF: Open Shortest Path First (Estado de enlace - Dijkstra)
+    * IGRP: Interior Gateway Routing Protocol (propietario de Cisco) --> optimizado para los productos CISCO, NO es de
+    código abierto. 
+
+RIP = la distancia no pondera de enlaces, el camino más corto será el que tenga menos saltos. Intercambia avisos entre
+vecinos cada 30 segundos (aviso RIP). En cada aviso puede listar entre 25 redes destino dentro del mismo As. 
+Maximo de 15 saltos, 15 es demasiado, y esto viene configurado dentro del mensaje. 
+
+OSPF = código abierto. Utiliza el algoritmo de estado de enlace. Usa algoritmo de estado de enlace.
+* Se difunden paquetes de estado de enlace.
+* Se crea un mapa de la topología en cada nodo.
+* Las rutas se calculan usando el algoritmo de Dijkstra.
+* Avisos OSPF transportan una entrada por cada router vecino.
+* Avisos son difundidos al sistema autónomo entero (vía inundación: Avisa a travez de inundación, mediante la dirección
+        de broadcast)
+* Permite hasta tener 3 mejores caminos, a diferencia de RIP que sólo contempla 1. 
+
+Protocolos de Inter-AS: 
+----------------------
+* BGP (Border Gateway Protocol): Estándar por ¿de facto¿
+* BGP provee a cada AS un medio para:
+    1. Obtener la información de alcanzabilidad de una subred desde sus AS¿s vecinos.
+    2. Propaga la información de alcanzabilidad a todos los routers internos al AS.
+    3. Determina rutas ¿buenas¿ a subredes basados en información de alcanzabilidad y políticas.
+* Permite a una subred dar aviso de su existencia al resto de internet. 
+
+Es a travéz de los puertos que saben los ruters para comunicarse entre routers. 
+
+--------------
+CLASE PRACTICA: 
+--------------
+
+PacketTrace: Lo que se hace es conectar dos redes a través de un Router. 
+
+Host A: 192.168.1.122 -----> switch  ---> Router -----> switch -----> host B: 192.168.2.2
+                                |
+                                |
+                        Servidor web: 192.168.1.199
+
+El tipo de cable para conectar es el mismo (el negro). Switch debe ser el genérico PT. Y el router debe ser también el
+genérico. 
+
+Para que el host B alcance el Servidor Web, habrá que cofigurar el router. DE parte del Host A sería 192.168.1.1 y del
+lado del host B : 192.168.2.1
+Lo que se debe configurar es la puerta de enlace predeterminada (gatewey), la del host B, será 192.168.2.1, la del host
+A sería 192.168.1.1. Esto se debería configurar en cada uno de los host de cada red. 
+
+
+Host A: 192.168.1.122 -----> switch  ---> Router -----> switch -----> host B: 192.168.2.2
+                                |                           |
+                                |                           +-> servidor DNS: 192.168.2.100
+                                |
+                        Servidor web: 192.168.1.199
+[Foto en el celular de la red]
+
+Conviene laburar con patrones en las direcciones IP. Por ejemplo, para los servidores poner .100
+DNS: Tabla dirección ip la relacionaba con una URL. Se quiere generar un dominio de la UNAJ. 
+Se configura agregando un DNS, en Nombre debe ser la dirección URL y la Adress será la dirección IP que tiene esa URL. 
+    Name: www.unaj.edu.ar                   Address: 192.168.1.100 (Servidor web)
+
+Si se conecta desde el host B y no se sabe el Address(nombre de dominio) entonces, lo que hac es conectarse al DNS, que
+le da la paridad de la página web. 
+Cada DNS está conectado a otro, un DNS nO tiene todas las url, sino que está ordenado de forma jerarquizada, si no se
+encuentra en un servidor entonce el DNS lo deriva al siguiente DNS y así hasta que lo pueda resolver. 
+
+Se le agrga un servidor DHCP: 
+Host A: 192.168.1.122 -----> switch  ---> Router -----> switch -----> host B: 192.168.2.2
+                                |                           |
+                                |                           +-> servidor DNS: 192.168.2.100
+                                |
+                        Servidor web: 192.168.1.199
+
+DHCP: Es el que asigna de forma dinámica las direcciones IP. 
+Se puden administrar servicios de interet tanto en capa de red como en capa de Aplicación, el primero directamente da o
+no internet a la computadora en general, de la otra forma se pude dar internt o no a determinados usuario. 
+
+[Foto del celular]
+Access point: dispocitivo de capa nº 2, funciona com un switch pero para dispositivos inalámbricos. 
+Hay que configurar la laptop que se ingrese para que tenga una placa de wifi. Hay que sacarle el conector rj-45
+(arrastrándo desde la foto de la laptop hacia algún lugar y agregarle placa mediante las opciones de la izquierda). 
+Cuando se conecta una laptop a una red sólo hay que ponerle una contraseña que es de la red pero no hay que configurarle
+ninguna direcciónIP, y ello es porque tiene internamente un servidor DHCP que le asigna la dirección de forma dinámica. 
+El servidor DHCP se puede hacer mismo del servidor web. 
+Inicio de la dirección: es la dirección desde la cual comenzará a asignar direcciones (podría ser el final 150, con lo
+que tendría 105 direcciones más). Se tiene que asignar un puerta de enlace predeterinada que será: 192.168.1.1,
+y el servidor DNS que será 192.168.2.100
