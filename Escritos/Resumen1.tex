@@ -1191,4 +1191,78 @@ automáticamente una dirección privada.
 servidor de google donde está hospedada la página mediante el código del puerto 200 (que seguro el servidor lo tendrá
 configurado como cerrado)
 
+\section{Clase nº 5}
+
+\subsection{Protocolo NAT}
+
+Lo que hace es ejecutarse en el ruter, cada dispositivo que se quiera conectar en el exterior, cambia la dirección
+privada para hacerla pública. La reemplaza por su inteface de salida, la dirección de fuente tiene la pública.  Cuando
+el paquete vuelve el roter vuelve a transformar la dirección pública en privada.
+¿Cómo sabe qué máquina tiene que entregar el paquete? Por el puerto que escucha para distintas aplicaciones. Si es por
+ejemplo una página web, sería puerto 80.
+Puerto es distinto para cada una de las máquinas que están en la red. Si varias computadoras hacen una peticióna a la
+misma web, lo que sucede es que por cada paquete tendrá el número de puerto que tiene cada una de las máquinas, que son
+distintas. También se pueden reservar puertos para diferentes máquinas.
+
+\emph{Campo de puerto}: 16 bits, número reservado: 8080 por ejemplo para web. Tiene un máximo 65000 usuarios en una sola LAN
+(no es posible que supere esto).
+
+Los ruters son de capa 3 solamente, por lo que viola el argumento de extremo a extremo, ya que es una función que no
+debería de cumplir el ruter. Sería ideal que no la cumpla el ruter; con la nueva versión 6 IP va a contemplar mayor
+rango de direciones para no hacer nateo (NAT) de direcciones. Recordar que el ''nateo'' de direcciones es debido al
+incremento de dispositivos conectados a internet. Ello hace que los ruters que estarían dedicados a otra cosa, tengan
+que realizar otros trabajos para poder salvar la problematica de las pocas direcciones IP públicas.
+
+\subsubsection{ICMP}
+
+\textbf{ICMP}: Informe de errores y señalización de routers (cómo es que se comunican los ruters entre si). La sigla
+ICMP significa Internet Control Message Protocol. El protocolo IP no es fiable, porque no ofrece garantías. El grueso de
+los errores no lo corrigue la capa de red.
+
+Lo que hace este protocolo es:
+\begin{itemize}
+    \item
+        Protocolo IP no es fiable, los datagramas IP pueden perderse o llegar defectuosos a su destino.
+    \item
+        ICMP informa al origen si hubo algún error en la entrega del mensaje.
+    \item
+        Informa errores y mensajes de control.
+    \item
+        Informa sobre errores pero no toma decisiones sobre estos Mensaje ICMP
+    \item
+        Los mensajes ICMP se encapsulan como parte del área de datos del protocolo IP:v
+\end{itemize}
+
+Se envían datagramas de control, como ejemplo cuando se realiza un ping a una dirección ip, sirve a la red para saber el
+estado de conexión de determinado host. Esto lo utiliza también el browser de internet cuando no se puede conectar.
+
+Un ejemplo de este tipo de errores es \emph{Red destino inalcanzable}: Quiere decir que el router ese no está
+respondiendo, es problema de toda la red. También se pueden hacer ping a las computadoras que están en la misma red.
+Que es distinto a \emph{Host destino inalcanzable}: la máquina no está activa pero la red funciona correctamente.
+
+Hay mensajes que sirven para comunicar los rotuers entre si, como ser:
+\begin{itemize}
+    \item
+        Anuncio de router
+    \item
+        Descubrimiento de rout
+\end{itemize}
+
+Otro error es el de \textbf{Cabecera IP errónea} el cual significa que  tiene un header checksum, sólo de la cabecera,
+si da mal entonces ICMP anuncia esto.
+
+\subsection*{IPV6}
+
+Este nuevo tipo de
+Aumentar el espacio de direcciones, es la motivación inicial. También permite cambiar el encabezado para agilizar el
+envío y el recibo, y también Cambiar encabezado para facilitar QoSk: para poder darle mayor prioridad dependiendo del
+paquete, si proviene de una aplicación de streming o de llamada tendrá por ejemplo más prioridad que un pedido de una
+soliciud de página web por ejemplo.
+El nuevo IP Evita el Nateo (utlizar el protocolo NAT). El encabezado se duplicó, la fragmentación no está permitida.
+Permite direcciones anycast:
+Se elimina el checksum. Se elimina el campo de opciones. Y hay ua nuvea versión ICMP para que labure con este protocolo.
+iderablemente el reenvío IP dentro de la red.
+Checksum: eliminada enteramente para reducir tiempo de procesamiento en cada router al ser redundante, ya está en capa
+de transporte y de enlace (Ethernet).
+
 \end{document}
