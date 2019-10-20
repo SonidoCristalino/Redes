@@ -1,0 +1,244 @@
+Filmina nº 7.
+Filmina nº 8 --> no va
+
+Clase del 24/10 no viene el profesor. 
+
+Fecha examen: Jueves 14/11 y recuperatorio el 28/11
+Defensa del Trabajo: jueves 21/11
+
+Clase pasada: capa de enlace, sirve para transportar de nodo a nodo la información. Corrige el grueso de los errores. 
+Enlaces compartidos y dedicados. Compartidos: lso protocolos se ponene de acuerdo cómo compartir el medio. 
+    1) Partir el canal en varios usuarios. A través de frecuencia, por tiempo. ventajas: cada usuario tiene asignado un
+    pedazo de canal, Contra: tasa máxima, tasa del canal / por usuario. 
+    2) Transmitir todos en el mismo canal, Cuando hay colisión, se debe retrasmitir, el cómo recuperarse de esa colisión
+    depende del protocolo. 
+
+Direccionamiento en la capa de enlace. 
+-------------------------------------
+Dos direcciones en la Capa de Red: origen y destino. 
+En la CApa de enlace conectará dos interfaces, esas direcciones se conocen como Direcciones MAC. Direcciones de 48 bits,
+   a diferencia de las IP que son de las 32. 
+   
+Utilizadas para conducir un datagrama de una interfaz a otra interfaz físicamente conectada
+Dirección MAC grabada en la tarjeta MAC, no es jerarquico, pero es portable porque se conserva la dirección por estar en
+la ROM. Por lo que se puede mover una tarjeta de una LAN a la otra, sin sufrir modificaciones en la dirección MAC. 
+Los fabricantes de hardware son los que compran grandes porciones de direcciones que ponen en sus productos.  
+Anécdota: Mother a una pc de escritorio: se le ponen una placa de red se anula la que está en el mother. 
+
+Dentro de una red LAN, se conectan generalmente mediante direcciones MAC. Cada tarjeta tiene una dirección mac [nº 5],
+siempre a nivel de red local. Porque en esta red no hace falta identificar hostID ni tampoco NetID.  Las direcciones
+lucen como números en hexagesimal, pero tanto las IP como las MAc son binarios. 
+Las direcciones MAC se dividen en 6 grupos, lo que se hace es interpretarlo en Hexa. 
+1A = 00011010 en binario
+Dirección de Broadcast: FF-FF-FF-FF-FF-FF = todos uno, o en IP 255.255.255.255
+
+Dentro de la LAn se debe saber si o si la dirección MAC. Si no se sabe la MAC de destino, ¿cómo se hace para averiguar
+sabiendo la IP? ¿Cómo se sabe la IP? La Ip apriori siempre se debe conecer, porque es la máquina con la que me quiero
+comunicar, se debe saber que se quiere comunicar con alguien. De alguna forma la IP es el nombre lógica (de fantasía se
+podría decir), y la MAC es la dirección física, donde está ese host.
+Ahora bien ¿cual es esa dirección MAC? Para eso hay un protocolo ARP, cada router tiene una tabla que tiene mapeado la
+dirección MAC con la IP. En la tabla se encuentran los Campos IP, MAc, y u ncampo denominado TTL (es un tiempo de
+refresco de la tabla ARP, ya que se puede cambiar a la compu cambiarle la placa de red (con lo cual queda la IP)
+o cambiar la Ip y queda la MAC. 
+La capa de red comunica dos host y la de enlace dos nodos. Dirección origen y destino en la capa de red son iguales a
+lo largo de toda la red. Pero en la capa de enlace se va modificando a lo largo de la red, ya que las direcciones origen
+es un enlace de un router a otro, va cambiando la dirección por donde tiene que ir, la IP siempre se mantiene. 
+En una LAN siempre es necesario conocer la MAC, mediante ARP, es como se conoce ¿Cómo se hace para actaulizar la tabla?,
+
+A quiere enviar un datagrama a B, y la dirección MAC de B no está en tabla ARP de A.  
+    A difunde (broadcast), un paquete que en su dirección destino MAC con una consulta ARP, todos uno, lo reciben todos
+    los host de area local. Consulta a todos, para quien no es, lo descarta, cuando le llega a B, como es la misma
+    dirección IP de B, entonces responde a la dirección MAC de origien (de A) con lo que tiene su tabla, que es la MAC y
+    la IP. B le envía a A su dirección MAC. 
+
+ARP es plug-and-play: cuando se conecta un host, automáticamente se genera la tabla ARP. 
+Los nodos crean sus tablas de ARP sin intervención de la administradores. Se conecta 
+
+Ehernet[nº 8]
+-------------
+Preambulo, dirección destino, origen y el dato de las demás capas. 
+
+Prambulo: el patrón utilizado, Usado para sincronizar la frecuencia de reloj del receptor. El recepto recibe bits, pero
+cómo sabe dónde comienza y dónde termina un bit. Si se envían muchos ceros, el valor de tensión es siempre la misma,
+¿cómo se sabe si es 3 o 4 bits enviados? Se tiene "detección por flancos" por eso es que se envía esto. Es para marcar
+el tiempo. 
+
+Si el adaptador recibe trama con dirección destino propia o dirección de broadcast (eg paquete ARP), éste pasa los datos
+de la trama al protocolo de capa de red de otro modo, el adaptador descarta la trama.
+
+Tipo: indica el protocolo superior, casi siempre es IP. Pero hay otras arquitecturas que utilizan otros protocolos. 
+CRC: chequeado en receptor, si un error es detectado, la trama es simplemente descarta. 
+
+Serviciso Ethernet: 
+
+Sin conexión y No confiable: 
+    * Flujo de datagramas pasado a la capa de red puede tener vacíos por tramas descartada.
+    * Los vacíos son llenados si la aplicación está usando TCP.
+    * Si la aplicación está usando UDP entonces va a contener vacíos en la secuencia de datos recibidos. 
+
+Utiliza CSMA/CD.
+    * Sin ranuras.
+    * Sensa por portadora ¿ el adaptador no transmite si otro adaptador lo está haciendo).
+    * Detecta Colisiones ¿ adaptador transmisor aborta cuando éste detecta que otro adaptador está transmitiendo.
+    * Acceso Aleatorio Antes de intentar una retransmisión el adaptador espera un tiempo aleatorio. 
+
+CSMA/CD: ¿Cómo se genera esa espera aleatoria? Se denomina Backoff Exponencial. 
+
+Objetivo: estimar la carga actual ¿ si la carga es a lta, la espera aleatoria será mayor
+
+Si alguien esá transmitiendo, cada vez que quiero transmitir empeora la situación de los demas, por lo que se empeora
+tambien la situación de uno. Si hay mucha espera, no tiene que ser muy largo el tiempo ; es una cuestión estadística el
+tiempo que quiera de nuevo transmitir. [nº 11] Se tira la moneda, si sale 0 se retransmite al toque, si sale 1 entonces
+se espera 512 períodos de bits. Si hay interrupción, puede ser ahora en vez de 0 o 1 es 0, 1 2, 3, se espera otros 512.
+El K se va algrandado para que sea menos probable que vuelva a estar en 0. Backoff = retirarse de forma exponencial. 
+Los 512 dependen del procesamiento de transmisión, por lo que si es tiene más o menos transmisión cambia ese valor. 
+Esto mismo se utiliza también en los procesadores. 
+
+Da la impresión de que el sistema ,conviene un canal subdido, pero en el peor de los casos se tiene 10ª colisiones o
+más, elige K de {0,1,2,3,4,...,1023}, hasta 1023, se espera 50 milisegundos, que no es mucho el tiempo que se debe
+esperar. 0,1 * 512 = X y luego X * 1023. 
+
+El tiempo de espera está en el orden del retardo de nodos. Con lo cual el sistema es muy eficiente, aún cuando haya
+muchas colisiones. 
+
+Topología Estrella
+------------------
+en los 90 se utilizaba la topología BUS. Comunicaba a través de un medio compartido, complementamente compartido. NO es
+muy versatil, ya que había que cortar el cable si se quería conectar otra máquina, y conectar otra máquina por lo que se
+perdía mucha calidad de transmisión. 
+A medida que se escala, que hay necesidad de agregar más computadoras, fue naciendo el centro de estrella. El primero
+fue el HUB, dispositivo sin inteligencia que lo único que hace es una vinculación física entre uno y otro, no procesa
+direcciones MAC, distribuía para todos, sin importar si tenía todas las direcciones, lo retransmite para todos. Pero es
+muy ineficiente porque inunda toda la red. Se tenía un problema de seguridad, ya que a todas les llegaba toda la
+información, eran mas vulnerables. [nº 13]. El hub aumenta la probabilidad de colisiones. HUB de la capa física. 
+Se desarrolla un dispositivo conocido como Switch, que tiene la psibildiad de intercambiar canales entre otros. 
+
+Características: 
+---------------
+    * Dispositivo de capa enlace de datos
+        * Almacena y re-envía tramas Ethernet.
+        * Examina encabezados de tramas y re-envía basado en dirección MAC.
+        * Cuando debe re-enviar una trama utiliza CSMA/CD
+
+    * Transparente
+        * Hosts no notan la presencia de switches
+
+    * Plug-and-play (aprenden solos)
+        * Switches no requieren ser configurados. Aprenden solos. 
+
+    * Divide la subred en segmentos de LAN (para efectos de colisiones, por ejemplo)
+    * Filtra paquetes:
+        * Tramas de un mismo segmento de LAN no son re-enviados a los otros segmentos.
+        * Los segmentos pasan a ser dominios de colisión separados. 
+
+Cada Switch tiene una tabla de conmutación. [nº 17] La tabla es lo que aprende ni bien se conecta a la red. 
+
+[Nº 17] - D transmite primero al HUB, el hub no lo encuentra entonces lo envía a switch, como en su tabla el switch no
+lo encuentra, lo que hace es enviarlo a todos, lo inunda. Cuando recibe D un paquete de C, entonces D lo envía al hub,
+lo envía a D, E, F, el hub lo envía al switch y eso hace que el switch se agregue a D en su tabla. 
+
+A medida que los paquetes pasan por el switch, va aprendiendo dónde está cada host. Cuando se conecta todo en su tabla
+está en 0. ¡Ejercicio de Parcial!
+El swithc evita coliciones cuanto más conozca la red, ya cuando el swithc tiene sus tablaas ARP, viajan directamente de
+host a host, pero si hubiese en vez de un switch un hub, entonces habría má colisiones ya que está todo el tiempo
+transmitiendo en broadcast, por lo que inunda la red. Desde el punto d vista del tráfico, la eficiencia de la red
+disminuye mucho. 
+
+Aislamiento de tráfico. 
+----------------------
+El hub tiene un dominio de colisión muy amplio, Retransmite a todos lados, hace que se colisione todo con todos. 
+Pero con el swithc al filtrar paquetes, aisla el dominio de colisión, porque por cada tranmisión tiene la posibiliad de
+aprender la topología de la red. 
+No es del todo aislado, las tablas ARP siempre se regeneran por lo que los paquees a brodcast existen, pero sólo cuando
+no está completa o generada la tabla ARP. 
+[nº 21]. 
+    * Switch con muchas interfaces
+    * Cada host tiene conexión directa al switch
+    * No hay colisiones; full duplex. 
+
+Una de las Ventajas es que permite conmutar, porque va swicheando todo el tiempo ¿?
+
+Diseño de Redes institucionales. 
+-------------------------------
+Es complejo, hay mucha bibliografía al respecto. Cosas a tener en cuenta: 
+    * usuarios a conectar, de eso depende las colisiones. Conviene separar las computadoras por oficinas, conectados por
+    switch, y todos esos swtich conectados a un swtich CORE. dentro de este Core se suele conectar servidores. Hay que
+    tener en cuenta que la conexión del Core siempre debe ser mejor que las demás, ya que conecta para todos. Existen 3
+    niveles de switch depende del tamaño de la corporación. Swithc de nivel 3: rompe el principio de que es un
+    dispositivo de capa 2, pero si puede rutear por direcciones IP, no necsite actualzar la tabla ARP. 
+    Si se quiere comunicar internet hacia afuera, se debe tener en cuenta que debe poner un router. 
+    En la filmina está mal puesto el HUb, es porque la filmina es vieja, podría ir bien los switch. 
+    
+Se debe saber lo que es un Hub de un Switch. Cómo divide los dominios de colisiones. 
+
+Switch vs Routers
+----------------- 
+* Ambos son dispositivos de almacenamiento y re-envío
+    * Routers son dispositivos de capa de red (examinan encabezados de capa de red)
+    * Switches son dispositivos de capa enlace de datos.
+* Routers mantienen tablas de ruteo, implementan los algoritmos de ruteo
+* Switches mantienen las tablas de switches, implementan filtrado y algoritmos de aprendizaje
+
+Lo que se puede ver en el gráfico de la filmina nº 24: Switch no reconoce las direcciones IP, sólo con direcciones MAC.
+El router si entiende capa nº 3, de red, es decir que trabaja con direcciones IP. 
+
+---------------------- Hasta acá la teoría de la materia ------------------------------------
+
+Parte práctica: 
+
+NetID: 
+192.168.1.3/24 --> mascara de subred = 3 grupos * 8bits = 24, por lo que queda: 255.255.255.9
+192.168.1.3/23 --> mascara de subred = 2 grupos * 8bits = 16  + 7 bits = 255.255.
+
+
+[Foto del 17/10/2019] 
+
+        Switch   ---- -> 192.168.1.1 -> [router] -> 200.13.2.1 ----> 200.13.2.2 --> [router] --> 192.168.2.1
+         |                                                                                              |
+         |                                                                                             Switch
+         |                                                                                              |  
+[Host] : 192.168.1.2                                                                              [Host]: 192.168.2.2
+
+Explicación de cómo viaja el paquete en la red: (ruteo estático)
+-----------------------------------------------
+Si el host A quiere enviar un paquete, lo envía al swtich, como el switch sabe que no existe en su red, por ser distinta
+la IP, (ver que el final es 2.2). Lo Envía directamente a la puerta de enlace, pero el router no sabe que del otro lado
+de la 200.13.2.1 existe una red. El router solo se le debe configurar que si quiere llegar a la 192.169.2.2, debe pasar
+po la 200.13.2.1 y no por otra red. Al router se le debe indicar que para llegar a la 192.168.2.2 se debe ir físicamente
+a la 200.13.2.1 y que tiene como "Puerta de enlace predeterminada" la dirección 200.13.2.2, si se quiere comunicar con
+la dirección 192.168.2.2 tiene que ir por defecto a la 200.13.2.2 mediante la 200.13.2.1
+
+El cable entre los dos ruters debe se cruzado para que se comuniquen entre ellos. 
+
+En el campus virtual, hay un TP para poder realizarlo en grupo de 2. 
+Se pide realizar una red en una oficina. Para esto se le da un plano y poner los host, configurarlo y que todo funcione.
+Debe tener un informe, con un mapa de red y un pequeño presupuesto del costo de la red, la idea del presupuesto es la
+siguiente: 
+    - que se revisen cada dispositivo hay en el mercado, familiarizarse con cada una, especificando el modelo, las
+    características, comparar el precio/calidad, precio/disposición en cada uno delos dispositivos que se eligieron. 
+    - Se promedia con la nota del parcial, si es que está muy bien el parcial y el TP
+
+
+Ejercicio de Subneting [Ejercicio 6 práctica nº 3]
+--------------------------------------------------
+Sea un router que interconecta tres subredes: Subred 1, Subred 2 y Subred 3. Suponga que se requiere que todas las
+interfaces de cada una de estas tres subredes tengan el prefijo 223.1.17/24. Suponga también que se requiere que la
+Subred 1 admita hasta 63 interface Subred 2 tiene que admitir hasta 95 interfaces y la Subred 3 hasta 16 interfaces.
+Determine tres direcciones de red (de la forma a.b.c.d/x) que satisfagan estas restricciones.
+
+223.1.17.0/24 --> 1 red que permiten conectar 256 - 2 host porque la 0 y la 255 la requiere la red. 
+Se reservan dos bits para generar las 3 subredes: 223.1.17.X/26 (se reservan 2 bits porque permiten 4 posibilidades de
+        las 3 redes que se quieren hacer). 
+
+223.1.17.00XXXXXX --> direccion de red: netId + todo lo demás = 223.1.17.0/26 con Mascara de red: 255.255.255.192
+223.1.17.01XXXXXX --> direccion de red: netId + 01000000 = 223.1.17.64/26
+223.1.17.10XXXXXX --> Dir Red: NetId + 10000000 = 223.1.17.128/26
+223.1.17.11XXXXXX --> Dir Red: NetId + 11000000 = 223.1.17.192/26
+    [(2 a la 6) - 2] posibles host que se pueden conectar en cada red. 
+
+    En la SubRed I se requieren 63 host     = no se puede porque  [(2 a la 6) -2 ] = 62
+    En la SubRed II se requieren 99 host.   = no se puede porquese llega hasta 62
+    En la SubRed III se requieren 16 host.  = se puede. 
+
+223.1.17.10XXXXXX --> Dir Red: NetId + 10000000 (recordar que para obtener el decimal es 2 a la 7 = 128
+
