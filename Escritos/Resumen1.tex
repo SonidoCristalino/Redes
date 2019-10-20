@@ -611,38 +611,35 @@ Luego:
 \end{itemize}
 
 Por el contrario las \textbf{Redes Datagramas} (que es el que utiliza internet), a medidia que los paquetes van llegando, se
-envían. Las rutas varían durante la sesión.
-
+envían. Un paquete puede enviarse por una for Esta no dice que no vaya a mostrar un paquete asincrónico, esto se
+ordenan en otra capa.
 En una Red de Datagramas, cada vez que un sistema terminal desea enviar un paquete marca el paquete con la dirección del
 sistema terminal de destino y luego introduce el paquete en la red. Esto se hace sin configurar ningún circuito virtual.
 Los routers de una red de datagramas no mantienen ninguna información de estado acerca de los circuitos virtuales
-(¡porque no existe ningún circuito virtual!). Lo que no se garantiza es que los paquetes lleguen de forma
-sincronizada, es decir ordenada, en esta capa esto no es problema de los dispositivos que operan aquí, para que el
-paquete llegue de una forma ordenada al host de destino, deberá ampararse en otra capa que será la encargada de
-ordenarlos.
+(¡porque no existe ningún circuito virtual!).
 
 A diferencia de las redes de VC, en las redes de Datagramas:
 \begin{itemize}
     \item
-        Se introduce la dirección destino en la cabecera del datagrama.
+        Tx pone dirección dirección destino destino en la cabecera del datagrama.
     \item
-        No hay un estado que se mantenga a lo largo de la conexión en cada router.
+        No hay estado mantenido en cada router por cada conexión.
     \item
         Los paquetes se reenvían usando la dirección del Host de destino.
     \item
-        Los datagramas pueden ser transmitidos por diferentes rutas.
+        Los datagramas pueden ser transmitidos por diferentes
 \end{itemize}
 
-En Internet \emph{se implementa la Red de Datagramas}, por una cuestión de uso y costumbre de la población, no significa
-que en un futuro se modifique la arquitectura a VC.
+Se implementa en Internet Red de Datagramas, por una cuestión de uso y costumbre de la población, no significa que en un
+futuro se modifique la arquitectura a VC.
 
 Como nota de color \textbf{QuS} es calidad de servicio, la cual es más fácil poder brindarla en servicios como VC que en
-Red de Datagramas ya que para la primera se reserva recurso para ofrecer una mínmia calidad. ¿Cómo se hace para brindar
-cierta calidad de servicio en Redes de datagramas que en VC? Es más fácil con VC. Como en Datagramas los paquetes van
-por cualquier parte, es difícil reservar recurso, es difícil articularlos y por lo tanto garantizar una calidad. Hoy en
+Red de Datagramas ya que para la primera se reserva recurso para ofrecer una mínmia calidad. ¿Cómo
+se hace para brindar cierta calidad de servicio en Redes de datagramas que en VC? Es más fácil con VC.
+Como en Datagramas los paquetes van por cualquier parte, es difícil reservar recurso, es difícil articularloas. Hoy en
 día esto no está implementado. Esto siempre está implementado en la capa de Red.
 
-En algunas arquitecturas de redes, la Capa de Red cumple otra función decisiva que es la de \emph{establecer una
+En algunas arquitecturas de redes, la capa de red cumple otra función decisiva que es la de \emph{establecer una
 conexión virtual} pero esto es sólo en las \textbf{Redes de Circuitos Virtuales (VC)}.
 
 Se establece un circuito y el canal será el mismo mientras se esté conectado. No se evalua todo el tiempo la
@@ -653,37 +650,36 @@ datos) o los host extremos. A partir de aquí, todos los paquetes enviados entre 
 Las dos formas de establecer la transmisión mediante circuitos virtuales son los circuitos virtuales conmutados(SVC) y
 los circuitos virtuales permanentes(PVC).
 
-\subsubsection*{Circuitos Virtuales conmutados(SVC)}
-Los circuitos virtuales conmutados (SVC) por lo general se crean ex profeso (a propósito, con intención) y de forma
-dinámica para cada llamada o conexión, y se desconectan cuando la sesión o llamada es terminada. Un ejemplo de circuito
-virtual conmutado es la red telefónica tradicional así como los enlaces ISDN. Se utilizan principalmente en situaciones
-donde las transmisiones son esporádicas. En terminología ATM esto se conoce como conexión virtual conmutada. Se crea un
-circuito virtual cuando se necesita y existe sólo durante la duración del intercambio específico.
+\subsubsection{Circuitos Virtuales conmutados(SVC)}
+Los circuitos virtuales conmutados (SVC) por lo general se crean ex profeso y de forma dinámica para cada llamada o
+conexión, y se desconectan cuando la sesión o llamada es terminada. Un ejemplo de circuito virtual conmutado es la red
+telefónica tradicional así como los enlaces ISDN. Se utilizan principalmente en situaciones donde las transmisiones son
+esporádicas.En terminología ATM esto se conoce como conexión virtual conmutada. Se crea un circuito virtual cuando se
+necesita y existe sólo durante la duración del intercambio específico.
 
-\subsubsection*{Circuitos Virtuales Permanente(SVC)}
-En él se puede establecer un circuito virtual permanente (PVC) a fin de proporcionar un circuito dedicado entre dos puntos.
+\subsubsection{Circuitos Virtuales Permanente(SVC)}
+én se puede establecer un circuito virtual permanente (PVC) a fin de proporcionar un circuito dedicado entre dos puntos.
 Un PVC es un circuito virtual establecido para uso repetido por parte de los mismos equipos de transmisión.
 El circuito está reservado a una serie de usuarios y nadie más puede hacer uso de él. Una característica especial que en
 el SVC no se daba es que si dos usuarios solicitan una conexión, siempre obtienen la misma ruta.
 
-\textbf{Red de circuitos virtuales}: esto es a nivel de Capa de Red. No distingue entre si se está comunicando por UDP o
-TCP. En cambio en la Capa de Transporte depende del protocolo, se comunica entre aplicaciones, por lo tanto SI tiene en
-cuenta si transporta UPD o en TCP, todo es a nivel procesos.
+\textbf{Red de circuitos virtuales}: esto es en red. No distingue entre si se está comunicando por UDP o TCP.  En la capa
+de transporte depende del protocolo, se comunica entre aplicaciones, En la capa de transporte SI tiene en cuenta si
+transporta UPD o en TCP, todo es a nivel procesos.
 
 Los dispositivos finales los que saben si hay que retransmitir o no. Para la capa de RED le es indistinto, no está
 metido en el protocolo, sólo envía paquetes.
-
-\textbf{En internet la Capa de Red trabaja SIN conexión} (a diferencia de las Redes de circuitos virtuales), es decir
-que cuando se establece una conexión entre dos hosts, no se reservan recursos. Se establece de esta manera debido a la
-cantidad de usuarios y dispositivos conectados. Si esto fuera CON conexión, cada rotur deberá de decidir por la ida y
-vuelta de paquetes, por si hay que retransmitir o no, le pone mucha más complejidad que hace más densa el transporte.
-Por eso es prefierile que traminta sin conexión.
+En internet la Capa de Red trabaja SIN conexión (a diferencia de las Redes de circuitos virtuales), es decir que cuando
+se establece una conexión entre dos hosts, no se reservan recursos. Se diagrama de esta manera debido a la cantidad de
+usuarios y dispositivos conectados. Si esto fuera CON conexión, cada rotur deberá de decidir por la ida y vuelta
+depaquetes, por si hay que retransmitir o no, le pone mucha más complejidad que hace más densa el transporte. Por eso es
+prefierile que traminta sin conexión.
 
 \subsection{Modelos de Servicio de Red}
 
-Consideremos ahora algunos de los posibles servicios que podría proporcionar la Capa de Red. En el host emisor, cuando
-la Capa de Transporte pasa un paquete a la Capa de Red, entre los servicios específicos que la Capa de Red podría
-proporcionar se incluyen:
+Consideremos ahora algunos de los posibles servicios que podría proporcionar la capa
+de red. En el host emisor, cuando la capa de transporte pasa un paquete a la capa de red,
+entre los servicios específicos que la capa de red podría proporcionar se incluyen:
 
 \begin{itemize}
     \item
@@ -693,12 +689,13 @@ proporcionar se incluyen:
         que dicha entrega tendrá un límite de retardo especificado de host a host (por ejemplo, de 100 milisegundos).
 \end{itemize}
 
-Además, a un flujo de paquetes entre un origen y un destino dados podrían ofrecérsele los siguientes servicios:
+Además, a un flujo de paquetes entre un origen y un destino dados podrían ofrecérsele los
+siguientes servicios:
 
 \begin{itemize}
     \item
-        \textbf{Entrega de los paquetes en orden}: Este servicio garantiza que los paquetes llegan al des tino en el
-        orden en que fueron enviados.
+        \textbf{Entrega de los paquetes en orden}: Este servicio garantiza que los paquetes llegan al des­
+        tino en el orden en que fueron enviados.
     \item
         \textbf{Ancho de banda mínimo garantizado}: Este servicio de la capa de red emula el comportamiento de un
         enlace de transmisión con una velocidad de bit específica (por ejemplo, de 1 Mbps) entre los hosts emisor y
@@ -708,9 +705,7 @@ Además, a un flujo de paquetes entre un origen y un destino dados podrían ofrecé
         a host pre-especificado (por ejemplo, en 40 milisegundos.)
     \item
         \textbf{Fluctuación máxima garantizada}: Este servicio garantiza que el intervalo de tiempo transcurrido entre
-        la transmisión de dos paquetes sucesivos en el emisor es igual al intervalo de tiempo que transcurre entre su
-        respectiva recepción en el destino (es decir, que la separación entre paquetes no variará en una cantidad mayor
-        que un cierto valor específico).
+        la transmisión de dos paquetes sucesivos en el emisor es igual al intervalo de
 \end{itemize}
 
 \textbf{CBR en ATM}: El objetivo del servicio CBR es conceptualmente simple: proporcionar un flujo de paquetes (conocido como
@@ -739,11 +734,9 @@ routers utiliza la dirección de destino del paquete para reenviar dicho paquete.
 tabla de reenvío que asigna direcciones de destino a interfaces de enlace; cuando un paquete llega a un router, éste
 utiliza la dirección de destino del paquete para buscar la interfaz del enlace de salida apropiado en la tabla de
 reenvío. Después, el router reenvía intencionadamente el paquete a esa interfaz del enlace de salida.
-Es decir que simplemente el router luego de haber establecido su tabla de reenvío, compara la dirección de destino que
-al cual tiene que enviar el paquete y según una comparación puede establecer el enlace de salida por el cual deberá
-enviarlo.
 
-\subsection*{Arquitectura de Routers}
+
+\subsection{Arquitectura de Routers}
 
 Dos funciones claves de routers:
 \begin{itemize}
@@ -756,61 +749,61 @@ Dos funciones claves de routers:
 
 Para el exámen del router se diagrama un esquema general de las distintas partes operante:
 
-\begin{center}
-\includegraphics[width=90mm,scale=0.3]{Imagenes/imagen9.png}
-\end{center}
-
 \begin{itemize}
     \item
         \textbf{Puerto de Entrada} : El puerto de entrada realiza varias funciones. Lleva a cabo las funciones de la
-        Capa Física consistentes en la terminación de un enlace físico de entrada a un router. Realiza las funciones de
-        la Capa de Enlace de datos necesarias para interoperar con las funciones de la Capa de Enlace de datos en el
+        capa física consistentes en la terminación de un enlace físico de entrada a un router. Realiza las funciones de
+        la capa de enlace de datos necesarias para interoperar con las funciones de la capa de enlace de datos en el
         lado remoto del enlace de entrada. También realiza una función de búsqueda y reenvío (el recuadro más a la
         derecha del puerto de entrada y el recuadro más a la izquierda del puerto de salida) de modo que un paquete
         reenviado dentro del entramado de conmutación del router emerge en el puerto de salida apropiado. Los paquetes
         de control (por ejemplo, paquetes que transportan la información del protocolo de enrutamiento) son reenviados
         desde un puerto de entrada al procesador de enrutamiento. En la práctica, suelen agruparse varios puertos en una
         única tarjeta de línea dentro del router.
-        Depende el protocolo de la Capa de Enlace puede correr determinado servicios de la Capa de Enlace. Acá es donde
+        Depende el protocolo de la capa de enlace puede correr determinado servicios de la capa de enlace. Acá es donde
         según el protocolo puede corregir errores. Sirve como un filtro de error desde la entrada, para que no pase al
         router. En caso de que llegue un error se descarta desde el principo y no permite que pase a las subsiguientes
         partes del router.
     \item
-        \textbf{Entramado de Conmutación}: El entramado de conmutación conecta los puertos de entrada del router a sus
-        puertos de salida. Este entramado de conmutación está completamente contenido dentro del router.
-        La Conmutación de paquetes se realiza via memoria por bus del sistema. La rapidez del bus se mide según el ancho
-        de bus que tenga, que se mide por megaherz. Pero YA NO SE USA.
-        Lo que se utiliza es el \emph{Via bus}, es decir,  un bus compartido, no puede habe más de un paquete por bus,
-        de lo contrario se complica.
+        \textbf{Entramado de Conmutación}: Entramado de conmutación. El entramado de conmutación conecta los puertos de
+        entrada del router a sus puertos de salida. Este entramado de conmutación está completamente contenido dentro
+        del router.
+        La Conmutación de paquetes: via memoria por bus del sistema. La rapidez del bus se mide según el ancho de bus
+        que tenga, que se mide por megaherz. YA NO SE USA.
+        Lo que se utiliza es el \emph{Via bus}: un bus compartido, no puede habe más de un paquete por bus, de lo
+        contrario se complica.
         De qué depende de que sea rápido o no un router, dependiendo de dónde se coloque, no es lo mismo un router un
         ISP nivel 2 que para una corporación.
-        \emph{Conmutación via red de interconexión} Tipo crossbar: Todas las conexiones en simulanea. Se puede mandar
-        multiples paquetes al mismo tiempo por lo que es más rápido y más eficiente. Pero también depende de lo que
-        quiera manejar, para una empresa es muchísimo, si es para un ISP 1 quizás es poco.
+        Conmutación via red de interconexión:
+        Tipo crossbar: Todas las conexiones en simulanea. Se puede mandar multiples
+        paquetes al mismo tiempo por lo que es más rápido y más eficiente. Pero también
+        depende de lo que quiera manejar, para una empresa es muchísimo, si es para un
+        ISP 1 quizás es poco.
     \item
-        \textbf{Procesador de enrutamiento}: El procesador de enrutamiento ejecuta los protocolos de enrutamiento,
-        mantiene la información de enrutamiento y las tablas de reenvío y realiza funciones de gestión de red dentro del
-        router.
+        \textbf{Procesador de enrutamiento}: Procesador de enrutamiento. El procesador de enrutamiento ejecuta los
+        protocolos de enrutamiento, mantiene la información de enrutamiento y las tablas de reenvío y realiza funciones
+        de gestión de red dentro del router.
     \item
-        \textbf{Puertos de Salida}: Un puerto de salida almacena los paquetes que le han sido reenviados a través del
+        \textbf{Puertos de Salida}:Un puerto de salida almacena los paquetes que le han sido reenviados a través del
         entramado de conmutación y los transmite al enlace de salida. Así, el puerto de salida lleva a cabo la función
-        inversa de la Capa Física y de la Capa de Enlace de datos que el puerto de entrada. Cuando un enlace es
+        inversa de la capa física y de la capa de enlace de datos que el puerto de entrada. Cuando un enlace es
         bidireccional (es decir, transporta tráfico en ambas direcciones), un puerto de salida del enlace normalmente
         estará emparejado con otro puerto de entrada de dicho enlace en la misma tarjeta de línea.
     \item
         \textbf{Buffer}: pone los paquetes en una cola a medida que llegan.  Dada la dirección destino del datagrama, se
-        obtiene el puerto de salida usando la tabla de re-envío de la memoria del puerto de entrada. El Objetivo es que
+        obtiene el puerto de salida usando la tabla de re-envío de la memoria del puerto de entrada.  El Objetivo es que
         el procesamiento se realice en el puerto de entrada a la velocidad de la línea. Esto quiere decir que necesita
         que sea continuo, dinámico, antes de que llegue, posicionar la línea para enviarlo.
         Se puede ver la linea como un carril de un tren, y al tren como la ráfaga de paquetes a enviar, antes de ser
         enviado por determinado carril (línea) es necesario que evaluar el destino del tren (paquetes) y modificar los
         carriles según sea que vayan.
+
 \end{itemize}
 
-Se formará cola si los datagramas llegan más rápido que la tasa de re-envío de la estructura de switches. Esto quiere
-decir que el conmutar la vía por donde saldrán los paquetes si es mas lento que lo que entra, se comienza a encolar, por
-lo que se tiene dos posiblidads o buffers muy grandes, o muy chicos. Se debe que tener en cuenta el dimensionar bien el
-buffer,
+Se formará cola si los datagramas llegan más rápido que la tasa de re-envío de la estructura de switches. Esto quiere decir
+que el conmutar la vía por donde saldrán los paquetes si es mas lento que lo que entra, se comienza a encolar, por loque
+se tiene dos posiblidads o buffers muy grandes, o muy chicos.  Lo que se tiene que tener en cuenta es dimensionar bien
+el buffer,
 
 \textbf{Conmutación via red de interconexión}: Tipo crossbar, todas las conexiones en simulanea. Se puede mandar
 multiples paquetes al mismo tiempo por lo que es más rápido y más eficiente. Pero también depende de lo que quiera
@@ -819,12 +812,12 @@ manejar, para una empresa es muchísimo, si es para un ISP 1 quizás es poco.
 \textbf{Tabla de Reenvio}: La tabla de reenvío es el producto de accionar los algoritmos de Capa de Red en cada Router.
 Se generan a través de dos campos que contiene la dirección destino y las interfaz por la que se enviará el paquete en
 caso de coincidir la dirección de envío con el de la cabecera del paquete.
-Las direcciones posibles son $2^32$ bits, por lo que se obtienen mas de 4 mil millones de entradas; cantidad imposible
-de mantener una tabla y que cada router por cada paquete tenga que recorrer esas millones de direcciones para saber
-hacia dónde debe enviar la información. Por lo que se implementa de una manera más sencilla. Cada Router, dependiendo el
-nivel al que pertenezca (router ISP 1, 2 o 3) manejará distintos rangos de direcciones. Si el paquete recibido tiene una
-dirección comprendida entre un rango y otro, se enviará por la interfaz 1, si está comprendido entre otro rango, se
-enviará por 2,etc.
+Las direcciones posibles son $2^32$ bits, por lo que se obtienen mas de millones de 4 mil millones de entradas; cantidad
+imposible de mantener una tabla y que cada router por cada paquete tenga que recorrer esas millones de direcciones para
+saber hacia dónde debe enviar la información. Por lo que se implementa de una manera más sencilla. Cada Router,
+dependiendo el nivel al que pertenezca (router ISP 1, 2 o 3) manejará distintos rangos de direcciones. Si el paquete
+recibido tiene una dirección comprendida entre un rango y otro, se enviará por la interfaz 1, si está comprendido entre
+otro rango, se enviará por 2,etc.
 
 Dependiendo del nivel del ISP seran los rangos que manejará la tabla del router. El paquete va pasando por routers que
 tienen distintos rangos, desde los rangos más generales (ISP 1) hasta más locales (ISP 3).
@@ -856,59 +849,51 @@ ruter no le importa, lo envia igual.
 balancear los paquetes. Puede haber mayor capacidad de procesamiento pero en la salida puede existir menor capacidad de
 velocidad de envío en el enlace.
 
-\begin{center}
-\includegraphics[width=90mm,scale=0.3]{Imagenes/imagen10.png}
-\end{center}
-
-\emph{Encolamiento en puerto de entrada}: Ver la problemática que hay con el paquete rojo, para un lugar determinado, si
-hay muchos rojos para una misma salida y una entrada quiere enviar a esa misma salida un paquete rojo, lo detiene y se
-encolan no sólo el rojo sino el verde también.
+\emph{Encolamiento en puerto de entrada}: Ver la problemática que hay con el paquete rojo (Filmina nº 34) para un lugar
+determinado, si hay muchos rojos para una misma salida y una entrada quiere enviar a esa misma salida un paquete rojo,
+lo detiene y se encolan no sólo el rojo sino el verde también.
 
 Para ello se implementan lo que se denomina como \emph{Políticas de descarte y envío}:
 \begin{itemize}
     \item
-        \textbf{Primero que llega primero que envía}: Colas ponderadas de forma equitativa, se distribuyen mejor los
-        paquetes a la salida. Se reparte mejor la salida de paquetes.
+        \textbf{Primero que llega primero que envía}: Colas podnderadas equitativas, se distribuya mejor el gráfico
+        entre medio. Se reparte el gráfico.
     \item
         \textbf{Descarte al ingresar a la cola}: El que se queda fuera, se descarta. Otra forma, RED: a deerminados
         paquetes se marcan para eliminarlo, ¡¿con qué criterio? Bueno se hace una ponderación para cada uno de los
-        usuarios si es que procesa muchos paquetes y otro usuario se envía 1 paquete, para que no quede afuera este
-        último usuario lo que se hace es eliminar los paquetes marcados previamente para el usuario A.
+        usuarios si es que procesa muchos paquees y otro usuario se envía 1 paquete , para que no quede afuera este
+        último usuario lo que se hace es eliimnar los paquetes marcados previamente para el usuario A.
 \end{itemize}
 
-\section*{Clase nº 4}
+\section{Clase nº 4}
 
-\subsection*{Repaso clase nº 3}
+\subsection{Repaso clase nº 3}
 
 Objetivo de la capa de Red:
 \begin{itemize}
     \item
-        Transportar segmentos de un lado a otro. \textbf{Función principal}: conectar un host a otro. Realizar una
-        comunicación entre host, lo hace a traves del routeo y el reenvío.
+        Transportar segmntos de un lado a otro. Función principal: conectar un host a otro. Realizar una comunicación
+        entre host, lo hace a traves del routeo y el reenvío.
     \item
-        \textbf{Ruteo}: determinar la mejor ruta para llegar de host a host
+        Ruteo: determinar la mejor ruta para llegar de host a host
     \item
-        \textbf{Reenvio}: mover los paquetes de un enlace a un enlace.
+        Reenvio: mover los paquetes de un enlace a un enlace.
 \end{itemize}
 
-En Internet se utiliza la Red de Datagrama. NO se basa en una ruta fija, sino que la ruta varía, y los paquetes pueden
+Internet se utiliza la red de datagrama. NO se basa en una ruta fija, sino que la ruta varía, y los paquetes puden
 tomar distintas rutas sin importar el orden en que lleguen; de la organización y sincronización de los paquetes se
 encarga otra capa.
 La red virtual determinaba una conexión establecida y fija y se asemeja a la del teléfono.
 
-\subsection*{Esquema de IP en TCP/IP}
+\subsection{Esquema de IP en TCP/IP}
 
 El protocolo que más se usa es el IP, es el más importante en la capa de red, por el nombre del modelo.
 Cada protocolo es independiente a las anteriores capas, sin embargo IP obtiene información de otras capas para mejor sus
-servicio, aún así trata de ser lo más independiente posible.
+servicio, aún así trata de ser lo más indpendiente posible.
 
 En la tabla de reenvío de los routers, las direcciones que la componen están basadas en el protocolo IP.
 
-\subsection*{Formato del datagrama}
-
-\begin{center}
-\includegraphics[width=80mm,scale=0.3]{Imagenes/imagen11.png}
-\end{center}
+\subsection{Formato del datagrama}
 
 Cada capa le agrega un encabezado y encapsula todo lo demás, proveniente de otra capa como un dato más. Y cada capa le
 pone su propio encabezado, en este caso el de red.
@@ -918,7 +903,7 @@ datagrama, es información que proviene de las demás capas.
 
 \begin{itemize}
     \item
-        \textbf{HaeadLen/Longitud de Cabecera}: Puesto que un datagrama IPv4 puede contener un número variable de
+        \textbf{HaeadLen / Longitud de Cabecera}: Puesto que un datagrama IPv4 puede contener un número varia­ ble de
         opciones (las que se incluyen en la cabecera del datagrama IPv4), estos 4 bits son necesarios para determinar
         dónde comienzan realmente los datos del datagrama IP. La mayoría de los datagramas IP no contienen opciones, por
         lo que el datagrama IP típico tiene una cabecera de 20 bytes.
@@ -935,20 +920,20 @@ datagrama, es información que proviene de las demás capas.
         bytes. Sin embargo, los datagramas rara vez tienen una longitud mayor de 1.500 bytes.
     \item
         \textbf{Fragmentación del datagrama}: La capa de red determina la ruta y es el encargado de fragmentar el
-        datagrama, en función de los MTU (Maximum Transmission Unit) de los enlaces. Básicamente, Un datagrama se
-        convierte en varios. Se debe saber cómo fragmentarlo. Acá no hace faltan que lleguen seguidos los datagramas
-        fragmentados. Cada uno es un datagrama individual. También puede que al haber mas MTU puede tomar 3 datagramas y
-        juntarlos en uno. Si se cambia el tipo de medio, el cable por ejemplo se modifica el MTU y por lo tanto esta
-        capa permite diversificar y adaptarse a la red.
+        datagrama, en función de los MTU de los enlaces. Básicamente, Un datagrama se convierte en varios. Se debe saber
+        cómo fragmentarlo. Acá no hace faltan que lleguen seguidos los datagramas fragmentados. Cada uno es un datagrama
+        individual. También puede que al haber mas MTU puede tomar 3 datagramas y juntarlos en uno. Si se cambia el
+        tipo de medio, el cable por ejemplo se modifica el MTU y por lo tanto esta capa permite diversificar y adaptarse
+        a la red.
     \item
         \textbf{Tiempo de vida}: El campo Tiempo de vida (TTL, Time-To-Live) se incluye con el fin de garantizar que los
         datagramas no estarán eternamente en circulación a través de la red (debido, por ejemplo, a un bucle de
         enrutamiento de larga duración). Este campo se decrementa en una unidad cada vez que un router procesa un
         datagrama. Si el campo TTL alcanza el valor 0, el datagrama tiene que ser descartado.
     \item
-        \textbf{Protocolo}: Este campo sólo se emplea cuando un datagrama IP alcanza su destino final. El valor de este
-        campo indica el protocolo específico de la capa de transporte al que se pasarán los datos contenidos en ese
-        datagrama IP.
+        \textbf{Protocolo}: Este campo sólo se emplea cuando un datagrama IP alcanza su destino final.
+        El valor de este campo indica el protocolo específico de la capa de transporte al que se
+        pasarán los datos contenidos en ese datagrama IP.
         Observe que el número de protocolo especificado en el datagrama IP desempeña un papel análogo al del campo que
         almacena el número de puerto de un segmento de la capa de transporte. El número de protocolo es el elemento que
         enlaza las capas de red y de transporte, mientras que el número de puerto es el componente que enlaza las capas
@@ -965,9 +950,9 @@ datagrama, es información que proviene de las demás capas.
         destino. A menudo el host de origen determina la dirección de destino mediante una búsqueda DNS.
         Las direcciones son de tipo IP. Para una mejor lectura humana se separan en 4 octetos y se traducen a números
         decimales. Cada octeto puede ir desde un rango de 0 a 255: \[0/255.0/255.0/255.0/255\]
-        Con esto se puede saber cuántos dispositivos conctados: $2^{32} = 4,294,967,296$ .Teniendo en cuenta que existen
-        cerca de 7 mil millones de personas en el mundo, pero sólo 4 millones de dispositivos se permiten conectar a
-        internet, sin tener ambiguedad, según el rango de direcciones IP.
+        Con esto se puede saber cuántos dispositivos conctados: $2^{32} = 4,294,967,296$ .7 mil millones de personas
+        existen en el mundo, pero sólo 4 millones de dispositivos se permiten conectar a internet, sin tener ambiguedad,
+        según el rango de direcciones IP.
     \item
         \textbf{Opciones}: El campo de opciones permite ampliar una cabecera IP. La idea original era que las opciones
         de cabecera rara vez se emplearan: de ahí la decisión de ahorrar recur­ sos no incluyendo la información de los
@@ -995,9 +980,7 @@ decir: 1500 + 1500 + 1000). Recordar que se tiene 20 bytes de encabezado IP por 
 \emph{Flag}: un bit que identifica si hay mas segmentos para ensamblar o no. Si el campo Flag se encuentra 1 significa
 que faltan llegar datagramas.
 
-\emph{Offset}: Campo que permite reconstruir los datagramas fragmentados indicando la posición en un buffer.
-
-\emph{Ejemplo de Offset}:
+\emph{Offset}: Campo que permite reconstruir los datagramas fragmentados indicando la posición en un buffer. Ejemplo:
 
 Se quiere transmitir un archivo de 4000 bytes mediante una red que tiene 1500 de MTU. Se divide en 3 datagramas y en
 cada uno de ellos se indica en el offset hasta dónde llega el dato que contiene.
@@ -1036,28 +1019,97 @@ la tarea de un router consiste en recibir un datagrama por un enlace y reenviarl
 necesariamente está conectado a dos o más enlaces. El límite entre el router y cualquiera de sus enlaces también se
 conoce como interfaz.
 
-La direccion IP está asociada a la \emph{interfaz}. El router en el siguiente ejempo, no tiene una sola dirección, sino
-que tiene 3 direcciones diferentes, ya que conecta 3 redes distintas. Esta dirección está en la interfaz, dividido en 4
-grupos de 8 bits.
-
-\begin{center}
-\includegraphics[width=90mm,scale=0.3]{Imagenes/imagen12.png}
-\end{center}
+La direccion IP está asociada a la \emph{interfaz}. El router no tiene una dirección, tiene 3 direcciones diferentes.
+Esta dirección está en la interfaz, dividido 4 grupos de 8 bits. En la filmina nº 11 por ejemplo, el Router conecta 3
+redes.
 
 La dirección IP se puede dividir en dos partes:
 \begin{enumerate}
     \item
-        \textbf{Net Id}: Bits más significativos, es decir, los bits que están más a la izquierda.
-        Como se puede ver en la imagen, la Dirección de la subred izquierda es: 223.1.1, en cambio para la subred de la
-        derecha, el NetId será 223.1.2 y la de la subred de abajo es 223.1.3.
+        \textbf{Net Id}: Bits más significativos (los que están más a la izquierda).  Dirección de una subred. 223.1.1
+        (es lo mas significativo en la filmina) 223.1.2 el de la derecha.
     \item
-        \textbf{Host Id}: Es la parte menos significativa de la dirección. Sería la parte de la dirección que identifica
-        de forma unívoca dentro de una determinada red a un dispositivo. Por ejemplo, en la imagen, la subred de la
-        izquierda identifica cada uno de los host con 1, 2 y 3, siendo el Host Id nº 4 específico para la Puerta de
-        Enlace del router.
+        \textbf{Host Id}: dispositivo de esa red .1, .2 (es lo menos significativo en la filmina)
 \end{enumerate}
 
-\subsubsection*{Máscara de Subred}
+\textbf{Subred}: dispositivos que tienen el misma Net Id, si esta es diferente, se está en otra red, en otra LAN , por
+lo tanto se tiene que comunicar utilizando otro router.
+
+\emph{¿Cómo se hace para identificar una sub red de otra? }
+Una forma es ver el router y ver qué dispositivos están de un lado y del otro. Cada una de esas islas pertenecen a una
+subred. Dentro de la misma red por mas que no haya internet, se van a poder comunicar.
+
+Un router requiere saber cuál es el NetId y el HostId. Para eso hay un subnúmero denomina máscara d subred, es un número
+que permite identifiar el Net y el hostId. Lo que hace es poner en 1 los bits más significativos y pone en 0 los menos.
+El NetId termina en 1 y el HostId en 0.
+
+Por ejemplo:
+\[223,1,1,2/24\]
+
+En la anterior dirección iP, se simboliza con 24 para indicar que se quedan con los primeros 24byts más significativos.
+
+Ejemplo:
+
+\emph{223.1.1.2/24} ¿cuál es la dirección de red? La misma sería el NetId pero y con todos los ceros por detrás:
+\begin{itemize}
+    \item
+        \textbf{NetId}: Dirección de Red, resultaría 223.1.1.0
+    \item
+        \textbf{HostID}: 2/24
+\end{itemize}
+
+Otro ejemplo:
+
+\emph{223.1.1.4/24}: La dirección de Red sería 223.1.1.0
+
+\emph{255.255.255.0}: Mascara tiene todos 1 donde tiene el NetId y ceros en el HostID. Esto es la forma que tiene de
+identificar Si se hace una AND entre la dirección IP y la máscara y así se puede obtener de forma rápida el hostId y el
+NetId.
+
+Otro Ejemplo:
+
+\emph{223.1.1.128/25} Es una dirección de red porque el último octal termina en
+cero, por lo que sería: 223.1.1.10000000/25.
+Hay que pensarlo en binario siempre, por más que el número esté escrito en decimal. Hay que pensarlo entre la máscara y
+el final de la dirección terminada en ceros (que puede ser en binario o en decimal).
+
+
+\emph{223.1.1.128/28} La misma es una dirección de red porque el último octal termina en 0.
+
+
+\subsubsection*{División en las direcciones IP}
+
+Antes de que se adoptara el enrutamiento CIDR, la parte de red de una dirección IP
+estaba restringida a longitudes de 8, 16 o 24 bits, un esquema de direccionamiento conocido
+como direccionamiento con clases, ya que las subredes con direcciones de 8, 16 y 24 bits
+se conocían, respectivamente, como redes de clase A, B y C.
+\begin{itemize}
+    \item
+        \textbf{Clase A} : subnet :/8, lo que daría: $2^8$ redes diferentes de $2^{24}$ host
+    \item
+        \textbf{Clase B} : subnet :/16
+    \item
+        \textbf{Clase C} : subnet :/24, lo que daría: $2^{24}$ redes diferentes de $2^8$ host
+\end{itemize}
+
+Por ejemplo: 192.168.1.1 se puede decir que es una Red Clase C.
+
+Las subdivisiones entre clases ya han quedado obsoletas. Porque ahora con la máscara de red se puede definir la cantidad
+de bits que se puden rservar para los host y cuántos para las redes.
+
+Direcciones que se reservan de entre las clases de A, B, C. ¿Por qué?
+
+\begin{itemize}
+    \item
+        Al comienzo se pensó que cada máquina debía tener una dirección única en el planeta. Esto no es necesario porque
+        si se tienen maquinas conectadas en red pero sin internet, entoncs no hace falta que las direcciones sean
+        unicas.
+    \item
+        Para este propósito se reservó una subred de cada clase para crear redes privadas.
+\end{itemize}
+
+
+\subsubsection*{Máscara de subRed}
 
 Las mismas se pueden simbolizar de distintas maneras:
 \begin{itemize}
@@ -1073,138 +1125,38 @@ Por ejemplo: 223.1.1.2/26
 
 Significaría: 255.255.255.[11000000]
 
-\textbf{Explicación de Internet}
 Existe otro tipo de dirección IP, la dirección de difusión o de \emph{Broadcasting}: 255.255.255.255. Cuando un host
 envía un datagrama cuya dirección de destino es 255.255.255.255, el mensaje se entrega a todos los hosts existentes en
 la misma subred.  Opcionalmente, los routers también reenvían el mensaje a las subredes vecinas (aunque habitualmente no
 lo hacen).
-\textbf{Subred}: dispositivos que tienen el mismo Net Id; si esto es diferente, se está en otra red, en otra LAN, por
-lo tanto se tiene que comunicar utilizando otro router.
-
-\emph{¿Cómo se hace para identificar una sub red de otra?}
-
-Una forma es ver el router y ver qué dispositivos están de un lado y del otro. Cada una de las islas que se encuentran
-en la imagen anterior, pertenecen a una subred. Dentro de la misma red por mas que no haya internet, se van a poder
-comunicar. Eso para el ojo humano, pero un router requiere identificar de una forma certera y mecánica las distintas
-partes de la dirección IP.
-
-Dividir en subredes o hacer subnetting (en inglés) consiste en asignar parte de la dirección IP a identificar la subred y
-parte a designar el equipo que tiene una dirección concreta. Esto se consigue aplicando una máscara binaria que
-identifica con unos la parte de la dirección IP asignada a la red y con ceros la parte asignada a cada uno de los
-equipos de red.
-
-Tradicionalmente las redes privadas que tenemos en nuestros hogares se basan el hacer subnetting con un rango de
-direcciones IPv4 de clase C, basado en el estándar de la IETF RFC 950. Esto nos ofrece redes con hasta 254 direcciones
-IPv4 disponibles. La máscara de subred para esta red es: 255.255.255.0 o en notación binaria
-11111111.11111111.11111111.00000000.  Esto son \emph{24 unos seguidos de 8 ceros}.
-
-Si por ejemplo en una red doméstica se tiene la siguiente dirección IP 192.168.1.3, entonces la Máscara de Subred puede
-representarse como 192.168.1.0/24, es decir, que el NetId serán los primeros 24 binarios de la dirección IP.
-
-Esto quiere decir que la parte que identifica a nuestra subred es 192.168.0 y que por lo tanto todas las direcciones
-IPv4 de nuestra subred tendrán esa parte fija. Por lo tanto, comprende las direcciones IPv4 en este rango:
-192.168.0.0/192.168.0.255
-
-\textbf{La primera dirección queda reservada para identificar la red (192.168.0.0) y la última queda reservada como
-dirección de broadcast (192.168.0.255)}.
-
-Por ejemplo:
-\[223\cdotp1\cdotp1\cdotp2/24\]
-
-¿Cuál es la dirección de red de la siguiente Máscara de Subred?
-\[223\cdotp1\cdotp1\cdotp2/24\]
-
-Respuesta: Sería el NetId pero y con todos los ceros por detrás:
-\begin{itemize}
-    \item
-        \textbf{NetId}: Dirección de Red, resultaría 223.1.1.0
-    \item
-        \textbf{HostID}: 2/24
-\end{itemize}
-
-Otro ejemplo:
-
-\[223\cdotp1\cdotp1\cdotp4/24\]
-La Dirección de Red sería 223.1.1.0 y el HostID sería .4
-
-\[255\cdotp255\cdotp255\cdotp0/24\]
-
-Mascara tiene todos 1 donde tiene el NetId y ceros en el HostID. Esto es la forma que tiene de
-identificar Si se hace una AND entre la dirección IP y la máscara y así se puede obtener de forma rápida el HostId y el
-NetId.
-
-Determinar en el siguiente ejemplo qué tipo de dirección es:
-
-\[223\cdotp1\cdotp1\cdotp128/25\]
-
-Respuesta: Es una dirección de red porque el último octal termina en cero, por lo que sería: 223.1.1.10000000/25.
-
-Hay que pensarlo en binario siempre, por más que el número esté escrito en decimal. Hay que pensarlo entre la máscara y
-el final de la dirección terminada en ceros (que puede ser en binario o en decimal).
-
-¿Qué tipo de dirección es la siguiente?
-
-\[223\cdotp1\cdotp1\cdotp128/28\]
-
-Respuesta: Es una dirección de red porque el último octal termina en 0.
-
-
-\subsubsection*{División en las direcciones IP}
-
-Antes de que se adoptara el enrutamiento CIDR, la parte de red de una dirección IP estaba restringida a longitudes de 8,
-16 o 24 bits, un esquema de direccionamiento conocido como direccionamiento con clases, ya que las subredes con
-direcciones de 8, 16 y 24 bits se conocían, respectivamente, como redes de clase A, B y C.
-\begin{itemize}
-    \item
-        \textbf{Clase A} : subnet :/8, lo que daría: $2^8$ redes diferentes de $2^{24}$ host
-    \item
-        \textbf{Clase B} : subnet :/16
-    \item
-        \textbf{Clase C} : subnet :/24, lo que daría: $2^{24}$ redes diferentes de $2^8$ host
-\end{itemize}
-
-Por ejemplo: 192.168.1.1 se puede decir que es una Red Clase C.
-
-Las subdivisiones entre clases ya han quedado obsoletas. Porque ahora con la máscara de red se puede definir la cantidad
-de bits que se puden reservar para los host y cuántos para las redes.
-
-Direcciones que se reservan de entre las clases de A, B, C. ¿Por qué?
-
-\begin{itemize}
-    \item
-        Al comienzo se pensó que cada máquina debía tener una dirección única en el planeta. Esto no es necesario porque
-        si se tienen maquinas conectadas en red pero sin internet, entoncs no hace falta que las direcciones sean
-        unicas.
-    \item
-        Para este propósito se reservó una subred de cada clase para crear redes privadas.
-\end{itemize}
-
-
 
 \textbf{Dirección de broadcast}:
 \begin{itemize}
     \item
-        Directed Broadcast: El último octal todos con unos. Por ejemplo: 172.16.255.255, 192.168.1.255.
+        Directed Broadcast: la última (unos)
     \item
-        Limited Broadcast: Toda la dirección seteada a unos. Por ejemplo: 255.255.255.255
+        Ej: 172.16.255.255, 192.168.1.255
     \item
-        Ejemplo de Mascara de Subred: 223.1.1.0
+        Limited Broadcast: (all ones)
     \item
-        Ejemplo de Broadcast: 223.1.1.255
+        255.255.255.255
+    \item
+        Este host, cuando aún no tiene a
+    \item
+        Mascara: 223.1.1.0
+    \item
+        Broadcast: 223.1.1.255
+
 \end{itemize}
 
 \subsubsection*{Tipo de conexiones}
-
-\begin{center}
-\includegraphics[width=90mm,scale=0.3]{Imagenes/imagen13.png}
-\end{center}
-
 \begin{itemize}
     \item
-        \textbf{Unicast}: destino a un host/interfaz en particular, son las más comunes. Ej: 172.16.4.21
+        \textbf{Unicast}: destino a un host/interfaz en particular, son las más comunes. Ej:
+        172.16.4.21
     \item
-        \textbf{Broadcast}: destino a todos los hosts en una red.  Ej: 255.255.255.255. Se manda un paquete a todos los
-        host, se denomina a esto ''por inundación''.
+        \textbf{Broadcast}: destino a todos los hosts en una red.  Ej: 255.255.255.255. Se
+        manda un paquete a todos los host, por inundación se dice
     \item
         \textbf{Multicast}: destinada a un grupo de hosts en una red o varias redes.
     \item
@@ -1226,7 +1178,7 @@ Existieron dos estrategias para ampliar el número de dispositivos a conectarse a
         Flexibilizar el tamaño de subredes: Direccionamiento CIDR.
     \item
         Permitir el uso de internet de redes privadas a través del uso Nat. Muchas máquinas conectadas en red hogareñas,
-        todas ellas salen con la misma dirección pública en internet. Fue lo que terminó implementandose.
+        todas ellas salen con la misma dirección pública en internet. Se procede con el protocolo NAT.
 \end{enumerate}
 
 \subsubsection{CIDR}
@@ -1241,94 +1193,48 @@ Existieron dos estrategias para ampliar el número de dispositivos a conectarse a
 
 Por ejemplo:
 
-\[200\cdotp1\cdotp17\cdotp128/25\]
-Lo que se obtienen: $2^6 - 2$ direcciones IP posibles, ya que se le restan 2 por la de Red y la de Broadcast
+\emph{200.1.17.128/25}: $2^6 - 2$ direcciones IP posibles, ya que se le restan 2 porque : la de red y la de broadcast
 
-Un host ¿cómo obtiene su dirección de IP? Se puede cambiar forzadamente pero de la forma interna y la máscara de red.
+Un host ¿cómo obtiene su dirección de IP? Se puede cambiar forzdamente pero de la forma interna y la máscara de red.
 ¿quien maneja las direcciones públicas?  Los ISP. Dependen del servicio que uno contrate, tendrá determinada dirección
 pública.
 
-\textbf{DHCP}: protocolo que asigna direcciones de forma automática a los host que se conecten. Es un servicio
+\textbf{DHCP}: protocolo que asigna directamente de forma automática a los host que se conecten. Es un servicio
 determinado, eso lo asigna un servicio, que lo tiene contratado sl proveedor de internet.
 Este servicio viene implementado en el proveedor, es un servidor dinámico, que un host se conecta y el servidor le
-asigna una dirección. Es dinámico porque cambia según los host se conectan y se desconctan.
+asigna una dirección.  Es dinámico porque cambia según los host se conectan y se desconctan.
 
 Cuando se pone un ruter en el medio, se genera una nueva LAN, pero se conectan de forma externa con una contraseña
 determinada.
 
 \emph{¿Cómo se obtiene las direcciones públicas? }
+Las tiene los ISP, compran bloques de direcciones, con los bits más significativos.  ISP's block 11001000 00010111
+00010000 00000000 que sería: 200.23.16.0/20
 
-Las tiene los ISP, compran bloques de direcciones, con los bits más significativos.
+\textbf{DNS}: servidor que asigna un nombre de donminoi a una dirección IP donde está el host donde está almacenada. El
+servidor físico puede cambiar de direccion IP, pero el  DNS la modifica dinámicamente y para nosotros los humanos es
+transparente.
 
-\textbf{DNS}: servidor que asigna un nombre de dominio a una dirección IP donde está el host almacenada. El servidor
-físico puede cambiar de direccion IP, pero el DNS la modifica dinámicamente y para nosotros los humanos es transparente.
+\subsubsection{NAT}
 
-Cuando se quiere acceder a una página web en Internet se necesita la dirección IP del servidor donde está almacenada,
-pero, por regla general, el usuario solo conoce el nombre del dominio. La razón no es otra que la dificultad de recordar
-las series numéricas del tipo 93.184.216.34 que las componen, que son las que, precisamente, constituyen la base de la
-comunicación en Internet. Es por este motivo por el que las direcciones IP se ¿traducen¿ en nombres que podamos
-recordar, los llamados dominios. Por ejemplo:
-\begin{itemize}
-    \item
-        Dirección IP: 93.184.216.34
-    \item
-        Dominio: www.ejemplo.es
-\end{itemize}
-
-El Sistema de Nombres de Dominio o DNS es un sistema de nomenclatura jerárquico que se ocupa de la administración del
-espacio de nombres de dominio (Domain Name Space). Su labor primordial consiste en resolver las peticiones de asignación
-de nombres. Para ello, el sistema de nombres de dominio recurre a una red global de servidores DNS, que subdividen el
-espacio de nombres en zonas administradas de forma independiente las unas de las otras. Esto permite la gestión
-descentralizada de la información de los dominios.
-
-\subsubsection*{NAT}
-
-Internet en sus inicios no fue pensado para ser una red tan extensa, por ese motivo se reservaron sólo 32 bits para
-direcciones, el equivalente a 4.294.967.296 direcciones únicas, pero el hecho es que el número de máquinas conectadas a
-Internet aumentó exponencialmente y las direcciones IP se agotaban. Por ello surgió la NAT o Network Address Translation
-(en castellano, Traducción de Direcciones de Red)
-
-La idea es sencilla, hacer que redes de ordenadores utilicen un rango de direcciones especiales (IPs privadas) y se
-conecten a Internet usando una única dirección IP (IP pública). Gracias a este ''parche'', las grandes empresas sólo
-utilizarían una sola dirección IP pública y no tantas como máquinas hubiese en dicha empresa. Este mismo principio se
-utiliza para conectar redes domésticas a Internet.
-
-\begin{center}
-\includegraphics[width=90mm,scale=0.3]{Imagenes/imagen14.png}
-\end{center}
+Direcciones no alcanzan, direcciones privadas y acceden a internet y no pudieron. Salen con una misma red.
+una sola red para conectarse a una red exerior, ISP no se tiene que dar varias direcciones para todos los hots, sino una
+sola para toda la red que se quiere conectar.
 
 Para saber información pública de la red por la que se está saliendo se puede visitar: \emph{whatismyip.org}. También
 permite generar mucha información acerca de la red que se está utilizando.
 
 \emph{¿Cómo se hace para salir a internet desde una red de computadoras?}
 
-Dentro de la red existe lo que se denomina \emph{Puerta de enlace} que para nuestro ejemplo será: 10.0.0.4. Cuando un
-host quiere comunicarse con otro host situado fuera de la red local, situándose en Internet, lo que debe hacer es
-enviarle el paquete a la Puerta de Enlace Predeterminada; el router modifica la dirección IP privada por una dirección
-IP pública y envía el paquete al host destino. El router es quien permite salir a internet mediante la asignación de una
-dirección pública.
+Cada host que se quiere comunicar a internet, un host tiene que comunicar a otro que está afuera envia el paquete a la
+dirección: \emph{Puerta de enlace} predeterminada: 10.0.0.4; si una computadora se quiere comunicar dentro de su propia
+red lo hace sin problema, pero si se quiere comunicar con otra que NO esté, lo tiene que enviar a 10.0.0.4 que lo envía
+el router, que es el único que pude hacer eso de salir públicamente a inernet.
 
-El paquete cuando sale de adentro hacia afuera, el protocolo lo que hace es cambiar la dirección de puerta de enlace
-192.168.1.1 y le adjudica la pública 85.67.4.35 (ver imagen anterior).  Desde afuera, la red privada de donde salió el
-paquete es vista como UN SOLO host.  Cando el paquete vuelve viene con nombre destino la pública, y el router la
-modifica por la interna.
+El paquete cuando sale de adentro hacia afuera, el protocolo lo que hace es cambiar la dirección de puerta de enlace y
+le pone la pública (118.76.29.7), viaja ese paquete por la red como si fuera esa red una solo host.
 
-Nat tiene 3 tipos de asignación:
-\begin{itemize}
-    \item
-        \textbf{Estática}: Una dirección IP privada se traduce siempre en una misma dirección IP pública. Este modo de
-        funcionamiento permitiría a un host dentro de la red ser visible desde Internet. (Ver imagen anterior)
-    \item
-        \textbf{Dinámica}: El router tiene asignadas varias direcciones IP públicas, de modo que cada dirección IP
-        privada se mapea usando una de las direcciones IP públicas que el router tiene asignadas, de modo que a cada
-        dirección IP privada le corresponde al menos una dirección IP pública.
-    \item
-        \textbf{Sobrecarga}: La NAT con sobrecarga o PAT (Port Address Translation) es el más común de todos los tipos,
-        ya que es el utilizado en los hogares. Se pueden mapear múltiples direcciones IP privadas a través de una
-        dirección IP pública, con lo que evitamos contratar más de una dirección IP pública. Además del ahorro
-        económico, también se ahorran direcciones IPv4, ya que aunque la subred tenga muchas máquinas, todas salen a
-        Internet a través de una misma dirección IP pública.
-\end{itemize}
+Cando el paquete vuelve viene con nombre destino la pública, y el router la modifica por la interna.
 
 \emph{¿Cómo sabe cuando vuelve el paquete a qué host tiene que darselo?}
 
@@ -1340,48 +1246,42 @@ para las páginas internet.
 El Router tiene un propio servidor de HCP para la red pública, cuando se conecta un nuevo host lo que hace es asignar
 automáticamente una dirección privada.
 
-Ejemplo:
-\begin{center}
-\emph{www.google.com.ar:200}
-\end{center}
+\emph{www.google.com.ar:200} si se escribe en la barra del navegador la anterior consulta, lo que hace es consultar al
+servidor de google donde está hospedada la página mediante el código del puerto 200 (que seguro el servidor lo tendrá
+configurado como cerrado)
 
-Si se escribe en la barra del navegador la dirección anterior seguida por los dos puntos y el número 200, lo que hace es
-consultar al servidor de google donde está hospedada la página mediante el código del puerto 200 (que seguro el servidor
-lo tendrá configurado como cerrado).
+\section{Clase nº 5}
 
-\section*{Clase nº 5}
+\subsection{Protocolo NAT}
 
-\subsection*{Protocolo NAT}
-
-Lo que hace es ejecutarse en el ruter, cada dispositivo que se quiera conectar con el exterior, cambia la dirección
-privada para hacerla pública. La reemplaza por su inteface de salida, la dirección fuente tiene la pública. Cuando el
-paquete vuelve el roter vuelve a transformar la dirección pública en privada.
-
+Lo que hace es ejecutarse en el ruter, cada dispositivo que se quiera conectar en el exterior, cambia la dirección
+privada para hacerla pública. La reemplaza por su inteface de salida, la dirección de fuente tiene la pública.  Cuando
+el paquete vuelve el roter vuelve a transformar la dirección pública en privada.
 ¿Cómo sabe qué máquina tiene que entregar el paquete? Por el puerto que escucha para distintas aplicaciones. Si es por
 ejemplo una página web, sería puerto 80.
-
 Puerto es distinto para cada una de las máquinas que están en la red. Si varias computadoras hacen una peticióna a la
 misma web, lo que sucede es que por cada paquete tendrá el número de puerto que tiene cada una de las máquinas, que son
 distintas. También se pueden reservar puertos para diferentes máquinas.
 
-\emph{Campo de puerto}: de 16 bits, número reservado: 8080 por ejemplo para web. Tiene un máximo 65000 usuarios en una
-sola LAN (no es posible que supere esto).
+\emph{Campo de puerto}: 16 bits, número reservado: 8080 por ejemplo para web. Tiene un máximo 65000 usuarios en una sola LAN
+(no es posible que supere esto).
 
 Los ruters son de capa 3 solamente, por lo que viola el argumento de extremo a extremo, ya que es una función que no
 debería de cumplir el ruter. Sería ideal que no la cumpla el ruter; con la nueva versión 6 IP va a contemplar mayor
-rango de direciones para no realizar nateo (NAT) de direcciones. Recordar que el ''nateo'' de direcciones es debido al
+rango de direciones para no hacer nateo (NAT) de direcciones. Recordar que el ''nateo'' de direcciones es debido al
 incremento de dispositivos conectados a internet. Ello hace que los ruters que estarían dedicados a otra cosa, tengan
 que realizar otros trabajos para poder salvar la problematica de las pocas direcciones IP públicas.
 
-\subsubsection*{ICMP}
+\subsubsection{ICMP}
 
 \textbf{ICMP}: Informe de errores y señalización de routers (cómo es que se comunican los ruters entre si). La sigla
 ICMP significa Internet Control Message Protocol. El protocolo IP no es fiable, porque no ofrece garantías. El grueso de
-los errores no lo corrigue la capa de red. Protocolo IP no es fiable, los datagramas IP pueden perderse o llegar
-defectuosos a su destino.
+los errores no lo corrigue la capa de red.
 
 Lo que hace este protocolo es:
 \begin{itemize}
+    \item
+        Protocolo IP no es fiable, los datagramas IP pueden perderse o llegar defectuosos a su destino.
     \item
         ICMP informa al origen si hubo algún error en la entrega del mensaje.
     \item
@@ -1396,10 +1296,8 @@ Se envían datagramas de control, como ejemplo cuando se realiza un ping a una di
 estado de conexión de determinado host. Esto lo utiliza también el browser de internet cuando no se puede conectar.
 
 Un ejemplo de este tipo de errores es \emph{Red destino inalcanzable}: Quiere decir que el router ese no está
-respondiendo, es problema de toda la red. Que es distinto a \emph{Host destino inalcanzable}: la máquina no está activa
-pero la red funciona correctamente.
-
-También se pueden hacer ping a las computadoras que están en la misma red.
+respondiendo, es problema de toda la red. También se pueden hacer ping a las computadoras que están en la misma red.
+Que es distinto a \emph{Host destino inalcanzable}: la máquina no está activa pero la red funciona correctamente.
 
 Hay mensajes que sirven para comunicar los rotuers entre si, como ser:
 \begin{itemize}
@@ -1409,8 +1307,8 @@ Hay mensajes que sirven para comunicar los rotuers entre si, como ser:
         Descubrimiento de rout
 \end{itemize}
 
-Otro error es el de \textbf{Cabecera IP errónea} el cual significa que tiene el checksum de la cabecera con error, sólo
-de la cabecera, si da mal entonces ICMP anuncia esto.
+Otro error es el de \textbf{Cabecera IP errónea} el cual significa que  tiene un header checksum, sólo de la cabecera,
+si da mal entonces ICMP anuncia esto.
 
 \subsection*{IPV6}
 
@@ -1442,10 +1340,8 @@ Algunas modificaciones:
 \end{itemize}
 
 \subsubsection*{Tunelización}
-
 ¿Cómo sabe el dispositivo receptor del datagrama si es IPv4 o IPv6?  Lo que se denomina \textbf{tunelización}, los
 ruters laburan con IPV6, pero también acepta el IPv4, esto se hace mediante el \emph{tunelling}.
-
 Es necesario ir \emph{implementando de a poco} aquellos ruters que soportan IPv6, no se puede implementar de un día para
 el otro.
 
@@ -1560,11 +1456,11 @@ la topología,por lo que se vuelve más costoso.
 
 \begin{itemize}
     \item
-        Protocolo principal : IP, ICMP.
+        Protocolo principal : ip, icmp.
     \item
         Tareas: ruteo y reenvío.
     \item
-        Objetivo: determinar la mejor ruta de Host a Host.
+        Objetivo: determinar la mejor ruta de host a host.
 \end{itemize}
 
 Para generar esto requiere protocolos, que utilizan diferentes algoritmos. Se utilizan los grafos y se clasifican en dos
@@ -1592,7 +1488,7 @@ sus vecinos y esos vecinos informan a los demás, etc). Lo bueno es que no tienen
 cambios entonces el algoritmos converge a la ruta de minimo costo.
 
 Se tiene en una conexión horizontal: El nodo H, A y B. H tendrá como vecino a A. Si H contiene un protocolo que corre un
-algoritmo de Vector Distancia, entonces la información que tenga H de A será directa, es decir, que podrá calcularlo
+algoritmo de Vector Distancia, entonces la información que tenga H de A será directa,  es decir, que podrá calcularlo
 sin problemas. Pongamos por ejemplo un Costo de 5. Ahora, para conocer a B, será mediante lo que le informe A de B.
 Entre A y B puede haber millones de nodos, pero para H es lo mismo.
 
@@ -1601,9 +1497,7 @@ guarda como vectores, lo envía a los vecinos y los vecinos generan nuevamente es
 así va recopilando información. En la filmina 29 de la Clase 5 se puede ver cómo es que se comunican los vectores generados
 mediante 3 iteraciones.
 
-\begin{center}
-\includegraphics[width=100mm, scale=0.8]{Imagenes/imagen2.png}
-\end{center}
+\includegraphics[width=\textwidth]{Imagenes/imagen2.png}
 
 ¿Cómo repsonde este algoritmo frente a la cambio en los costos? Si hay tráfico por ejemplo, se le asigna otro valor,
 Se actualiza la información de ruteo, se actualiza los propios vectores distancia, se lo comunican a los vecinos, y
@@ -1655,9 +1549,7 @@ El problema es cuando se tienen varios ruters de frontera, que comunica diferent
 protocolos: uno que corre entre los sistemas autónoms y otro intra (que es adentro). En la filmina 42 una cosa es
 enviarla en 1b y otra es 1c. ¿Cómo sabe? Bueno, para eso corren protocolos denominado \emph{inter-as}.
 
-\begin{center}
-\includegraphics[width=100mm, scale=0.8]{Imagenes/imagen3.png}
-\end{center}
+\includegraphics[width=\textwidth]{Imagenes/imagen3.png}
 
 Se puede complejizar aún más cuando se tienen más AS todos interconectados, es decir, multiple elección entre múltiples
 AS.
