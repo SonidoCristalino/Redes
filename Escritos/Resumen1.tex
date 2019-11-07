@@ -2065,5 +2065,275 @@ arquitecturas viejas.
 \includegraphics[width=90mm,scale=0.3]{Imagenes/imagen7.png}
 \end{center}
 
+\section*{Clase nº 8 - Final de teoría}
+
+\subsection*{Repaso de la clase pasada}
+
+Capa de enlace: sirve para transportar de nodo a nodo la información. Está encargada de corregir el grueso de los errores.
+Los Enlaces pueden ser compartidos o dedicados. \textbf{Compartidos}: los protocolos que se ejecutan en ellos, se ponene
+de acuerdo cómo compartir el medio. La forma de hacerlo es:
+
+\begin{itemize}
+    \item
+        Partir el canal en varios usuarios. A través de frecuencia, por tiempo. Ventajas: cada usuario tiene asignado un
+        pedazo de canal. Contra: tasa máxima será la tasa del canal dividido la cantidad de usuarios que haya en el
+        canal.
+    \item
+        Transmitir todos en el mismo canal. Cuando hay colisión, se debe retrasmitir, el cómo recuperarse de esa
+        colisión depende del protocolo.
+\end{itemize}
+
+\subsection*{Direccionamiento de la Capa de Enlace}
+
+Como se sabe en la Capa de Red existen dos direcciones para poder transportar los datos entre hosts: dirección de
+origen y de destino.
+
+En la Capa de Enlace se conectarán dos interfaces, esas direcciones para cada enlace conocen como \textbf{Direcciones
+MAC}. Son Direcciones de 48 bits, a diferencia de las IP que son de las 32.
+
+Las direcciones MAc son Utilizadas para conducir un datagrama de una interfaz a otra interfaz físicamente conectada.
+Las Dirección MAC se encuentran grabada en la ROM de la tarjeta adaptadora, no es jerarquico, pero es portable porque se
+conserva la dirección por estar en la ROM.
+Por lo que se puede mover una tarjeta de una LAN a la otra, sin sufrir modificaciones en la dirección MAC. Los
+fabricantes de hardware son los que compran grandes porciones de direcciones que ponen en sus productos. Anécdota:
+Mother a una pc de escritorio, se le ponen una placa de red se anula la que está en el mother.
+
+Dentro de una red LAN, se conectan generalmente mediante direcciones MAC. Cada tarjeta tiene una dirección MAC, todo
+siempre a nivel de red local. Porque en esta red no hace falta identificar hostID ni tampoco NetID.  Las direcciones
+lucen como números en hexagesimal, pero tanto las IP como las MAc recordar que son binarios.
+Las direcciones MAC se dividen en 6 grupos, lo que se hace es interpretarlo en Hexa: 1A = 0001 | 1010 en binario
+
+Dirección de Broadcast: FF-FF-FF-FF-FF-FF = todos uno, o en IP 255.255.255.255
+
+Dentro de la LAN se debe saber si o si la dirección MAC. Si no se sabe la MAC de destino, ¿cómo se hace para averiguar
+sabiendo la IP? ¿Cómo se sabe la IP? La IP a priori siempre se debe conecer, porque es la máquina con la que me quiero
+comunicar, se debe saber que se quiere comunicar con alguien. De alguna forma la IP es la dirección lógica (de fantasía se
+podría decir), y la MAC es la dirección física, donde está ese host.
+
+Ahora bien ¿cual es esa dirección MAC? Para eso hay un protocolo \textbf{ARP}, el cual establece que cada router tiene
+una tabla que tiene mapeado la dirección MAC con la IP. En la tabla se encuentran los Campos IP, MAC, y un campo
+denominado TTL (es un tiempo de refresco de la tabla ARP), ya que se puede cambiar a la computador la placa de red (con
+lo cual queda la IP) o cambiar la IP por temas de administración y queda la MAC.
+
+La Capa de Red comunica dos host y la de Enlace dos nodos. Dirección origen y destino en la Capa de Red son iguales a
+lo largo de toda la red. Pero en la Capa de Enlace se va modificando a lo largo de la red, ya que las direcciones origen
+es de un enlace de un router a otro, va cambiando la dirección por donde tiene que ir, la IP siempre se mantiene.
+En una LAN siempre es necesario conocer la MAC, mediante el protocolo ARP, es como se conoce o se descubre esa
+dirección.
+
+¿Cómo se hace para actualizar la tabla?
+
+A quiere enviar un datagrama a B, y la dirección MAC de B no está en tabla ARP de A.
+
+A envía un mensaje mediante difusión(broadcast), el cual es un paquete que en su dirección destino MAC lleva una
+consulta ARP, (recordar que la dirección de Broadcast son todos uno), lo reciben todos los host de area local. Consulta
+a todos, para el host que no es, lo descarta, cuando le llega a B, como es la misma dirección IP de B, entonces responde a la
+dirección MAC de origien (de A) con lo que tiene su tabla, que es la MAC y la IP. B le envía a A su dirección MAC.
+
+El protocolo ARP es plug-and-play: cuando se conecta un host, automáticamente se genera la tabla ARP. Los nodos crean
+sus tablas de ARP sin intervención de la administradores.
+
+\subsection*{Ethernet}
+
+El esquema de una trama vía Ethernet es el siguiente:
+
+\begin{center}
+\includegraphics[width=70mm, scale=0.5]{Imagenes/imagen15.png}
+\end{center}
+
+\textbf{Prambulo}: el patrón utilizado. Usado para sincronizar la frecuencia de reloj del receptor. El receptor recibe
+bits, pero cómo sabe dónde comienza y dónde termina un bit. Si se envían muchos ceros, el valor de tensión es siempre la
+misma, ¿cómo se sabe si es 3 o 4 bits enviados o la cantidad que sea? Se tiene "detección por flancos" por eso es que se
+envía esto. Es para marcar el tiempo.
+
+Si el adaptador recibe una trama con dirección destino propia o dirección de broadcast (por ejemplo un paquete ARP),
+éste pasa los datos de la trama al protocolo de Capa de Red, de otro modo, el adaptador descarta la trama.
+
+\textbf{Tipo}: indica el protocolo superior, casi siempre es IP. Pero hay otras arquitecturas que utilizan otros
+protocolos.
+
+\textbf{CRC}: chequeado en receptor, si un error es detectado, la trama es simplemente descarta.
+
+\subsection*{Servicios Ethernet}
+
+Sin conexión y No confiable:
+\begin{itemize}
+    \item
+        Flujo de datagramas pasado a la capa de red puede tener vacíos por tramas descartada.
+    \item
+        Los vacíos son llenados si la aplicación está usando TCP.
+    \item
+        Si la aplicación está usando UDP entonces va a contener vacíos en la secuencia de datos recibidos.
+\end{itemize}
+
+
+Utiliza CSMA/CD.
+\begin{itemize}
+    \item
+        Sin ranuras.
+    \item
+        Sensa por portadora ¿ el adaptador no transmite si otro adaptador lo está haciendo).
+    \item
+        Detecta Colisiones ¿ adaptador transmisor aborta cuando éste detecta que otro adaptador está transmitiendo.
+    \item
+        Acceso Aleatorio Antes de intentar una retransmisión el adaptador espera un tiempo aleatorio.
+\end{itemize}
+
+\subsubsection*{CSMA/CD de Ethernet}
+\textbf{CSMA/CD}: ¿Cómo se genera esa espera aleatoria? Se denomina Backoff Exponencial.
+
+Objetivo: estimar la carga actual. Si la carga es alta, la espera aleatoria será mayor.
+
+Si alguien esá transmitiendo por un canal, cada vez que quiero transmitir empeora la situación de los demas, por lo que
+se empeora tambien la situación de uno. Si hay mucha espera, no tiene que ser muy largo el tiempo ; es una cuestión
+estadística el tiempo que se espera para transmitir de nuevo. Se tira la moneda, si sale 0 se retransmite al instante,
+si sale 1 entonces se espera 512 períodos de bits. Si hay interrupción, puede ser ahora en vez de 0 o 1 es 0, 1 2, 3, se
+espera otros 512.  El K se va agrandando para que sea menos probable que vuelva a estar en 0. ''Backoff'' significa
+retirarse, de forma exponencial.
+
+Los 512 dependen del procesamiento de transmisión, por lo que si es tiene más o menos transmisión cambia ese valor.
+Esto mismo se utiliza también en los procesadores.
+
+Da la impresión de que conviene tener un canal subdividido, pero en el peor de los casos se tiene muchísimas colisiones
+o más, elige K de en un rango que va desde 0,1,2,3,4,... hasta 1023. Si cae en 1023, que sería en el peor de los casos,
+se espera 50 milisegundos, que no es mucho el tiempo que se debe esperar.
+\[K * 512 = X\]
+\[X * 1023 = tEspera\]
+
+El tiempo de espera está en el orden del retardo de nodos. Con lo cual el sistema es muy eficiente, aún cuando haya
+muchas colisiones.
+
+\subsection*{Topología Estrella}
+
+En los 90 se utilizaba la topología BUS. Comunicaba a través de un medio compartido, complementamente compartido. NO es
+muy versatil, ya que había que cortar el cable si se quería conectar otra máquina, y volver a reconectar todo de nuevo,
+por lo que se perdía mucha calidad de transmisión.
+
+A medida que se escala, y que las computadoras se vuelven menos costosas,  que hay necesidad de agregar más
+computadoras, fue naciendo el centro de estrella. El primero fue el HUB, dispositivo sin inteligencia que lo único que
+hace es una vinculación física entre uno y otro host, no procesa direcciones MAC. Lo que hacía es distribuir la
+información  para todos vía inundación de canal, es decir mediante Broadcast, sin importar si tenía las direcciones de
+origen y destino, lo retransmite para todos.
+
+Pero es muy ineficiente porque inunda toda la red. Se tenía un problema de seguridad, ya que a todas les llegaba toda la
+información, por lo que estas conexiones eran muy vulnerables. El HUB aumenta la probabilidad de colisiones. Recordar
+que el HUB es de la Capa Física.
+Se desarrolla un dispositivo conocido como Switch, que tiene la psibildiad de intercambiar canales entre otros.
+
+\subsubsection*{Switches}
+
+Características de los Switches:
+\begin{itemize}
+    \item
+        Dispositivo de capa enlace de dato:
+        \begin{itemize}
+            \item
+                  Almacena y re-envía tramas Ethernet.
+            \item
+                  Examina encabezados de tramas y re-envía basado en dirección MAC.
+            \item
+                  Cuando debe re-enviar una trama utiliza CSMA/CD
+        \end{itemize}
+
+        Transparente:
+        \begin{itemize}
+            \item
+              Hosts no notan la presencia de switches
+        \end{itemize}
+
+        Plug-and-play (aprenden solos):
+        \begin{itemize}
+            \item
+              Switches no requieren ser configurados. Aprenden solos.
+            \item
+                Divide la subred en segmentos de LAN (para efectos de colisiones, por ejemplo)
+        \end{itemize}
+
+        Filtra paquetes:
+        \begin{itemize}
+            \item
+                  Tramas de un mismo segmento de LAN no son re-enviados a los otros segmentos.
+            \item
+                  Los segmentos pasan a ser dominios de colisión separados.
+        \end{itemize}
+\end{itemize}
+
+Cada Switch tiene una tabla de conmutación. La tabla es lo que aprende ni bien se conecta a la red.
+
+\begin{center}
+\includegraphics[width=110mm, scale=0.5]{Imagenes/imagen16.png}
+\end{center}
+
+D transmite primero al HUB, el HUB no lo encuentra entonces lo envía a switch, como en su tabla el switch no
+lo encuentra, lo que hace es enviarlo a todos, lo inunda. Cuando recibe D un paquete de C, entonces D lo envía al HUB,
+lo envía a D, E, F, el HUB lo envía al switch y eso hace que el switch se agregue a D en su tabla.
+
+A medida que los paquetes pasan por el Switch, va aprendiendo dónde está cada host. Cuando se conecta todo en su tabla
+está en 0. [Esto se toma en el parcial]
+
+El Switch evita colisiones cuanto más conozca la red, ya cuando el Switch tiene sus tablas ARP que viajan directamente
+de host a host, pero si hubiese en vez de un Switch un HUB, entonces habría má colisiones ya que está todo el tiempo
+transmitiendo mediante broadcast, por lo que inunda la red. Desde el punto d vista del tráfico, la eficiencia de la red
+disminuye mucho.
+
+\subsection*{Aislamiento de tráfico}
+
+El HUB tiene un Dominio de Colisión muy amplio. Retransmite a todos lados, hace que se colisione todo con todos.
+Pero con el swithc al filtrar paquetes, aisla el Dominio de Colisión, porque por cada transmisión tiene la posibiliad de
+aprender la topología de la red.
+
+No es del todo aislado, las tablas ARP siempre se regeneran por lo que los paquetes distribuidos Broadcast siguen
+existiendo, pero sólo cuando no está completa o generada la tabla ARP.
+
+Switches de acceso dedicado:
+\begin{itemize}
+    \item
+        Switch con muchas interfaces
+    \item
+        Cada host tiene conexión directa al switch
+    \item
+        No hay colisiones; full duplex.
+\end{itemize}
+
+\subsection*{Diseño de Redes Institucionales}
+
+Es complejo, hay mucha bibliografía al respecto. Cosas a tener en cuenta:
+Las colisiones dependen de los Usuarios a conectar. Conviene separar las computadoras por oficinas, conectados por
+Switch, y todos esos Swtich conectados a un Swtich CORE. Dentro de este Core se suele conectar servidores. Hay que
+tener en cuenta que la conexión del Core siempre debe ser mejor que las demás, ya que conecta para todos.
+
+Existen 3 niveles de Switch depende del tamaño de la corporación. Swithc de nivel 3: rompe el principio de que es un
+dispositivo de Capa 2, pero si puede rutear por direcciones IP, no necesite actualzar la tabla ARP. Si se quiere
+comunicar internet hacia afuera, se debe tener en cuenta que debe poner un Router.  En la filmina está mal puesto el
+HUB, es porque la filmina es vieja, podría ir bien los Switch.
+
+Se debe saber lo que es un HUB de un Switch. Cómo divide los dominios de colisiones.
+
+\subsection*{Switches vs. Routers}
+\begin{itemize}
+    \item
+        Ambos son dispositivos de almacenamiento y re-envío
+        \begin{itemize}
+            \item
+              Routers son dispositivos de capa de red (examinan encabezados de capa de red)
+            \item
+              Switches son dispositivos de capa enlace de datos.
+        \end{itemize}
+    \item
+        Routers mantienen tablas de ruteo, implementan los algoritmos de ruteo.
+    \item
+        Switches mantienen las tablas de switches, implementan filtrado y algoritmos de aprendizaje.
+\end{itemize}
+
+\subsubsection*{Resumen comparativo}
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=100mm, scale=0.5]{Imagenes/imagen17.png}
+\end{center}
+
+Lo que se puede ver en el gráfico es que los Switches no reconoce las direcciones IP, sólo trabaja con direcciones MAC.
+El router si entiende de la Capa nº 3, de Red, es decir que trabaja con direcciones IP.
+
 
 \end{document}

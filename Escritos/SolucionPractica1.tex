@@ -275,5 +275,36 @@ pero sólo durante 20\% del tiempo}
         ¿Cuál es la probabilidad de que un usuario dado esté trasmitiendo?
 \end{enumerate}
 
+Respuestas:
+\begin{itemize}
+    \item
+        En caso de utilizar conmutación de circuitos, dado que cada usuario transmite al 20\% de tiempo, estaría dando
+        la posibidad de soportar hasta 5 usuarios, que serían las ranuras disponibles en las que se dividirá la trama.
+    \item
+        En el caso de utilizar conmutación de paquetes, el retardo de cola es despreciable dado que, a diferencia de la
+        Conmutación de Circuitos, en la de Paquetes se transmiten por paquetes, dando la posibilidad de transmitir a la
+        máxima velocidad que permita el enlace.
+        Puede darse la situación que si un paquete entrante tiene que ser transmitido a través de un enlace, pero se
+        encuentra con que el enlace está ocupado transmitiendo otro paquete, el paquete entrante tendrá que esperar en
+        el buffer de salida. Por tanto, además de los retardos dé almacenamiento y reenvío, los paquetes se ven
+        afectados por los retardos de cola del buffer de salida. Estos retardos son variables y dependen del nivel de
+        congestión de la red. Puesto que la cantidad de espacio en el buffer es finita, un paquete entrante puede
+        encontrarse con que el buffer está completamente lleno con otros paquetes que esperan a ser transmitidos. En
+        este caso, se producirá una pérdida de paquetes, bien el paquete que acaba de llegar o uno que ya se encuentra
+        en la cola será des cartado.
+    \item
+        La probabilidad de que haya más de un usuario transmitiendo es de 0,2, dado que se dijo en el enunciado del
+        problema que el usuario ocupaba la linea el 20\% del tiempo.
+        Por ejemplo: Suponga que hay 10 usuarios y que de repente un usuario genera 1.000 paquetes de 1.000 bits,
+        mientras que los usuarios restantes permanecen inactivos y no generan paquetes. Con la tecnología de conmutación
+        de circuitos con multiplexación TDM con 10 particiones por marco y con cada partición formada por 1.000 bits, el
+        usuario activo sólo puede emplear su partición por marco para transmitir los datos, mientras que las restantes
+        nueve particiones de cada marco permanecen inactivas.  Transcurrirán 10 segundos antes de que el millón de bits
+        de datos del usuario activo hayan sido transmitidos. Sin embargo, con la conmutación de paquetes, el usuario
+        activo puede enviar de forma continuada sus paquetes a la velocidad máxima del enlace de 1 Mbps, ya que no hay
+        ningún otro usuario generando paquetes que tengan que ser multiplexados con los paquetes del usuario activo. En
+        este caso, todos los datos del usuario activo se transmitirán en un segundo.
+\end{itemize}
+
 
 \end{document}
