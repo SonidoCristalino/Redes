@@ -1,0 +1,96 @@
+Si se quiere agrandar la cantidad de host para una subred, lo que se puede hacer es tomar una dirección de host, se pone
+un router y del otro lado se puede poner todos los host privados. Pero acá debería de hacer un nateo, esto es una ps
+
+Entre dos ruters deben haber una dirección IP y tienen que tener el mismo Net ID, es decir que se genera una nueva
+subred, En el ejercicio 9 existen 6 redes, es decir, las 3 que tienen 2 host cada una y los enlaces que están entre los
+routers. Esto último, es lo que se trata de explicar, que entre cada salida de router debe tener una dirección que hace
+que estén una ruta 
+
+Ejercicio del parcial nº 7: 
+--------------------------
+Mandar un archivo de 5 millones de bytes, MTU 1500bytes, cabecera de IP 20. 
+(Si el ejercicio dice que el archivo "viene un segmento por internet"... es que ya tiene la cabecera). 
+
+De 1500 hay 20 bytes de cabecera y 1480 de cuerpo. 
+
+5000000 / 1480 = 3378 con un resto de 560(se debe sacar el resto, haciendo 5 millons - (3378*1480) )
+
+    Se envian 3378 + 1 (el del resto): 
+        - se envian 3378 de 1500 bytes (porque se agregan los 20 de cabecera)
+        - y se envía el último de 680: 560 + 20 
+
+Offset: 
+    1 - 0 
+    2 - 1480
+    3 - 2960
+    ...
+    3379 - 3378
+
+Resultado: 
+La cantidad de paquetes es de 3379 porque son los 3378 bytes de 1500 + 1 de 680
+
+----------------------------------------------------------
+
+Se toma también de las tablas ARP, de cómo van aprendiendo cuando se descubre un switch y todo eso (HUB y Switchs). 
+Ejercicio 7 del TP nº 5. 
+
+Estacion 1 envia el HUb e indunda todo ese segmento. 
+1) lo reciben todos, porque el switch 1 lo pasa a la derecha y abajo. y el Swithc 2 lo pasa 
+2) estacion 1, 2, 3, 4, 5, y servidor, porque el Switch 1 ya sabe que la estacion 1 está a la izquierda como también el
+servidor. 
+3) Trasmite al de la derecha y abajo 
+
+----------------------------------------------------------
+
+Si hay ejercicio que se apliquen el algoritmo ,pero se debe poner en un caso la formula, y se debe tener la tabla
+resultante de reenvío, es decir por dónde tiene que salir determinado
+El subindice indica por qué enlace debe salir ¿?. 
+
+----------------------------------------------------------
+
+Realizar ejercicios con los de Dijsktra. 
+
+----------------------------------------------------------
+
+sistema autonomo: el problema es cuando salir afuera de la región autonoma, el problema que debe resolver son dos: 
+    1) sabe rqué router de borde se tiene que elegir para poder pasar a otra región autónoma. 
+    2) llegar a ese router de borde para que este alcance la otra región autónoma a donde se quiere llegar. 
+
+Uno es cuál debe ser el router de borde y el otro es cómo llegar hasta él. 
+
+¿Es necesario que todos los sistemas autónomos utilicen el mismo algoritmo de enrutamiento interno? ¿Por qué?
+No es necesario, ya que cada región autónoma resuelve internamente el saber cuál es el ruter de borde y cómo llegar
+hasta él. Se pueden llegar de distintas formas dependiendo del algoritmo, pero básicamente tienen que resolver los dos
+íntems anteriores. (Verlo bien en el libro). 
+
+----------------------------------------------------------
+Se puede contar el bit de paridad o de imparidad, mientras que los distintos routers sepan qué van a contar, si es de
+paridad o de imparidad. 
+
+----------------------------------------------------------
+
+Ejercicio tablas ARP (sólo los swithcs, los HUBS no tienen tabla): 
+    [ver imagen en el celular]
+
+     a [Switch] b
+     |          |
+     HUB        HUB
+    | | |       |
+    1 2 3       4
+
+Mensajes            Los que reciben:    Cómo se va completando la tabla ARP:
+a) 1 envia a 3      (1, 2, 3, 4)        Descubre que 1 está en a (interfaz del Switch)
+b) 3 > 1            (1, 2, 3)           Descubre que 3 esta en a (interfaz del Switch)
+c) 2 > 4            (1, 2, 3, 4)        Descubre que 2 esta en a (interfaz del Switch)
+d) 4 > 2            (1, 2, 3)           Descubre que 4 esta en b (interfaz del Switch)
+e) 3 > 4            (1, 2, 3, 4)
+f) 4 > 3            (1, 2, 3)
+
+Tabla ARP del switch: 
+--------------------
+    HOST        Interface
+    1              a
+    2               a
+    3               a
+    4               b
+
