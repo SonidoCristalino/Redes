@@ -76,14 +76,30 @@
 
 \author{Emiliano Salvatori}
 \title{Redes I\\
-    \large Examen Integrador 06/2018}
+    \large Examen Integrador 06/2016}
 \date{Noviembre 2019}
-\pagestyle{myheadings}
+\pagestyle{myheadings}  %se modifica para que no salga en la cabecera cada una de las preguntas de \section
 
 \begin{document}
 \maketitle
 
-\section{¿Cuáles son las características de una Red de Circuitos Conmutados y una Red de Paquetes Conmutados?}
+\section{¿Qué entiende por Protocolo? Cuáles son las características de una red de Circuitos Conmutados?}
+
+Un protocolo de red es similar a un protocolo humano, excepto en que las entidades que intercambian mensajes y llevan a
+cabo las acciones son los componentes hardware o software de cierto dispositivo (por ejemplo, una computadora, una
+PDA, un teléfono móvil, un router u otro dispositivo de red). Cualquier actividad de Internet que implique dos o más
+entidades remotas que se comunican está gobernada por un protocolo. Por ejemplo, los protocolos implementados por
+hardware en las taijetas de interfaz de red de dos computadoras conectadas físicamente controlan el flujo de bits a
+través del ''cable'' conectado entre las dos taijetas de interfaz de red; los protocolos de control de congestión de los
+sistemas terminales controlan la velocidad a la que se transmiten los paquetes entre el emisor y el receptor; los
+protocolos de los routers determinan la ruta que seguirá un paquete desde el origen al destino. Los protocolos se
+ejecutan por todas partes en Internet.
+
+En otras palabras, \emph{Un protocolo define el formato y el orden de los mensajes intercambiados entre dos o más
+entidades que se comunican, así como las acciones tomadas en la transmisión y/o la recepción de un mensaje u otro
+suceso}.
+
+\subsection*{Red de Circuitos Conmutados}
 
 Existen dos métodos fundamentales que permiten transportar los datos a través de una red de enlaces y conmutadores: la
 conmutación de circuitos y la conmutación de paquetes.  En las \textbf{redes de conmutación de circuitos}, los recursos
@@ -92,8 +108,6 @@ entre los sistemas terminales están reservados durante el tiempo que dura la ses
 las \textbf{redes de conmutación de paquetes}, estos recursos no están reservados; los mensajes de una sesión utilizan los
 recursos bajo petición y, en consecuencia, pueden tener que esperar (es decir, ponerse en cola) para poder acceder a un
 enlace de comunicaciones.
-
-\subsection*{Conmutación de circuitos}
 
 La \textbf{conmutación de circuitos} es un tipo de conexión que realizan los diferentes nodos de una red para lograr un
 camino apropiado para conectar dos usuarios de una red de telecomunicaciones. A diferencia de lo que ocurre en la
@@ -137,24 +151,8 @@ utilizar (en cada marco) para transmitir los datos de la conexión.
 \end{center}
 \vspace{5pt}
 
-\subsection*{Conmutación de paquetes}
 
-Un paquete es un grupo de información que consta de dos partes: los datos propiamente dichos y la información de
-control, que indica la ruta a seguir a lo largo de la red hasta el destino del paquete. La \textbf{conmutación de
-paquetes} es un método de agrupar los datos transmitidos a través de una red digital en paquetes que se componen de un
-encabezado y una carga útil. Los datos en el encabezado son utilizados por el hardware de red para dirigir el paquete a
-su destino donde la carga útil es extraída y utilizada por el software de la aplicación. La conmutación de paquetes es
-la base principal de las comunicaciones de datos en redes informáticas de todo el mundo.
-
-Las aplicaciones distribuidas intercambian mensajes para llevar a cabo sus tareas. Los mensajes pueden contener
-cualquier cosa que el diseñador del protocolo desee. Los mensajes pueden realizar una función de control (por ejemplo,
-los mensajes de saludo ''Hola'' del ejemplo anterior sobre establecimiento de la comunicación) o pueden contener datos,
-como por ejemplo un mensaje de correo electrónico, una imagen JPEG o un archivo de audio MP3. En las redes de
-computadoras modernas, el origen divide los mensajes largos en fragmentos de datos más pequeños que se conocen como
-paquetes. Entre el origen y el destino, cada uno de estos paquetes viaja a través de los enlaces de comunicaciones y de
-los conmutadores de paquetes (de los que existen dos tipos predominantes: los routers y los switches de la capa de
-enlace). Los paquetes se transmiten a través de cada enlace de comunicaciones a una velocidad igual a la velocidad de
-transmisión máxima del enlace.
+\section{¿Cuáles son los retardos en Redes de Conmutación de Paquetes? Describir}
 
 La mayoría de los conmutadores de paquetes emplean el método de transmisión de almacenamiento y reenvío en las entradas
 de los enlaces. \textbf{Transmisión de almacenamiento y reenvío} significa que el conmutador tiene que recibir el paquete
@@ -164,9 +162,9 @@ existente a lo largo de la ruta que debe seguir el paquete. Veamos el tiempo que
 desde un host a otro host en una red de conmutación de paquetes. Supongamos que existen Q enlaces entre los dos hosts, y
 que la velocidad en cada uno de ellos es igual a R bps. Suponemos que éste es el único paquete presente en la red. En
 primer lugar, el paquete tiene que enviarse a través del primer enlace que sale del host A, lo que consume un tiempo de
-$\frac{L}{R}$ segundos. A continuación, tiene que ser transmitido por cada uno de los $Q - 1$ enlaces restantes; es decir, se
-tiene que almacenar y reenviar $Q - 1$ veces, añadiéndose cada vez un retardo de almacenamiento y reenvío de $\frac{L}{R}$. Por
-tanto, el retardo total es igual a $\frac{Q*R}{L}$
+$\frac{L}{R}$ segundos. A continuación, tiene que ser transmitido por cada uno de los $Q - 1$ enlaces restantes; es
+decir, se tiene que almacenar y reenviar $Q - 1$ veces, añadiéndose cada vez un retardo de almacenamiento y reenvío de
+$\frac{L}{R}$. Por tanto, el retardo total es igual a $\frac{Q*R}{L}$
 
 Cada conmutador de paquetes tiene varios enlaces conectados a él y para cada enlace conectado, el conmutador de paquetes
 dispone de un buffer de salida (también denominado cola de salida), que almacena los paquetes que el router enviará a
@@ -179,42 +177,70 @@ paquete entrante puede encontrarse con que el buffer está completamente lleno co
 transmitidos. En este caso, se producirá una pérdida de paquetes, bien el paquete que acaba de llegar o uno que ya se
 encuentra en la cola será descartado.
 
-\section{Dado un paquete de longitud igual a 2000bytes, que se transmite a través de un enlace a una distancia de
-2500km, siendo la velocidad de propagación de 2,5*108 m/s y la velocidad de transmisión de 2Mb/s}
+\subsection*{Retardo de Procesamiento}
+
+El tiempo requerido para examinar la cabecera del paquete y determinar dónde hay que enviarlo es parte del retardo de
+procesamiento. El retardo de procesamiento también incluye otros factores como el tiempo necesario para comprobar los
+errores de nivel de bit del paquete que se producen al transmitir los bits del paquete desde el nodo anterior al router
+A. Los retardos de procesamiento en los routers de alta velocidad suelen ser del orden de los microsegundos o
+menores. Una vez efectuado el procesamiento nodal, el router dirige el paquete a la cola que precede al enlace que lleva
+al router B.
+
+\subsection*{Retardo de Cola}
+
+En la cola, el paquete experimenta un retardo de cola al tener que esperar para ser transmitido a través del enlace. La
+duración del retardo de cola de un determinado paquete dependerá del número de paquetes que hayan llegado antes a la
+cola y que están esperando para ser transmitidos por el enlace. Si la cola está vacía y no se está transmitiendo
+ningún paquete actualmente, entonces el retardo de cola de nuestro paquete será cero. Por el contrario, si hay mucho
+tráfico y muchos paquetes también están esperando para ser transmitidos, el retardo de cola puede ser grande. Vamos a
+ver brevemente que el número de paquetes que un paquete entrante puede esperar encontrar es una función de la intensidad
+y de la naturaleza del tráfico que llega a la cola. En la práctica, los retardos de cola pueden ser del orden de
+microsegundos a milisegundos
+
+\subsection*{Retardo de Transmisión}
 
 Suponiendo que los paquetes se transmiten de manera que el primero que llega es el primero que sale, lo que es una
 práctica común en las redes de conmutación de paquetes, nuestro paquete sólo puede ser transmitido después de que todos
 los paquetes que hayan llegado antes que él hayan sido transmitidos. Sea la longitud del paquete igual a L bits y la
 velocidad de transmisión del enlace del router A hasta el router B igual a R bits/segundo. Entonces, por ejemplo, para
 un enlace Ethernet a 10 Mbps, la velocidad es R = 10 Mbps; para un enlace Ethernet a 100 Mbps, la velocidad será R = 100
-Mbps. Por lo que: \[ R_T= \frac{L}{R}\]
+Mbps. El retardo de transmisión (también denominado retardo de almacenamiento y reenvío) será igual a UR. Este es el
+tiempo necesario para introducir (es decir, transmitir) todos los bits del paquete por el enlace. Normalmente, en la
+práctica, los retardos de transmisión son del orden de los microsegundos a los milisegundos.
 
-\subsection*{Calcule el retardo de transmisión. ¿Depende este retardo de la longitud del paquete?}
-
-Siendo $R_T$ el \textbf{Retardo de Transmisión},  L la \textbf{Longitud del paquete}, y R la \textbf{Velocidad de
-Transmisión}, entonces se tiene: \[ R_T = \frac{2000b}{2048b/s} \approx 0,98 s\]
-
-En el \textbf{Retardo de Transmisión} depende directamente de la longitud del paquete que se esté tratando de
-transmitir, ya que el paquete será transmitido sólo después de que todos los paquetes que hayan llegado antes que él
-hayan sido transmitidos.
-
-\subsection*{Calcule el retardo de propagación. ¿Depende este retardo de la longitud del paquete? ¿y de la velocidad de
-transmisión?}
+\subsection*{Retardo de Propagación}
 
 Una vez que un bit ha entrado en el enlace, tiene que propagarse hasta el router B. El tiempo necesario para propagarse
-desde el principio del enlace hasta el router B es el \textbf{retardo de propagación}. El bit se propaga a la velocidad de
+desde el principio del enlace hasta el router B es el retardo de propagación. El bit se propaga a la velocidad de
 propagación del enlace. Esta velocidad depende del medio físico del enlace (es decir, que el medio sea cable de fibra
-óptica, cable de cobre de par trenzado, etc.) y es igual o menor a la velocidad de la luz.
+óptica, cable de cobre de par trenzado, etc.) y está comprendido en el rango entre
+$2 * 10^8 \frac{m}{s}$ y $3*10^8 \frac{m}{s}$
+(metros sobre segundos) que es igual o menor que la velocidad de la luz.
 
-El \textbf{Retardo de propagación} es igual a la distancia entre dos routers dividida entre la velocidad de propagación.
+El retardo de propagación es igual a la distancia entre dos routers dividida entre la velocidad de propagación. Es
+decir, el retardo de propagación es igual a d/s, donde d es la distancia entre el router A y el router B y s es la
+velocidad de propagación del enlace. Una vez que el último bit del paquete se ha propagado hasta el nodo B, éste y todos
+los bits anteriores del paquete se almacenan en el router B. A continuación, el router B lleva a cabo el reenvío. En las
+redes de área extensa, los retardos de propagación son del orden de los milisegundos.
 
-Siendo $R_P$ el \textbf{Retardo de propagación}, D la \textbf{Distancia} entre dos routers y $V_p$ la \textbf{Velocidad
-de Propagación} entonces se tiene: \[ R_P = \frac{D}{V_p} = \frac{2500000m}{2,5*108m/s} \approx 9259.25s\]
+\section{Dado un paquete de longitud igual a 2000 bytes, que se transmite a través de un enlace a una distancia de
+2500km, siendo la velocidad de propagación de 2,5 * $10^4$ m/s y la velocidad de transmisión de 2Mb/s. Calcule el
+retardo de transmisión}
 
-En el \textbf{Retardo de Propagación} NO importa la longitud del paquete, sino que lo que impera es el medio físico del
-enlace y la distancia entre los dos dispositivos (routers en este caso) que tienen que intercambiar los paquetes.
+\subsection*{Retardo de Transmisión}
+Suponiendo que los paquetes se transmiten de manera que el primero que llega es el primero que sale, lo que es una
+práctica común en las redes de conmutación de paquetes, nuestro paquete sólo puede ser transmitido después de que todos
+los paquetes que hayan llegado antes que él hayan sido transmitidos.
 
-\section{¿Cuáles son las características principales de la Capa de Red? }
+\subsection*{Cálculo}
+Siendo $L_p$ la \textbf{Longitud del Paquete} y $R_e$ la \textbf{Velocidad del Enlace} entonces para calcular el
+\textbf{Retardo de transmisión} ($R_t$) se debe realizar: \[ R_t = \frac{L_p}{R_e} = \frac{2000b}{2048b/s} \approx 0,97s\]
+
+
+\section{¿Cuáles son las características principales de la Capa de Red?¿Cuáles son las funciones de un Router? Realice
+un diagrama en bloques de un Router y describa sus módulos}
+
+\subsection*{Funciones de la capa de Red}
 
 La función de la capa de red es por tanto tremendamente simple: transporta paquetes desde
 un host emisor a un host receptor. En la realización de esta tarea podemos identificar dos
@@ -271,8 +297,7 @@ Cada ruter corre el algoritmo, genera la tabla, determina la mejor ruta, envía l
 cada determinado tiempo, para que se actualice la tabla de ruteo; y todo esto se denomina \emph{Ruteo dinámico}.
 \emph{Ruteo estático}: es cuando se define vía hardware por dónde debe salir un paquete determinado.
 
-\section{¿Cuáles son las funciones de un router? Realice un diagrama de bloques de un Router y describa sus módulos.}
-
+\subsection*{Función de un Router}
 La función principal de un router es la \emph{transferencia real de paquetes desde los enlaces de entrada de un router a
 los apropiados enlaces de salida.}
 
@@ -312,166 +337,167 @@ En un router se pueden identificar cuatro componentes:
         router.
 \end{enumerate}
 
-\section{¿Para qué se utiliza el comando Tracert? ¿Cómo se utiliza?}
+\section{Detalle las características de protocolo IP ¿a qué capa pertenece? ¿Qué es el número IP? ¿Qué es una IP
+pública? ¿Cómo se distingue una subred de un Host?}
 
-El comando \textbf{tracert} es un comando del símbolo del sistema que se utiliza para mostrar varios detalles sobre la
-ruta que toma un paquete desde el equipo o dispositivo en el que se encuentra hasta el destino que se especifique.
+\subsection*{Protocolo IP}
 
-Tracert determinará la ruta llevada a un destino. Para ello, envía mensajes de solicitud de eco del Protocolo de
-mensajes de control de Internet (ICMP) al destino. Al enviar el tráfico al destino, aumentará de manera creciente los
-valores del campo Tiempo de vida (TTL) para ayudar a encontrar la ruta a esa dirección de destino.
+El protocolo de IP (Internet Protocol) es la base fundamental de la Internet. Este protocolo corre sobre la \textbf{Capa
+de Red}, portando datagramas de la fuente al destino.
 
-El comando tracert, o traceroute es similar al comando ping, pero este proporciona información sobre la ruta que toma un
-paquete. Tracert envía paquetes a un destino, pidiendo a cada enrutador de Internet que responda cuando pase el paquete.
-Esto le mostrará los paquetes de ruta que toma cuando los envía entre su ubicación y un destino.
+El nivel de transporte parte el flujo de datos en datagramas.  Durante su transmisión se puede partir un datagrama en
+fragmentos que se montan de nuevo en el destino. Las principales características de este protocolo son:
 
-\subsection*{Ejemplo}
-\begin{center}
-    tracert 192.168.1.1
-\end{center}
-
-En el ejemplo anterior, el comando tracert se usaba para mostrar la ruta desde la computadora en red en la cual el
-comando tracert está siendo ejecutado por un dispositivo de red, en este caso, un router en una red local, que tiene
-asignada la dirección IP 192.168.1.1.
-
-\section{Detalle las características del protocolo IP. ¿A qué capa pertenece? ¿qué tipos de campos y/o servicios hay en
-el formato de un datagrama?}
-
-El protocolo de la \textbf{Capa de Red} de Internet es el \textbf{Protocolo IP (Internet Protocol)}. IP proporciona una
-comunicación lógica entre hosts. El modelo de servicio de IP es un servicio de entrega de mejor esfuerzo (best effort).
-Esto quiere decir que IP hace todo lo que puede por entregar los segmentos entre los hosts que se están comunicando,
-pero no garantiza la entrega. En particular, no garantiza la entrega de los segmentos, no garantiza que los segmentos se
-entreguen en orden y no garantiza la integridad de los datos contenidos en los segmentos. Por estas razones, se dice que
-IP es un servicio no fiable. Además, sabemos que todos los hosts tienen al menos una dirección de capa de red, que se
-conoce como dirección IP. Lo único que necesitamos saber es que todo host tiene una dirección IP asociada.
-
-Los campos clave de los datagramas IPv4 son los siguientes:
 \begin{itemize}
     \item
-        \textbf{Número de versión}: Estos 4 bits especifican la versión del protocolo IP del datagrama. A partir del
-        número de versión el router puede determinar cómo interpretar el resto del datagrama IP. Las distintas versiones
-        de IP utilizan distintos formatos de datagrama.
+        Protocolo orientado a no conexión.
     \item
-        \textbf{Longitud de cabecera}: Puesto que un datagrama IPv4 puede contener un número variable de opciones (las
-        que se incluyen en la cabecera del datagrama IPv4), estos 4 bits son necesarios para determinar dónde comienzan
-        realmente los datos del datagrama IP. La mayoría de los datagramas IP no contienen opciones, por lo que el
-        datagrama IP típico tiene una cabecera de 20 bytes.
+        Fragmenta paquetes si es necesario.
     \item
-        \textbf{Tipo de servicio}: Los bits del tipo de servicio (TOS, Type of service) se incluyeron en la cabecera de
-        IPv4 con el fin de poder diferenciar entre distintos tipos de datagramas IP (por ejemplo, datagramas que
-        requieran en particular un bajo retardo, una alta tasa de transferencia o una entrega fiable). Por ejemplo,
-        puede resultar útil diferenciar datagramas en tiempo real (como los utilizados en aplicaciones de telefonía
-        IP) del tráfico que no es en tiempo real (como por ejemplo el tráfico FTP). El nivel específico de servicio que
-        se proporcione es una política que determinará el administrador del router.
+        Direccionamiento mediante direcciones lógicas IP de 32 bits.
     \item
-        \textbf{Longitud del datagrama}: Es la longitud total del datagrama IP (la cabecera más lo datos) en bytes.
-        Puesto que este campo tiene una longitud de 16 bits, el tamaño máximo teórico del datagrama IP es de 65.535
-        bytes. Sin embargo, los datagramas rara vez tienen una longitud mayor de 1.500 bytes.
+        Si un paquete no es recibido, este permanecerá en la red durante un tiempo finito.
     \item
-        \textbf{Identificador, indicadores, desplazamiento de fragmentación}: Estos tres campos tienen que ver con lo
-        que se denomina fragmentación IP. Es interesante comentar que la nueva versión de IP, IPv6, NO permite la
-        fragmentación en los routers.
+        Realiza el "mejor esfuerzo" para la distribución de paquetes.
     \item
-        \textbf{Tiempo de vida}: El campo Tiempo de vida (TTL, Time-To-Live) se incluye con el fin de garantizar que los
-        datagramas no estarán eternamente en circulación a través de la red (debido, por ejemplo, a un bucle de
-        enrutamiento de larga duración). Este campo se decrementa en una unidad cada vez que un router procesa un
-        datagrama. Si el campo TTL alcanza el valor 0, el datagrama tiene que ser descartado.
-    \item
-        \textbf{Protocolo}: Este campo sólo se emplea cuando un datagrama IP alcanza su destino final.  El valor de este
-        campo indica el protocolo específico de la capa de transporte al que se pasarán los datos contenidos en ese
-        datagrama IP. Por ejemplo, un valor de 6 indica que los datos se pasan a TCP, mientras que un valor igual a 17
-        indica qiie los datos se pasan a UDP. Puede obtener una lista de todos los valores posibles en [IANA Protocol
-        Numbers 2009]. Observe que el número de protocolo especificado en el datagrama IP desempeña un papel análogo al
-        del campo que almacena el número de puerto de un segmento de la capa de transporte. El número de protocolo es el
-        elemento que enlaza las capas de red y de transporte, mientras que el número de puerto es el componente que
-        enlaza las capas de transporte y de aplicación. En el Capítulo 5 veremos que ia trama de la capa de enlace
-        también contiene un campo especial que enlaza la capa de enlace con la capa de red.
-    \item
-        \textbf{Suma de comprobación de cabecera}: La suma de comprobación de cabecera ayuda a los routers a detectar
-        errores de bit en un datagrama IP recibido. Esta suma de comprobación se calcula tratando cada pareja de 2 bytes
-        de la cabecera como un número y sumando dichos números utilizando aritmética de complemento a 1. Como se ha
-        visto en la Sección 3.3, eí complemento a 1 de esta suma, conocida como suma de comprobación Internet, se
-        almacena en el campo Suma de comprobación. Un router calcula la suma de comprobación de cabecera para cada
-        datagrama IP recibido y detecta una condición de error si la suma de comprobación incluida en la cabecera del
-        datagrama no coincide con la suma de comprobación calculada. Normalmente, los routers descartan los datagramas
-        en los que se ha detectado que existe un error. Observe que la suma de comprobación tiene que volver a
-        calcularse y almacenarse en cada router, ya que el campo TTL y, posiblemente, también el campo de opciones
-        pueden cambiar.
-        Una cuestión que suele plantearse en este punto es ¿por qué TCP/IP lleva a cabo una comprobación de errores
-        tanto en la capa de transporte como en la capa de red? Existen varias razones para esta redundancia. En primer
-        lugar, fíjese en que en la capa IP sólo se calcula la suma de comprobación para la cabecera IP, mientras que la
-        suma de comprobación TCP/UDP se calcula sobre el segmento TCP/UDP completo. En segundo lugar, TCP/UDP e IP no
-        necesariamente tienen que pertenecer a la misma pila de protocolos. En principio, TCP puede ejecutarse sobre un
-        protocolo diferente (por ejemplo, ATM) e EP puede transportar datos que no se pasarán a TCP/UDP.
-
-    \item
-        \textbf{Direcciones IP de origen y de destino}: Cuando un origen crea un datagrama, inserta su dirección IP en
-        el campo de dirección IP de origen e inserta la dirección del destino final en el campo de dirección IP de
-        destino. A menudo el host de origen determina la dirección de destino mediante una búsqueda DNS.
-
-    \item
-        \textbf{Opciones}: El campo de opciones permite ampliar una cabecera IP. La idea original era que las opciones
-        de cabecera rara vez se emplearan: de ahí la decisión de ahorrar recursos no incluyendo la información de los
-        campos opcionales en la cabecera de todos los datagramas. Sin embargo, la mera existencia de opciones complica
-        las cosas, ya que las cabeceras de datagrama pueden tener una longitud variable, por lo que no puede
-        determinarse a priori dónde comenzará el campo de datos. Además, dado que algunos datagramas pueden requerir el
-        procesamiento de opciones y otros no, la cantidad de tiempo necesario para procesar un datagrama IP en un router
-        puede variar enormemente. Estas consideraciones cobran una particular importancia en el procesamiento IP
-        realizado en los hosts y routers de altas prestaciones. Por estas razones y otras, las opciones IP fueron
-        eliminadas en la cabecera de IPv6.
-
-    \item
-        \textbf{Datos (carga útil)}: Finalmente, llegamos al último campo y más importante.  En la mayoría de las
-        circunstancias, el campo de datos del datagrama IP contiene el segmento de la capa de transporte (TCP o UDP) que
-        va a entregarse al destino. Sin embargo, el campo de datos puede transportar otros tipos de datos, como por
-        ejemplo mensajes ICMP.
+        Tamaño máximo del paquete de 65635 bytes.
 \end{itemize}
 
-\section{Suponga un MTU de un cierto enlace está limitado a 1500bytes. Suponiendo una cabecera IP de 20 bytes ¿Cuántos
-datagramas se necesitarían para enviar un archivo MP3 de 5 millones de bytes?}
+Sólo ser realiza verificación por suma al encabezado del paquete, no a los datos éste que contiene.
 
-Si el enlace está limitado a 1500 bytes y 20 de ellos serán de la cabecera IP, entonces se tiene:
+El Protocolo Internet proporciona un servicio de distribución de paquetes de información orientado a no conexión de
+manera no fiable. La orientación a \textbf{no conexión} significa que los paquetes de información, que será emitido a la
+red, son tratados independientemente, pudiendo viajar por diferentes trayectorias para llegar a su destino. El término
+\textbf{no fiable} significa más que nada que no se garantiza la recepción del paquete.
+
+La unidad de información intercambiada por IP es denominada datagrama. Tomando como analogía los marcos intercambiados
+por una red física los datagramas contienen un encabezado y una área de datos. IP no especifica el contenido del área de
+datos, ésta será utilizada arbitrariamente por el protocolo de transporte.
+
+\subsection*{Dirección IP}
+
+Para que en una red dos computadoras puedan comunicarse entre sí ellas deben estar identificadas con precisión Este
+identificador puede estar definido en niveles bajos (identificador físico) o en niveles altos (identificador lógico) de
+pendiendo del protocolo utilizado. TCP/IP utiliza un identificador denominado dirección internet o dirección IP, cuya
+longitud es de 32 bites. La dirección IP identifica tanto a la red a la que pertenece una computadora como a ella misma
+dentro de dicha red.
+
+Puesto que todos los hosts y todos los routers son capaces de enviar y recibir datagramas IP, IP requiere que cada
+interfaz de host y de router tenga su propia dirección IP. Por tanto, técnicamente, una dirección IP está asociada con
+una interfaz, en lugar de con el host o con el router que contiene dicha interfaz (el límite entre el host y el enlace
+físico se denomina \textbf{interfaz}).
+
+Las direcciones IP tienen una longitud de 32 bits (lo que equivale a 4 bytes), por lo que existen un total de $2^{32}$
+direcciones.IP posibles. Aproximando $2^{10}$ a $10^3$, es fácil ver que hay unos 4.000 millones direcciones IP posibles. Estas
+direcciones normalmente se expresan utilizando la notación decimal con punto, en la que cada byte de la dirección se
+escribe en formato decimal y separada medíante un punto del resto de los bytes de la dirección.
+
+La dirección IP es el identificador de cada host dentro de su red de redes. Cada host conectado a una red tiene una
+dirección IP asignada, la cual debe ser distinta a todas las demás direcciones que estén vigentes en ese momento en el
+conjunto de redes visibles por el host. En el caso de Internet, no puede haber dos ordenadores con 2 direcciones IP
+(públicas) iguales. Pero sí podríamos tener dos ordenadores con la misma dirección IP siempre y cuando pertenezcan a
+redes independientes entre sí (sin ningún camino posible que las comunique).
+
+Clasificación de las direcciones IP:
+
 \begin{itemize}
     \item
-        \textbf{Bytes de datos}: 1480
+        \textbf{Direcciones IP públicas}: Son visibles en todo Internet. Un ordenador con una IP pública es accesible
+        (visible) desde cualquier otro ordenador conectado a Internet. Para conectarse a Internet es necesario tener una
+        dirección IP pública.
+
     \item
-        \textbf{Bytes de Cabecera}: 20
-    \item
-        \textbf{Total de Bytes}: 1500
+        \textbf{Direcciones IP privadas (reservadas)}: Son visibles únicamente por otros hosts de su propia red o de
+        otras redes privadas interconectadas por routers. Se utilizan en las empresas para los puestos de trabajo. Los
+        ordenadores con direcciones IP privadas pueden salir a Internet por medio de un router (o proxy) que tenga una
+        IP pública. Sin embargo, desde Internet no se puede acceder a ordenadores con direcciones IP privadas.
 \end{itemize}
 
-Si se requiere pasar cinco millones de bytes, se tiene $L_a$ la \textbf{Longitud del archivo} y $B_c$ la cantidad de
-\textbf{Bytes de datos}:
-\[ \frac{L_a}{B_d} = \frac{5000000}{1480} \approx 3378,37 \]
+A su vez las direcciones IP pueden ser:
 
-Se debe quedar con la parte entera del resultado, es decir 3378 y se debe sacar el resto haciendo:
-\[ L_a - (C_p * B_d) = 5000000 - (3378*1480) = 560 \]
-
-Entonces se tienen la cantidad de paquetes:
 \begin{itemize}
     \item
-        3378 paquetes de 1500 bytes con 20 bytes de cabecera
+        \textbf{Direcciones IP estáticas (fijas)}: Un host que se conecte a la red con dirección IP estática siempre lo
+        hará con una misma IP. Las direcciones IP públicas estáticas son las que utilizan los servidores de Internet con
+        objeto de que estén siempre localizables por los usuarios de Internet. Estas direcciones hay que contratarlas.
+
     \item
-        1 paquete de 580 bytes, siendo 560 de datos + 20 de cabecera
+        \textbf{Direcciones IP dinámicas}: Un host que se conecte a la red mediante dirección IP dinámica, cada vez lo
+        hará con una dirección IP distinta. Las direcciones IP públicas dinámicas son las que se utilizan en las
+        conexiones a Internet mediante un módem. Los proveedores de Internet utilizan direcciones IP dinámicas debido a
+        que tienen más clientes que direcciones IP (es muy improbable que todos se conecten a la vez).
+
 \end{itemize}
 
-La tabla de \emph{offset} se genará de la siguiente forma:
+
+\section{Dada la red 200.100.50.0 se necesitan definir 8 subredes. Indique la máscara utilizada y las direcciones de las
+dos primeras subredes. Luego tome una de ellas e indique el rango de direcciones asignables en esa subred, dirección de
+red y de broadcast}
+
+Si se requieren definir 8 subredes entonces para obtener ese rango es necesario realizar la siguiente cuenta: $2^3 = 8$
+posibles subredes. Por lo que se deben tomar los últimos 3 dígitos de la dirección 200.100.50.0 para obtener las
+distintas subredes. La dirección en binario de la red es: \[11001000\cdot01100100\cdot00110010\cdot00000hhh\]
+
+Donde h son los dígitos reservados para las 8 posibles subredes.
+
+\subsection*{Indicar para cada subred: Dirección de Subred, Máscara de Subred, y Dirección de Broadcast}
+
+\subsubsection*{Red 0}
+
+Por lo tanto la \textbf{Red 0} tendría las siguientes características:
 \begin{itemize}
     \item
-        Paquete nº 1 - \emph{offset}: 0
+        \textbf{Dirección de Red}: 200.100.50.0/29
+        \[11001000\cdot01100100\cdot00110010\cdot00000000\]
     \item
-        Paquete nº 2 - \emph{offset}: 1480
+        \textbf{Dirección de Broadcast}: No tiene
     \item
-        Paquete nº 3 - \emph{offset}: 2960
-    \item
-        ...
-    \item
-        Paquete nº 3379 - \emph{offset}: 3378
+        \textbf{Dispositivos disponibles}: 1
 \end{itemize}
 
-\textbf{Respuesta}: Se tendrá que dividir el archivo en 3379 paquetes: 3378 de 1500 bytes y 1 de 580.
+\subsubsection*{Red 1}
 
-\section{¿Qué algoritmos de enrutamiento conoce? Detalle sus principios de funcionamiento}
+Por lo tanto la \textbf{Red 1} tendría las siguientes características:
+\begin{itemize}
+    \item
+        \textbf{Dirección de Red}: 200.100.50.1/29
+        \[11001000\cdot01100100\cdot00110010\cdot00000001\]
+    \item
+        \textbf{Dirección de Broadcast}: No tiene
+    \item
+        \textbf{Dispositivos disponibles}: 1
+\end{itemize}
+
+\subsubsection*{Red 2}
+
+Por lo tanto la \textbf{Red 2} tendría las siguientes características:
+\begin{itemize}
+    \item
+        \textbf{Dirección de Red}: 200.100.50.2/29
+        \[11001000\cdot01100100\cdot00110010\cdot00000010\]
+    \item
+        \textbf{Dirección de Broadcast}: 200.100.50.3/29
+        \[11001000\cdot01100100\cdot00110010\cdot00000011\]
+    \item
+        \textbf{Dispositivos disponibles}: 1
+\end{itemize}
+
+\subsubsection*{Red 3}
+
+Por lo tanto la \textbf{Red 3} tendría las siguientes características:
+\begin{itemize}
+    \item
+        \textbf{Dirección de Red}: 200.100.50.4/29
+        \[11001000\cdot01100100\cdot00110010\cdot00000100\]
+    \item
+        \textbf{Dirección de Broadcast}: 200.100.50.6/29
+        \[11001000\cdot01100100\cdot00110010\cdot00000111\]
+    \item
+        \textbf{Dispositivos disponibles}: $(2^2) - 2 = 2$
+\end{itemize}
+
+
+\section{¿Qué algoritmo de enrutamiento conoce? Detalle sus principios de funcionamiento}
 
 En términos generales, una forma de clasificar los algoritmos de enrutamiento es dependiendo de si son \textbf{globales}
 o \textbf{descentralizados}:
@@ -542,16 +568,17 @@ ios demás nodos de la red. El algoritmo de Dijkstra es iterativo y tiene la prop
 iteración del algoritmo, se conocen las rutas de coste mínimo hacia k nodos de destino y entre las rutas de coste mínimo
 a todos los nodos de destino, estas k rutas tendrán los k costes más pequeños.
 
-\section{Suponiendo que cada nodo conoce inicialmente los costos a cada uno de sus vecinos. Utilizando el algoritmo de
-Vector Distancias, especifique las entradas de la tabla de distancias para el Nodo nº 2}
+\section{Calcule las tablas de distancias después del paso de inicialización y después de cada iteración del algoritmo
+de Vector Distancia}
 
 \vspace{5pt}
 \begin{center}
-\includegraphics[width=50mm, scale=0.5]{Imagenes/imagen27.png}
+\includegraphics[width=70mm, scale=0.5]{Imagenes/imagen23.png}
 \end{center}
 \vspace{5pt}
 
-\section{¿Cuáles son los servicios que debe otorgar la Capa de Enlace?}
+\section{¿Cuáles son los servicios que debe otorgar la capa de enlace? ¿En qué consiste el protocolo CSMA/CD? ¿Qué es
+una dirección MAC?}
 
 Para la Capa de Enlace, nos resultará conveniente referirnos a los hosts y los routers simplemente como \textbf{nodos}
 ya que, no nos va a preocupar especialmente si un determinado nodo es un router o un host. También nos referimos a los
@@ -619,7 +646,7 @@ Entre los posibles servicios que un protocolo de la capa de enlace puede ofrecer
         transmitir y recibir al mismo tiempo.
 \end{itemize}
 
-\section{¿En qué consiste el protocolo CSMA/CD?}
+\subsection*{¿En qué consiste el protocolo CSMA/CD?}
 
 El protocolo \textbf{CSMA/CD}: protocolo de acceso múltiple de Ethernet. El mismo, realiza lo siguiente:
 \begin{enumerate}
@@ -670,113 +697,50 @@ Dentro de un adaptador específico,el protocolo CSMA/CD opera de la siguiente for
 
 \end{enumerate}
 
-\section{¿Qué es un Switch? ¿Cómo funciona?}
+\subsection*{Direcciones MAC}
 
-Los switches, son los encargados de la interconexión de equipos dentro de una misma red, o lo que es lo mismo, son los
-dispositivos que, junto al cableado, constituyen las redes de área local o LAN.
-Un switch o conmutador es un dispositivo de interconexión utilizado para conectar equipos en red formando lo que se
-conoce como una red de área local (LAN) y cuyas especificaciones técnicas siguen el estándar conocido como Ethernet.
+En las redes de computadoras, la dirección MAC (siglas en inglés de Media Access Control) es un identificador de 48 bits
+(6 bloques de dos caracteres hexadecimales (8 bits)) que corresponde de forma única a una tarjeta o dispositivo de red.
+Se la conoce también como dirección física, y es única para cada dispositivo. Está determinada y configurada por el IEEE
+(los últimos 24 bits) y el fabricante (primeros 24 bits) utilizando el \emph{organizationally unique identifier}.
+\footnote{El identificador único de organización o organizationally unique identifier (OUI) es un número de 24 bits
+comprado a la Autoridad de Registro del Instituto de Ingeniería Eléctrica y Electrónica (IEEE). Este identificador
+único, identifica a cada empresa u organización (llamados asignados) a nivel mundial y reserva un bloque en cada posible
+identificador derivado (como las direcciones MAC, direcciones de grupos, identificadores para el Protocolo de acceso a
+subredes, etc.)}
 
-En realidad los switches no son los únicos elementos encargados de la interconexión de dispositivos en una red local.
-Los switches realizan esta función para medios cableados. Cuando la interconexión se realiza de forma
-\textbf{inalámbrica} el dispositivo encargado de ello se denomina \textbf{Punto de acceso inalámbrico}.
+La mayoría de los protocolos que trabajan en la \textbf{Capa de Enlace} del modelo OSI usan una de las tres numeraciones
+manejadas por el IEEE: MAC-48, EUI-48, y EUI-64, las cuales han sido diseñadas para ser identificadores globalmente
+únicos. No todos los protocolos de comunicación usan direcciones MAC, y no todos los protocolos requieren
+identificadores globalmente únicos.
 
-En la actualidad las redes locales cableadas siguen el estándar Ethernet (prácticamente el 100\%) donde se utiliza una
-topología en estrella y donde el switch es el elemento central de dicha topología.
+Las direcciones MAC son únicas a nivel mundial, puesto que son escritas directamente, en forma binaria, en el hardware
+en su momento de fabricación. Debido a esto, las direcciones MAC son a veces llamadas burned-in addresses, en inglés.
 
-En las primeras versiones de Ethernet, la topología en estrella se implementaba con otro dispositivo conocido como hub.
-En la actualidad, los hubs se pueden considerar obsoletos. Y es importante tener en cuenta que, aunque externamente son
-muy parecidos, los switches tienen prestaciones muy superiores a los hubs por lo que si aún encontramos alguna red que
-utilice un hub es muy recomendable sustituirlo por un switch.
+Si nos fijamos en la definición como cada bloque hexadecimal son 8 dígitos binarios (bits), tendríamos:
+$6^8 = 48$ bits únicos
 
-La función básica de un switch es la de unir o conectar dispositivos en red. Es importante tener claro que un switch NO
-proporciona por si solo conectividad con otras redes, y obviamente, TAMPOCO proporciona conectividad con Internet. Para
-ello es necesario un router.
+En la mayoría de los casos no es necesario conocer la dirección MAC, ni para montar una red doméstica, ni para
+configurar la conexión a internet, usándose esta sólo a niveles internos de la red. Sin embargo, es posible añadir
+un control de hardware en un conmutador o un punto de acceso inalámbrico, para permitir sólo a unas MAC concretas el
+acceso a la red. En este caso, deberán conocerse las MAC de los dispositivos para añadirlos a la lista. Dicho medio
+de seguridad se puede considerar un refuerzo de otros sistemas de seguridad, ya que teóricamente se trata de una
+dirección única y permanente, aunque en todos los sistemas operativos hay métodos que permiten a las tarjetas de red
+identificarse con direcciones MAC distintas de la real.
 
-\vspace{5pt}
-\begin{center}
-\includegraphics[width=100mm, scale=0.5]{Imagenes/imagen22.png}
-\end{center}
-\vspace{5pt}
+Cuando un adaptador de un emisor quiere enviar una trama a otro adaptador de destino, inserta la dirección MAC del de
+destino en la trama y luego la envía a través de la red LAN. Si la red LAN es una LAN de difusión (como por ejemplo,
+802.11 o Ethernet), la trama será recibida y procesada por todos los demás adaptadores de la LAN. En particular, cada
+adaptador que reciba la trama comprobará si la dirección MAC de destino contenida en la trama se corresponde con su
+propia dirección MAC. Si existe una correspondencia, el adaptador extraerá el datagrama incluido en la trama y lo pasará
+hacia arriba por la pila de protocolos para entregárselo a su nodo padre. Si no hay una correspondencia entre ambas
+direcciones, el adaptador descarta la trama, sin pasar el datagrama de la capa de red hacia arriba por la pila de
+protocolos. De este modo, sólo el nodo de destino será interrumpido cuando se reciba la trama.
 
-Como se observa en la figura, la existencia de la red local permite:
-
-\begin{itemize}
-    \item
-        \textbf{Compartir archivos}: Un equipo de la red habilita la compartición de archivos y el resto de equipos
-        pueden acceder a dichos archivos a través de la red.
-    \item
-        \textbf{Compartir impresoras}: Todos los equipos de la red pueden utilizar la misma impresora.
-    \item
-        \textbf{Compartir la conexión a Internet}: Todos los equipos pueden acceder a Internet a través de router de
-        acceso, que está conectado en la red.
-\end{itemize}
-
-\subsection*{Características}
-
-\subsubsection*{Puertos}
-Los puertos son los elementos del switch que permiten la conexión de otros dispositivos al mismo. Como por ejemplo un
-PC, portátil, un router, otro switch, una impresora y en general cualquier dispositivo que incluya una interfaz de red
-Ethernet. El número de puertos es una de las características básicas de los switches. Aquí existe un abanico bastante
-amplio, desde los pequeños switches de 4 puertos hasta switches troncales que admiten varios cientos de puertos.
-
-El estándar Ethernet admite básicamente dos tipos de medios de transmisión cableados: el cable de par trenzado y el
-cable de fibra óptica. El conector utilizado para cada tipo lógicamente es diferente así que otro dato a tener en cuenta
-es de qué tipo son los puertos. Normalmente los switches básicos sólo disponen de puertos de cable de par trenzado (cuyo
-conector se conoce como RJ-45) y los más avanzados incluyen  puertos de fibra óptica (el conector más frecuente aunque
-no el único es el de tipo SC).
-
-\subsubsection*{Velocidades}
-Dado que Ethernet permite varias velocidades y medios de transmisión, otra de las características destacables sobre los
-puertos de los switches es precisamente la velocidad a la que pueden trabajar sobre un determinado medio de transmisión.
-
-\subsubsection*{Conmutación}
-La función básica que realiza un switch se conoce como conmutación y consiste en trasferir datos entre los diferentes
-dispositivos de la red. Para ello, los switches procesan la información contenida en las cabeceras de la trama Ethernet.
-
-Sin entrar mucho en detalle en el funcionamiento de Ethernet podemos decir que Ethernet es una tecnología de transmisión
-de datos para redes locales cableadas que divide los datos que se tiene que transmitir en tramas y a cada trama se le
-añade una determinada información de control llamada cabecera. Dicha cabecera contiene la dirección MAC tanto del emisor
-como del receptor.
-
-Los switches guardan en una tabla las direcciones MAC de todos los dispositivos conectados junto con el puerto en el que
-están conectados, de forma que cuando llega una trama al switch, dicha trama se envía al puerto correspondiente.
-
-\subsubsection*{Buffers}
-El elemento clave en los switches para llevar a cabo el proceso de conmutación son los buffers, que son zonas de memoria
-donde las tramas son almacenadas antes de ser reenviadas al puerto correspondiente. Esta característica además, permite
-al switch conectar puertos que trabajen a diferentes velocidades.
-
-Los buffers pueden ser implementados en la salida de los puertos, en la entrada de los puertos o una combinación de
-ambos. Lo más habitual es implementarlos en la salida ya que es el modo más eficiente, consiguiéndose unos índices de
-eficacia cercanos al 98\%.
-
-\subsubsection*{Técnicas de Conmutación}
-Existen dos técnicas para llevar a cabo la transferencia de los datos entre puertos de un switch:
-
-\begin{enumerate}
-    \item
-        \textbf{Reenvío directo (cut-through)}: En esta técnica, cuando un switch comienza a recibir datos por un
-        puerto, no espera a leer la trama completa para reenviarla al puerto destino. En cuanto lee la dirección de
-        destino de la trama MAC, comienza a transferir los datos al puerto destino.
-
-        Esta técnica proporciona unos tiempos de retardo bastante bajos, sin embargo, tiene como inconveniente que sólo
-        puede usarse cuando las velocidades de todos los puertos son iguales.
-    \item
-        \textbf{Almacenamiento y reenvío (Store and Forward)}: En este caso, cuando un switch recibe datos por un
-        puerto, almacena la trama completa en el buffer para luego reenviarla al puerto destino. La utilización de esta
-        técnica permite realizar algunas comprobaciones de error antes de ser enviada al puerto de destino.
-
-\end{enumerate}
-
-\subsubsection*{Switches de Nivel 3 y Nivel 3/4}
-Los switches de gama alta utilizados en el troncal de redes Ethernet de mediana y gran envergadura suelen ofrecer
-capacidades de enrutamiento de paquetes IP. A este tipo de switches se le conoce como switches de nivel 3. Un switch de
-nivel 3 realiza todas las funciones de conmutación de un switch pero además proporciona funciones de enrutamiento IP.
-Esta característica es especialmente útil para switches que utilicen VLAN y necesiten comunicar algunas de sus redes LAN
-virtuales.
-
-Además, pueden existir switches que ofrezcan características relacionadas con funciones del nivel 4, como control de
-puertos. A estos switches se le conoce como switches de nivel 3/4.
+Sin embargo, en ocasiones un adaptador de un emisor sí que quiere que todos los demás adaptadores de la LAN reciban y
+procesen la trama que va a enviar. En este caso, el adaptador emisor inserta una dirección de difusión MAC especial en
+el campo de la dirección de destino de la trama. Para las redes LAN que utilizan direcciones de 6 bytes (como las LAN
+Ethernet y de paso de testigo), la dirección de difusión es una cadena compuesta por 48 unos (1) consecutivos, es decir:
+FF:FF:FF:FF:FF:FF en notación hexagecimal.
 
 \end{document}
