@@ -1,0 +1,345 @@
+
+% ---------------------------------------------------------
+%		Preámbulo del documento
+% ---------------------------------------------------------
+\documentclass[titlepage]{article} %utilizamos el documento de tipo articulo
+
+\usepackage{comment} %util para comentarios largos
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{listings} %Necesario para colorear el código
+\usepackage{xcolor} %Necesario para obtener los colores para el codigo
+\usepackage{libertine} %Necesario para la fuente
+\usepackage[scaled=1.2]{inconsolata} %Necesario para la fuente
+\usepackage{graphicx} % Necesario para poder renderizar imagenes
+\usepackage[export]{adjustbox} %Necesarios para poder obtener el borde rojo de la imagen
+\usepackage{tabularx}   %Necesario para poner la orientacion de {tabular} en 'medio'
+\graphicspath{ {.} }
+
+\definecolor{red}{rgb}{0.6,0,0}
+\definecolor{blue}{rgb}{0,0,0.6}
+\definecolor{green}{rgb}{0,0.5,0}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{cloudwhite}{rgb}{0.9412, 0.9608, 0.8471}
+
+\lstset{
+    language=c,
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,
+    numberstyle=\tiny,
+    numbersep=5pt,
+    tabsize=1,
+    extendedchars=true,
+    breaklines=true,
+    frame=b,
+    stringstyle=\color{blue}\ttfamily,
+    showspaces=false,
+    showtabs=false,
+    xleftmargin=17pt,
+    framexleftmargin=17pt,
+    framexrightmargin=5pt,
+    framexbottommargin=4pt,
+    commentstyle=\color{green},
+    morecomment=[l]{//}, %use comment-line-style!
+    morecomment=[s]{/*}{*/}, %for multiline comments
+    showstringspaces=false,
+    morekeywords={ abstract, event, new, struct,
+    as, explicit, null, switch,
+    base, extern, object, this,
+    bool, false, operator, throw,
+    break, finally, out, true,
+    byte, fixed, override, try,
+    case, float, params, typeof,
+    catch, for, private, uint,
+    char, foreach, protected, ulong,
+    checked, goto, public, unchecked,
+    class, if, readonly, unsafe,
+    const, implicit, ref, ushort,
+    continue, in, return, using,
+    decimal, int, sbyte, virtual,
+    default, interface, sealed, volatile,
+    delegate, internal, short, void,
+    do, is, sizeof, while,
+    double, lock, stackalloc,
+    else, long, static,
+    enum, namespace, string},
+    keywordstyle=\color{cyan},
+    identifierstyle=\color{red},
+    backgroundcolor=\color{cloudwhite},
+}
+
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{blue}{\parbox{\textwidth}{\hspace{15pt}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
+
+
+% ---------------------------------------------------------
+%		Pagina de Presentación
+% ---------------------------------------------------------
+
+% Esto puede ser redefinido en un archivo aparte que contenga las directivas de \autor,\titulo,\subtitulo
+% permitiendo de esta manera solamente incluir el archivo y las directivas. Ejemplo pagina 89 - Latex Cockbook
+
+\author{Emiliano Salvatori}
+\title{%
+	Laboratorio Final\\
+	\large Redes I}
+\date{Noviembre del 2019}
+\pagestyle{headings} % para que indique seccion en cada pagina
+
+% ---------------------------------------------------------
+%		Comienza el docuemnto
+% Se comienza con las imagenes a partir de la nº 28
+% ---------------------------------------------------------
+
+\begin{document}
+
+% Se define cada tamaño de fuente para cada uno de las partes de la página principal
+\font\myfont=cmr12 at 30pt
+\title{{\myfont Redes I\\
+        \vspace{30pt}\Huge Laboratorio Final}}
+
+%Se utiliza vspace para separa el Titulo de lo que vendría a ser el Subtitulo
+
+\font\fuenteAutor=cmr12 at 20pt
+\author{{\fuenteAutor Salvatori Emiliano}}
+
+\font\fuenteFecha=cmr12 at 16pt
+\date{{\fuenteFecha Noviembre del 2019}}
+
+\vbox{
+	\centering
+	\includegraphics[width=0.5\textwidth]{Imagenes/UNAJ.png}
+	\maketitle
+	}
+
+\newpage
+\tableofcontents % Directiva para que cree el listado de temas
+
+\newpage
+
+\section{Introducción}
+
+En el siguiente informe se detalla lo realizado como parte del laboratorio de la materia \textbf{Redes I} para la
+\textbf{Comisión nº 2}.  El presente trabajo se basa en la implementación de una Red de Computadoras para una Empresa,
+con sus respectivas áreas y terminales, como así también la simulación de un router de frontera con su salida a
+Internet. Todo ello realizado bajo el software de simulación de Cisco: Packet Tracer.
+
+\section{Objetivos}
+
+La implementación realizada para este trabajo se basa en los siguientes objetivos:
+
+\begin{itemize}
+    \item
+        La realización del diseño de una Red de Computadoras sencilla.
+    \item
+        La simulación de la red para el observar el correcto funcionamiento.
+    \item
+        La integración de los conceptos estudiados durante el curso en un caso de aplicación específico.
+\end{itemize}
+
+\section{Implementación de la Red}
+
+Para la implementación de la Red, se utilizó el siguiente esquema proporcionado por la Cátedra de Redes I:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=80mm,scale=0.3]{Imagenes/imagen28.png}
+\end{center}
+
+\subsection{Página WEB, Router de Frontera y Región Autónoma}
+
+Además del esquema anterior, se proporcionan los siguientes detalles:
+\begin{itemize}
+    \item
+        Se configura una página WEB, cuya dirección estará gestionada por el Servidor DNS, la cual podrán acceder todas
+        las terminales situadas dentro de la Empresa.
+    \item
+        Para simular la salida a Internet, se agregan 3 routers por fuera del Router de Frontera, los primeros dos
+        simularán el Nucleo de la Red y el tercero el router de frontera del otro extremo.
+    \item
+        La dirección pública por la que se saldrá a Internet, es la \emph{200.142.20.1}
+\end{itemize}
+
+\section{Disposición de la Red}
+
+A continuación se visualiza la disposición de todos los elementos situados en la red. Se puede observar sobre cada
+enlace su respectiva dirección IP, como así también, las direcciones dentro de los dispositivos en la red LAN los cuales
+son identificados con sus direcciones, escritas en la parte inferior de cada uno.
+
+\begin{center}
+\includegraphics[width=130mm,scale=0.3]{Imagenes/imagen29.jpeg}
+\end{center}
+
+\section{Rango de direcciones empleadas}
+
+Se presenta un cuadro de los rangos de direcciones para cada uno de los dispositivos de cada área utilizadas, así como
+también las direcciones de Máscara de SubRed, el Gateway por defecto y las direcciones del servidor DNS y WEB:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=100mm,scale=0.3]{Imagenes/imagen30.jpeg}
+\end{center}
+
+\subsection{Direcciones de Enlaces en Routers}
+Asimismo se pueden ver las direcciones estáticas seleccionadas para los enlaces de los distintos routers que
+conformarían tanto la Frontera de la Red, como así también, las empleadas para los Núcleos y el otro router del extremo
+de red:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=100mm,scale=0.3]{Imagenes/imagen31.jpeg}
+\end{center}
+
+\section{Configuración de la Red LAN}
+
+A continuación se muestra la configuración que se empleó para modificar cada dispositivo PC e impresora dentro de las
+distintas áreas de nuestra LAN. Para los enlaces de nuestras PC se configura la Puerta de Enlace Predeterminada, y la
+dirección DNS provisto para acceder a la página WEB:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=100mm,scale=0.3]{Imagenes/imagen37.jpeg}
+\end{center}
+
+Luego se establece la configuración del Enlace FastEthernet0 de la PC:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=100mm,scale=0.3]{Imagenes/imagen38.jpeg}
+\end{center}
+
+\section{Configuración de la Página Web}
+
+A continuación se puede ver la configuración del Enlace del Servidor Web:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=100mm,scale=0.3]{Imagenes/imagen41.jpeg}
+\end{center}
+
+Procedemos a modificar la página existente de ejemplo como para que visualice algo referido a la materia de Redes I:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=100mm,scale=0.3]{Imagenes/imagen42.jpeg}
+\end{center}
+
+\subsection{Visualización de la Página en dispositivo}
+Por último se observa el correcto funcionamiento de la página WEB en el dispositivo \emph{192.168.0.18}:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=100mm,scale=0.3]{Imagenes/imagen39.jpeg}
+\end{center}
+
+La página modificada vista en el navegador de un terminal PC:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=100mm,scale=0.3]{Imagenes/imagen40.jpeg}
+\end{center}
+
+\section{Configuración de Enlaces}
+
+Se procede a configurar cada uno de los Enlaces de cada uno de los routers. Como se puede ver en la siguiente imagen,
+para cada enlace se debe ingresar al dispositivo deseado, seleccionar el tipo de enlace y configurar manualmente la
+dirección IP y la Máscara de Subred:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=100mm,scale=0.3]{Imagenes/imagen34.jpeg}
+\end{center}
+
+Se configura también el enlace que sale hacia el ''exterior'', conectándose con los dispositivos que simulan ser los
+Nucleos de la Red:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=100mm,scale=0.3]{Imagenes/imagen35.jpeg}
+\end{center}
+
+\subsection{Configuración RIP}
+
+Una vez establecidas las configuraciones anteriores, se procede a configurar el protocolo RIP (\emph{Routing Information
+Protocol}) para cada uno de los dispositivos:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=100mm,scale=0.3]{Imagenes/imagen36.jpeg}
+\end{center}
+
+\section{Pruebas dentro y fuera de la LAN}
+
+\subsection{Prueba entre dispositivos en la misma LAN}
+
+Se procede a realizar un ping desde un dispositivo a otro situado en la misma Red LAN:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=120mm,scale=0.3]{Imagenes/imagen44.jpeg}
+\end{center}
+
+El resultado del envío de paquetes entre dos dispositivos en la misma red fue \textbf{exitoso}.
+
+\subsection{Pruebas entre dos dispositivos situados fuera de la misma Red}
+
+Se procede a realizar un ping desde un dispositivo de nuestra Red a otro situado en otra Región Autónoma:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=120mm,scale=0.3]{Imagenes/imagen45.jpeg}
+\end{center}
+
+El resultado del envío de paquetes entre estos dos dispositivos situados en regiones autónomas distintas fue
+\textbf{exitoso}.
+
+
+\section{Configuración y prueba de NATeo}
+
+Una vez establecida la configuración de los distintos enlaces y la comprobación de todos los mensajes enviados de forma
+correcta a los distintos terminales internos a la Red LAN, se procede a configurar nuestro Router de Frontera, para que
+pueda ejecutar de forma correcta el NATEO y se enmascare la dirección privada de nuestra LAN hacia el ''exterior'' de
+Internet. Se puede ver a continuación el envío de un mensaje hacia un terminal que se encuentra situado en otra Región
+Autónoma y el enmascaramiento que se ejecuta al enviar el mensaje:
+
+\vspace{5pt}
+\begin{center}
+\includegraphics[width=120mm,scale=0.3]{Imagenes/imagen32.jpeg}
+\end{center}
+
+Se puede visualizar el cambio de dirección IP origen que pasa de ser \emph{192.168.0.9} a ser por fuera de nuestra LAN
+la dirección pública \emph{200.142.20.1}:
+
+\begin{center}
+\includegraphics[width=90mm,scale=0.3]{Imagenes/imagen33.jpeg}
+\end{center}
+
+\section{Conclusiones}
+
+El presente trabajo muestra la interesante labor de generar una red Lan y su correcta configuración para poder
+interactuar de manera simple entre distintos dispositivos.
+
+Si bien la tarea no fue compleja, permitió visualizar el funcionamiento de lo visto en clase desde una óptica práctica,
+asentando de esta manera algunos conceptos que habían quedado sin esclarecer en profundidad sobre el trabajo que lleva
+a cabo la Capa de Enlace y la Capa de Red.
+
+\section{Herramientas}
+
+\subsection{Materiales utilizados para el presente trabajo}
+Para la resolución del presente Laboratorio se utilizaron las siguientes herramientas:
+
+    \begin{enumerate}
+
+        \item
+            Arch Linux V5.1.11
+        \item
+            Windows 10.
+        \item
+            Packet Tracer V7.2.2.0418 (Se utilizó la última versión porque Arch Linux no permitía anteriores).
+        \item
+            Para la composición del presente Informe se utilizó el paquete \emph{texlive-latexextra 2018.50031-1}
+    \end{enumerate}
+
+\end{document}
