@@ -1,0 +1,18 @@
+DNS: 192.168.0.21
+WEB: 192.168.0.22
+
+
+Para configurar cada uno de los routers que dan acceso a internet se hace mediante CLI: 
+en
+conf t
+access-list 1 permit 192.168.0.0 0.0.0.255
+[de derecha a izquierda se configuran los puertos]
+ip nat inside source list 1 interface Se2/0
+int Fa2/0
+ip nat inside 
+exit 
+int Se2/0
+ip nat outside
+exit
+
+
